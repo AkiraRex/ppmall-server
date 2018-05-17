@@ -16,6 +16,7 @@ public class Const {
         CANCEL(0, "已取消"),
         UNPAY(10, "未付款"),
         PAID(20, "已付款"),
+        PREPARE(30, "已备货"),
         SHIPED(40, "已发货"),
         SUCCESS(50, "交易成功"),
         CLOSE(60, "交易关闭");
