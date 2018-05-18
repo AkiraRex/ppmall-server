@@ -18,10 +18,10 @@ import com.ppmall.service.ICartService;
 @Controller
 @RequestMapping("/cart")
 public class CartController {
-	
+
 	@Autowired
 	private ICartService iCartService;
-	
+
 	@RequestMapping(value = "get_cart_product_count.do", method = RequestMethod.GET)
 	@ResponseBody
 	public ServerResponse<Integer> getCartCount(HttpSession session) {
@@ -29,14 +29,18 @@ public class CartController {
 		int userId = currentUser.getId();
 		return iCartService.getCartCount(userId);
 	}
-	
+
 	@RequestMapping(value = "list.do", method = RequestMethod.GET)
 	@ResponseBody
 	public ServerResponse<List> getCartList(HttpSession session) {
 		User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
 		int userId = currentUser.getId();
 		return iCartService.getCartList(userId);
-		
-		
+	}
+
+	@RequestMapping(value = "add.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse add() {
+		return null;
 	}
 }
