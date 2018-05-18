@@ -33,9 +33,8 @@ public class ProductController {
 		Map paramMap = new HashMap<>();
 		paramMap.put("categoryId", categoryId);
 		paramMap.put("keyword", keyword);
-		paramMap.put("keyword", keyword);
 
-		if (StringUtil.isNotBlank(orderBy))
+		if (StringUtil.isNotBlank(orderBy) && !orderBy.equals("default"))
 			paramMap.put("orderBy", orderBy.replace("_", " "));
 
 		return iProductService.getProductListPortal(pageNum, pageSize, paramMap);
@@ -45,7 +44,7 @@ public class ProductController {
 	@ResponseBody
 	public ServerResponse<String> getDetail(HttpSession session, int productId) {
 		ServerResponse response = iProductService.getDetailById(productId);
-		Product product = (Product) response.getData();
+		Map product = (Map) response.getData();
 		if (product != null)
 			return response;
 		return ServerResponse.createErrorMessage("该商品已下架或被删除");
