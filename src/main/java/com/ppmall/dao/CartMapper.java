@@ -1,5 +1,7 @@
 package com.ppmall.dao;
 
+import java.util.List;
+
 import com.ppmall.pojo.Cart;
 
 public interface CartMapper {
@@ -14,4 +16,10 @@ public interface CartMapper {
     int updateByPrimaryKeySelective(Cart record);
 
     int updateByPrimaryKey(Cart record);
+    
+    int selectCountByUserId(int userId);
+    
+    List selectCartListByUserId(int userId);
+    
+    List selectCartProductListByUserId(int userId);
 }

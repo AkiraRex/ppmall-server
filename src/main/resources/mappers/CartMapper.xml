@@ -21,6 +21,39 @@
     from mmall_cart
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectCountByUserId" resultType="int" parameterType="java.lang.Integer" >
+    select 
+    count(1) cart_count
+    from mmall_cart
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectCartListByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from mmall_cart
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectCartProductListByUserId" resultType="com.ppmall.vo.CartProductVo" parameterType="java.lang.Integer" >
+    SELECT
+	c.id id,
+	c.user_id,
+	c.product_id ,
+	c.quantity,
+	p. name productName,
+	p.subtitle productSubtitle,
+	p.main_image productMainImage,
+	p.price productPrice,
+	p. status productStatus,
+	p. price * c. quantity productTotalPrice,
+	p.stock productStock,
+	c.checked productChecked,
+	IF (p.stock > c.quantity,'LIMIT_NUM_SUCCESS','LIMIT_NUM_FAIL') limitQuantity
+	FROM
+	mmall_cart c
+	LEFT JOIN mmall_product p ON c.product_id = p.id
+	WHERE
+	c.user_id = #{userId,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from mmall_cart
     where id = #{id,jdbcType=INTEGER}
