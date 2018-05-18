@@ -16,6 +16,7 @@ import com.ppmall.common.ServerResponse;
 import com.ppmall.pojo.Product;
 import com.ppmall.service.IProductService;
 import com.ppmall.util.StringUtil;
+import com.ppmall.vo.ProductVo;
 
 @Controller
 @RequestMapping("/product")
@@ -44,7 +45,7 @@ public class ProductController {
 	@ResponseBody
 	public ServerResponse<String> getDetail(HttpSession session, int productId) {
 		ServerResponse response = iProductService.getDetailById(productId);
-		Map product = (Map) response.getData();
+		ProductVo product = (ProductVo) response.getData();
 		if (product != null)
 			return response;
 		return ServerResponse.createErrorMessage("该商品已下架或被删除");
