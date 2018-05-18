@@ -16,44 +16,61 @@ import java.util.Map;
 @Service("iProductService")
 public class ProductServiceImpl implements IProductService {
 
-    @Autowired
-    private ProductMapper productMapper;
+	@Autowired
+	private ProductMapper productMapper;
 
-    @Override
-    public ServerResponse getProductList(int pageNum, int pageSize, Map paramMap) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<Product> productList = productMapper.selectAll(paramMap);
-        PageInfo<Product> pageResult = new PageInfo<>(productList);
-        return ServerResponse.createSuccess("获取成功", pageResult);
-    }
+	@Override
+	public ServerResponse getProductList(int pageNum, int pageSize, Map paramMap) {
+		PageHelper.startPage(pageNum, pageSize);
+		List<Product> productList = productMapper.selectAll(paramMap);
+		PageInfo<Product> pageResult = new PageInfo<>(productList);
+		return ServerResponse.createSuccess("获取成功", pageResult);
+	}
 
-    @Override
-    public ServerResponse getDetailById(int productId) {
-        Product product = productMapper.selectByPrimaryKey(productId);
-        return ServerResponse.createSuccess("获取成功", product);
-    }
+	@Override
+	public ServerResponse getDetailById(int productId) {
+		Product product = productMapper.selectByPrimaryKey(productId);
+		return ServerResponse.createSuccess("获取成功", product);
+	}
 
-    @Override
-    public ServerResponse saveProduct(Product product) {
-        Integer productId = product.getId();
+	@Override
+	public ServerResponse saveProduct(Product product) {
+		Integer productId = product.getId();
 
-        if (StringUtil.isNotBlank(product.getSubImages())) {
-            String subImg = product.getSubImages();
-            product.setMainImage(subImg.split(",")[0]);
-        }
-        if (productId == null) {
-            productMapper.insert(product);
-            return ServerResponse.createSuccessMessage("添加成功");
-        } else {
-            productMapper.updateByPrimaryKey(product);
-            return ServerResponse.createSuccessMessage("修改成功");
-        }
-    }
+		if (StringUtil.isNotBlank(product.getSubImages())) {
+			String subImg = product.getSubImages();
+			product.setMainImage(subImg.split(",")[0]);
+		}
+		if (productId == null) {
+			productMapper.insert(product);
+			return ServerResponse.createSuccessMessage("添加成功");
+		} else {
+			productMapper.updateByPrimaryKey(product);
+			return ServerResponse.createSuccessMessage("修改成功");
+		}
+	}
 
-    @Override
-    public ServerResponse setStatus(Product product) {
-        productMapper.updateByPrimaryKeySelective(product);
-        return ServerResponse.createSuccessMessage("修改成功");
+	@Override
+	public ServerResponse setStatus(Product product) {
+		productMapper.updateByPrimaryKeySelective(product);
+		return ServerResponse.createSuccessMessage("修改成功");
 
-    }
+	}
+
+	@Override
+	public ServerResponse getProductListPortal(int pageNum, int pageSize, Map paramMap) {
+		// TODO Auto-generated method stub
+		ServerResponse response = null;
+		try {
+			PageHelper.startPage(pageNum, pageSize);
+			List<Product> productList = productMapper.selectAll(paramMap);
+			PageInfo<Product> pageResult = new PageInfo<>(productList);
+			response = ServerResponse.createSuccess("获取成功", pageResult);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			response = ServerResponse.createErrorMessage("参数错误");
+		}
+		return response;
+	}
 }
