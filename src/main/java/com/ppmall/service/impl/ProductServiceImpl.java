@@ -7,9 +7,10 @@ import com.ppmall.common.ServerResponse;
 import com.ppmall.dao.ProductMapper;
 import com.ppmall.pojo.Product;
 import com.ppmall.service.IProductService;
-import com.ppmall.util.DateUtil;
 import com.ppmall.util.PropertiesUtil;
 import com.ppmall.util.StringUtil;
+import com.ppmall.vo.ProductVo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,24 +35,11 @@ public class ProductServiceImpl implements IProductService {
 	@Override
 	public ServerResponse getDetailById(int productId) {
 		Product product = productMapper.selectByPrimaryKey(productId);
-		//String subImgs[] = product.getSubImages().split(",");
-		//product.setSubImages(subImgs.toString());
-
-		Map returnMap = new HashMap();
-		returnMap.put("imageHost", PropertiesUtil.getProperty("ftp.server.http.prefix"));
-		returnMap.put("id",product.getId());
-		returnMap.put("categoryId",product.getCategoryId());
-		returnMap.put("name",product.getName());
-		returnMap.put("subtitle",product.getSubtitle());
-		returnMap.put("mainImage",product.getMainImage());
-		returnMap.put("subImages",product.getSubImages());
-		returnMap.put("detail",product.getDetail());
-		returnMap.put("price",product.getPrice());
-		returnMap.put("stock",product.getStock());
-		returnMap.put("createTime", DateUtil.getDateString(product.getCreateTime()));
-		returnMap.put("updateTime",DateUtil.getDateString(product.getUpdateTime()));
-
-		return ServerResponse.createSuccess("获取成功", returnMap);
+		
+		ProductVo productVo = new ProductVo(product);
+		productVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
+		
+		return ServerResponse.createSuccess("获取成功", productVo);
 	}
 
 	@Override
