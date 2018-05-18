@@ -41,9 +41,9 @@ public class UserSecurityFilter implements Filter {
 
         User currentUser = (User) httpSession.getAttribute(Const.CURRENT_USER);
         /**
-         * 包含login为登陆url不过滤，不包含login將进入以下
+         * 包含login为登陆url不过滤，不包含login,register將进入以下
          */
-        if (!requestUrl.contains("login")) {
+        if (!requestUrl.contains("login") && !requestUrl.contains("register")) {
             if (currentUser == null) {
                 httpServletResponse.getWriter().print(resultString);
             } else {
