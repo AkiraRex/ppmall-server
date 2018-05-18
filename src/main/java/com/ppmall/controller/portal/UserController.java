@@ -128,9 +128,6 @@ public class UserController {
     @ResponseBody
     public ServerResponse<String> updateInformation(User user, HttpSession session) {
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
-        if (currentUser == null) {
-            return ServerResponse.createErrorStatus(ResponseCode.NOT_LOGIN.getCode(), ResponseCode.NOT_LOGIN.getDesc());
-        }
         user.setUsername(currentUser.getUsername());
         user.setId(currentUser.getId());
         session.setAttribute(Const.CURRENT_USER, user);
