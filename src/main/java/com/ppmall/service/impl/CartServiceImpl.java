@@ -84,4 +84,11 @@ public class CartServiceImpl implements ICartService {
 		return getCartList(userId);
 	}
 
+	@Override
+	public ServerResponse updateCart(int productId, int userId, int count) {
+		// TODO Auto-generated method stub
+		cartMapper.updateCartByProductId(userId, productId, count);
+		return getCartList(userId);
+	}
+
 }

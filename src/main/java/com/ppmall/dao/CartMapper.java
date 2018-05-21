@@ -29,4 +29,6 @@ public interface CartMapper {
 	int deleteByProductIds(Map paramMap);
 
 	Cart selectCartByProductId(@Param("userId") int userId, @Param("productId") int productId);
+	
+	int updateCartByProductId(@Param("userId") int userId, @Param("productId") int productId,@Param("quantity") int count);
 }

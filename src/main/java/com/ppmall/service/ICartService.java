@@ -10,6 +10,8 @@ public interface ICartService {
 	ServerResponse getCartList(int userId);
 
 	ServerResponse addToCart(int productId, int count, int userId);
-	
+
 	ServerResponse deleteCart(int[] productIds, int userId);
+
+	ServerResponse updateCart(int productId, int userId, int count);
 }

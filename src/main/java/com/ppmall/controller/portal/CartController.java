@@ -46,7 +46,7 @@ public class CartController {
 		return iCartService.addToCart(productId, count, user.getId());
 	}
 
-	@RequestMapping(value = "delete.do", method = RequestMethod.POST)
+	@RequestMapping(value = "delete_product.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse delete(String productIds, HttpSession session) {
 		String productId[] = productIds.split(",");
@@ -56,5 +56,13 @@ public class CartController {
 		}
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		return iCartService.deleteCart(productIdsI, user.getId());
+	}
+	
+	@RequestMapping(value = "update.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse update(int productId,int count,HttpSession session) {
+		
+		return null;
+		
 	}
 }
