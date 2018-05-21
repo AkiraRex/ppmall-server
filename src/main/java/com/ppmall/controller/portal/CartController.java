@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ppmall.common.Const;
+import com.ppmall.common.ResponseCode;
 import com.ppmall.common.ServerResponse;
 import com.ppmall.pojo.User;
 import com.ppmall.service.ICartService;
@@ -40,7 +41,20 @@ public class CartController {
 
 	@RequestMapping(value = "add.do", method = RequestMethod.POST)
 	@ResponseBody
-	public ServerResponse add() {
-		return null;
+	public ServerResponse add(int productId, int count, HttpSession session) {
+		User user = (User) session.getAttribute(Const.CURRENT_USER);
+		return iCartService.addToCart(productId, count, user.getId());
+	}
+
+	@RequestMapping(value = "delete.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse delete(String productIds, HttpSession session) {
+		String productId[] = productIds.split(",");
+		int productIdsI[] = new int[productId.length];
+		for (int i = 0; i < productId.length; i++) {
+			productIdsI[i] = Integer.valueOf(productId[i]);
+		}
+		User user = (User) session.getAttribute(Const.CURRENT_USER);
+		return iCartService.deleteCart(productIdsI, user.getId());
 	}
 }
