@@ -1,5 +1,7 @@
 package com.ppmall.dao;
 
+import java.util.List;
+
 import com.ppmall.pojo.Shipping;
 
 public interface ShippingMapper {
@@ -14,4 +16,6 @@ public interface ShippingMapper {
     int updateByPrimaryKeySelective(Shipping record);
 
     int updateByPrimaryKey(Shipping record);
+    
+    List selectByUserId(int userId);
 }
