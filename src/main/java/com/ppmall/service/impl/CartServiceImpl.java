@@ -14,6 +14,7 @@ import com.ppmall.dao.CartMapper;
 import com.ppmall.pojo.Cart;
 import com.ppmall.service.ICartService;
 import com.ppmall.util.DateUtil;
+import com.ppmall.util.PropertiesUtil;
 import com.ppmall.vo.CartProductVo;
 
 @Service("iCartService")
@@ -43,6 +44,7 @@ public class CartServiceImpl implements ICartService {
 		}
 
 		Map returnMap = new HashMap<>();
+		returnMap.put("imageHost", PropertiesUtil.getProperty("ftp.server.http.prefix"));
 		returnMap.put("allChecked", allChecked);
 		returnMap.put("cartTotalPrice", cartTotalPrice);
 		returnMap.put("cartProductVoList", cartList);
