@@ -51,7 +51,29 @@ public class CartServiceImpl implements ICartService {
 
 		return ServerResponse.createSuccess("获取成功", returnMap);
 	}
+	
+	@Override
+	public ServerResponse getCartListByChecked(int userId, int checked) {
+		// TODO Auto-generated method stub
+		List<CartProductVo> cartList = cartMapper.selectCartProductListByUserIdAndChecked(userId, checked);
+		double cartTotalPrice = 0;
+		boolean allChecked = true;
+		for (CartProductVo vo : cartList) {
+			double totalPrice = vo.getProductTotalPrice();
+			cartTotalPrice += totalPrice;
+			if (vo.getProductChecked() == 0)
+				allChecked = false;
+		}
 
+		Map returnMap = new HashMap<>();
+		returnMap.put("imageHost", PropertiesUtil.getProperty("ftp.server.http.prefix"));
+		returnMap.put("allChecked", allChecked);
+		returnMap.put("cartTotalPrice", cartTotalPrice);
+		returnMap.put("cartProductVoList", cartList);
+
+		return ServerResponse.createSuccess("获取成功", returnMap);
+	}
+	
 	@Override
 	public ServerResponse addToCart(int productId, int count, int userId) {
 		// TODO Auto-generated method stub
@@ -93,7 +115,4 @@ public class CartServiceImpl implements ICartService {
 		cartMapper.updateCartByProductId(userId, productId, count, checked);
 		return getCartList(userId);
 	}
-
-	
-
 }

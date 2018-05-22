@@ -25,6 +25,8 @@ public interface CartMapper {
 	List selectCartListByUserId(int userId);
 
 	List selectCartProductListByUserId(int userId);
+	
+	List selectCartProductListByUserIdAndChecked(@Param("userId")int userId,@Param("checked")int checked);
 
 	int deleteByProductIds(Map paramMap);
 

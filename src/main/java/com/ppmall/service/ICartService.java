@@ -8,6 +8,8 @@ public interface ICartService {
 	ServerResponse getCartCount(int userId);
 
 	ServerResponse getCartList(int userId);
+	
+	ServerResponse getCartListByChecked(int userId,int checked);
 
 	ServerResponse addToCart(int productId, int count, int userId);
 
