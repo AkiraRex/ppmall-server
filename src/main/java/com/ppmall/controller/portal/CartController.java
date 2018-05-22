@@ -57,12 +57,39 @@ public class CartController {
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		return iCartService.deleteCart(productIdsI, user.getId());
 	}
-	
+
 	@RequestMapping(value = "update.do", method = RequestMethod.POST)
 	@ResponseBody
-	public ServerResponse update(int productId,int count,HttpSession session) {
-		
-		return null;
-		
+	public ServerResponse update(int productId, int count, HttpSession session) {
+		User user = (User) session.getAttribute(Const.CURRENT_USER);
+		return iCartService.updateCart(productId, user.getId(), count, 1);
+	}
+
+	@RequestMapping(value = "select.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse select(int productId, HttpSession session) {
+		User user = (User) session.getAttribute(Const.CURRENT_USER);
+		return iCartService.updateCart(productId, user.getId(), null, 1);
+	}
+
+	@RequestMapping(value = "un_select.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse unSelect(int productId, HttpSession session) {
+		User user = (User) session.getAttribute(Const.CURRENT_USER);
+		return iCartService.updateCart(productId, user.getId(), null, 0);
+	}
+	
+	@RequestMapping(value = "select_all.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse selectAll(HttpSession session) {
+		User user = (User) session.getAttribute(Const.CURRENT_USER);
+		return iCartService.updateCart(null, user.getId(), null, 1);
+	}
+	
+	@RequestMapping(value = "un_select_all.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse unSelectAll(HttpSession session) {
+		User user = (User) session.getAttribute(Const.CURRENT_USER);
+		return iCartService.updateCart(null, user.getId(), null, 0);
 	}
 }

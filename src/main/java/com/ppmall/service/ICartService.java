@@ -13,5 +13,6 @@ public interface ICartService {
 
 	ServerResponse deleteCart(int[] productIds, int userId);
 
-	ServerResponse updateCart(int productId, int userId, int count);
+	ServerResponse updateCart(Integer productId, int userId, Integer count, int checked);
+
 }

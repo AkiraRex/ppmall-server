@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ppmall.common.ServerResponse;
 import com.ppmall.dao.CartMapper;
@@ -85,10 +86,12 @@ public class CartServiceImpl implements ICartService {
 	}
 
 	@Override
-	public ServerResponse updateCart(int productId, int userId, int count) {
+	public ServerResponse updateCart(Integer productId, int userId, Integer count,int checked) {
 		// TODO Auto-generated method stub
-		cartMapper.updateCartByProductId(userId, productId, count);
+		cartMapper.updateCartByProductId(userId, productId, count, checked);
 		return getCartList(userId);
 	}
+
+	
 
 }

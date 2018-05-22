@@ -6,8 +6,6 @@ import com.ppmall.common.ServerResponse;
 import com.ppmall.pojo.User;
 import com.ppmall.service.IUserService;
 import com.ppmall.service.impl.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
