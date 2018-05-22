@@ -23,31 +23,31 @@ public class CategoryManageController {
     private ICategoryService iCategoryService;
 
 
-    @RequestMapping(value = "add_category.do")
+    @RequestMapping(value = "/add_category.do")
     @ResponseBody
     public ServerResponse<String> updateInformation(HttpSession session, String categoryName, @RequestParam(value = "parentId", defaultValue = "0") int parentId) {
         return iCategoryService.addCategory(parentId, categoryName);
     }
 
-    @RequestMapping(value = "get_category.do", method = RequestMethod.GET)
+    @RequestMapping(value = "/get_category.do", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List> getCategory(HttpSession session, @RequestParam(value = "parentId", defaultValue = "0") int parentId) {
         return iCategoryService.getCategory(parentId);
     }
 
-    @RequestMapping(value = "get_category_child.do", method = RequestMethod.GET)
+    @RequestMapping(value = "/get_category_child.do", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List> getCategoryAndChildren(HttpSession session, @RequestParam(value = "parentId", defaultValue = "0") int parentId) {
         return iCategoryService.getCategoryAndChildren(parentId);
     }
 
-    @RequestMapping(value = "get_category_parent.do", method = RequestMethod.GET)
+    @RequestMapping(value = "/get_category_parent.do", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List> getCategoryParent(HttpSession session, @RequestParam(value = "parentId", defaultValue = "0") int parentId) {
         return iCategoryService.getCategoryParent(parentId);
     }
 
-    @RequestMapping(value = "set_category_name.do", method = RequestMethod.GET)
+    @RequestMapping(value = "/set_category_name.do", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List> setCategoryName(HttpSession session, int categoryId, String categoryName) {
         return iCategoryService.setCategoryName(categoryId, categoryName);

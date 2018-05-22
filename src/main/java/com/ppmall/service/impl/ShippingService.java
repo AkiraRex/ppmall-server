@@ -33,6 +33,7 @@ public class ShippingService implements IShippingService {
 	public ServerResponse addShipping(int userId, Shipping shipping) {
 		// TODO Auto-generated method stub
 		Date date = DateUtil.getDate();
+		shipping.setUserId(userId);
 		shipping.setCreateTime(date);
 		shipping.setUpdateTime(date);
 		shippingMapper.insert(shipping);
