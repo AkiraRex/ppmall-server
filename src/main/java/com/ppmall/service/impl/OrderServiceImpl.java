@@ -75,7 +75,7 @@ public class OrderServiceImpl implements IOrderService {
 		orderInfo.put("status", order.getStatus());
 		orderInfo.put("statusDesc", Const.OrderStatus.codeOf(order.getStatus()).getDesc());
 		orderInfo.put("paymentTypeDesc",
-				order.getPaymentType() == null ? Const.PayType.codeOf(order.getPaymentType()).getDesc() : "");
+				order.getPaymentType() != null ? Const.PayType.codeOf(order.getPaymentType()).getDesc() : "");
 		orderInfo.put("payment", order.getPayment());
 		orderInfo.put("shippingVo", shipping);
 		orderInfo.put("orderItemVoList", orderItems);
@@ -114,6 +114,11 @@ public class OrderServiceImpl implements IOrderService {
 		List batchInsertList = new ArrayList();
 		List deleteCartList = new ArrayList<>();
 		List updateProductList = new ArrayList<>();
+
+		if (cartCheckedList == null || cartCheckedList.size() == 0) {
+			return ServerResponse.createErrorMessage("购物车为空~");
+		}
+
 		for (CartProductVo vo : cartCheckedList) {
 			OrderItem item = new OrderItem();
 			item.setOrderNo(orderNo);
