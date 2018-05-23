@@ -38,6 +38,7 @@ public class OrderController {
 			return iOrderService.createOrder(currentUser.getId(), shippingId);
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 			return ServerResponse.createErrorMessage("创建失败");
 		}
 	}

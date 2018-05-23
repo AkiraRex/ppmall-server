@@ -144,7 +144,7 @@ public class OrderServiceImpl implements IOrderService {
 		order.setUserId(userId);
 		order.setOrderNo(orderNo);
 
-		orderMapper.insert(order);
+		orderMapper.insertSelective(order);
 		orderItemMapper.insertBatch(batchInsertList);
 		productMapper.updateBatchSelective(updateProductList);
 		cleanCart(userId, deleteCartList);
