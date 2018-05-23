@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ppmall.common.Const;
 import com.ppmall.common.ServerResponse;
+import com.ppmall.dao.CartMapper;
 import com.ppmall.dao.OrderItemMapper;
 import com.ppmall.dao.OrderMapper;
 import com.ppmall.dao.ShippingMapper;
@@ -13,8 +14,12 @@ import com.ppmall.pojo.Shipping;
 import com.ppmall.service.IOrderService;
 import com.ppmall.util.DateUtil;
 import com.ppmall.util.PropertiesUtil;
+import com.ppmall.util.UUIDUtil;
+import com.ppmall.vo.CartProductVo;
+import com.ppmall.vo.OrderItemVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +35,9 @@ public class OrderServiceImpl implements IOrderService {
 
     @Autowired
     private OrderItemMapper orderItemMapper;
+
+    @Autowired
+    private CartMapper cartMapper;
 
     @Override
     public ServerResponse getOrderList(Long orderNum, int pageNum, int pageSize) {
@@ -67,4 +75,36 @@ public class OrderServiceImpl implements IOrderService {
 
         return ServerResponse.createSuccess("获取成功", orderInfo);
     }
+
+    @Override
+    public ServerResponse getOrderCart(int userId) {
+        List<OrderItemVo> list = orderItemMapper.selectCart(userId,1);
+        double cartTotalPrice = 0;
+        for (OrderItemVo vo : list) {
+            double totalPrice = vo.getTotalPrice();
+            cartTotalPrice += totalPrice;
+
+        }
+
+        Map returnMap = new HashMap<>();
+        returnMap.put("imageHost", PropertiesUtil.getProperty("ftp.server.http.prefix"));
+        returnMap.put("productTotalPrice", cartTotalPrice);
+        returnMap.put("orderItemVoList", list);
+        return ServerResponse.createSuccess("获取成功",returnMap);
+    }
+
+    @Override
+    @Transactional
+    public ServerResponse createOrder(int userId) {
+        List<CartProductVo> cartCheckedList = cartMapper.selectCartProductListByUserIdAndChecked(userId,1);
+        //long orderNo = UUIDUtil.getUUID();
+        Order order = new Order();
+        for (CartProductVo vo: cartCheckedList) {
+            OrderItem item = new OrderItem();
+            item.setOrderNo(32266666l);
+        }
+
+        return null;
+    }
+
 }

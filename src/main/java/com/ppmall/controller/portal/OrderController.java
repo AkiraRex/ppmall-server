@@ -2,6 +2,7 @@ package com.ppmall.controller.portal;
 
 import javax.servlet.http.HttpSession;
 
+import com.ppmall.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,15 +18,22 @@ import com.ppmall.service.ICartService;
 @Controller
 @RequestMapping("/order")
 public class OrderController {
-	@Autowired ICartService iCartService;
-	
-	@RequestMapping(value = "/get_order_cart_product.do", method = RequestMethod.GET)
-	@ResponseBody
-	public ServerResponse getOrderCartList(HttpSession session) {
-		User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
-		int userId = currentUser.getId();
-		return iCartService.getCartListByChecked(userId, 1);
-	}
+    @Autowired
+    IOrderService iOrderService;
+
+    @RequestMapping(value = "/get_order_cart_product.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse getOrderCartList(HttpSession session) {
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        int userId = currentUser.getId();
+        return iOrderService.getOrderCart(userId);
+    }
+
+    @RequestMapping(value = "/create.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse createOrder(){
+        return null;
+    }
 
 
 }

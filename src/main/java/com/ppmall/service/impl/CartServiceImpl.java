@@ -69,7 +69,7 @@ public class CartServiceImpl implements ICartService {
 		returnMap.put("imageHost", PropertiesUtil.getProperty("ftp.server.http.prefix"));
 		returnMap.put("allChecked", allChecked);
 		returnMap.put("cartTotalPrice", cartTotalPrice);
-		returnMap.put("cartProductVoList", cartList);
+		returnMap.put("orderItemVoList", cartList);
 
 		return ServerResponse.createSuccess("获取成功", returnMap);
 	}

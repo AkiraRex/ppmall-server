@@ -32,6 +32,22 @@
     from mmall_order_item
     where order_no = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectCart" resultType="com.ppmall.vo.OrderItemVo" parameterType="map">
+    SELECT
+	c.product_id  productId,
+	c.quantity,
+	p. name productName,
+	p.main_image productImage,
+	p.price currentUnitPrice,
+	p. status productStatus,
+	p. price * c. quantity totalPrice
+	FROM
+	mmall_cart c
+	LEFT JOIN mmall_product p ON c.product_id = p.id
+	WHERE
+	c.user_id = #{userId,jdbcType=INTEGER}
+	AND c.checked = #{checked,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from mmall_order_item
     where id = #{id,jdbcType=INTEGER}
