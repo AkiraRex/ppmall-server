@@ -74,7 +74,8 @@ public class OrderServiceImpl implements IOrderService {
 		orderInfo.put("createTime", DateUtil.getDateString(order.getCreateTime()));
 		orderInfo.put("status", order.getStatus());
 		orderInfo.put("statusDesc", Const.OrderStatus.codeOf(order.getStatus()).getDesc());
-		orderInfo.put("paymentTypeDesc", Const.PayType.codeOf(order.getPaymentType()).getDesc());
+		orderInfo.put("paymentTypeDesc",
+				order.getPaymentType() == null ? Const.PayType.codeOf(order.getPaymentType()).getDesc() : "");
 		orderInfo.put("payment", order.getPayment());
 		orderInfo.put("shippingVo", shipping);
 		orderInfo.put("orderItemVoList", orderItems);
@@ -145,10 +146,10 @@ public class OrderServiceImpl implements IOrderService {
 		order.setOrderNo(orderNo);
 
 		orderMapper.insertSelective(order);
-		orderItemMapper.insertBatch(batchInsertList);
+		orderItemMapper.insertBatchSelective(batchInsertList);
 		productMapper.updateBatchSelective(updateProductList);
 		cleanCart(userId, deleteCartList);
-		
+
 		ServerResponse response = getOrderDetail(orderNo);
 		return ServerResponse.createSuccess("创建成功", response.getData());
 	}

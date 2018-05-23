@@ -23,4 +23,6 @@ public interface OrderItemMapper {
     List selectCart(@Param("userId") int userId, @Param("checked") int checked);
     
     int insertBatch(List list);
+    
+    int insertBatchSelective(List list);
 }

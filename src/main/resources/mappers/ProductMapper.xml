@@ -199,44 +199,44 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateBatchSelective" parameterType="java.util.List" >
-    update mmall_product
-    <foreach collection="list" item="item" index="index" separator="" >
-    <set >
-      <if test="categoryId != null" >
+   <foreach collection="list" item="item" index="index" separator=";" >
+    update mmall_product 
+    <set>
+      <if test="item.categoryId != null" >
         category_id = #{item.categoryId,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
+      <if test="item.name != null" >
         name = #{item.name,jdbcType=VARCHAR},
       </if>
-      <if test="subtitle != null" >
+      <if test="item.subtitle != null" >
         subtitle = #{item.subtitle,jdbcType=VARCHAR},
       </if>
-      <if test="mainImage != null" >
+      <if test="item.mainImage != null" >
         main_image = #{item.mainImage,jdbcType=VARCHAR},
       </if>
-      <if test="subImages != null" >
+      <if test="item.subImages != null" >
         sub_images = #{item.subImages,jdbcType=VARCHAR},
       </if>
-      <if test="detail != null" >
+      <if test="item.detail != null" >
         detail = #{item.detail,jdbcType=VARCHAR},
       </if>
-      <if test="price != null" >
+      <if test="item.price != null" >
         price = #{item.price,jdbcType=DECIMAL},
       </if>
-      <if test="stock != null" >
+      <if test="item.stock != null" >
         stock = #{item.stock,jdbcType=INTEGER},
       </if>
-      <if test="status != null" >
+      <if test="item.status != null" >
         status = #{item.status,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
+      <if test="item.createTime != null" >
         create_time = #{item.createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null" >
+      <if test="item.updateTime != null" >
         update_time = #{item.updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{item.id,jdbcType=INTEGER}
-    </foreach> 
+   </foreach>
   </update>
 </mapper>
