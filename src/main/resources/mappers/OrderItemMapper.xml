@@ -135,6 +135,20 @@
       </if>
     </trim>
   </insert>
+  <insert id="insertBatch" parameterType="java.util.List">  
+    insert into 
+    mmall_order_item (id, user_id, order_no, 
+    product_id, product_name, product_image, 
+    current_unit_price, quantity, total_price, 
+    create_time, update_time)
+    values 
+    <foreach collection="list" item="item" index="index" separator=",">  
+    (#{item.userId,jdbcType=INTEGER}, #{item.orderNo,jdbcType=BIGINT}, 
+    #{item.productId,jdbcType=INTEGER}, #{item.productName,jdbcType=VARCHAR}, #{item.productImage,jdbcType=VARCHAR}, 
+    #{item.currentUnitPrice,jdbcType=DECIMAL}, #{item.quantity,jdbcType=INTEGER}, #{item.totalPrice,jdbcType=DECIMAL}, 
+    #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP})
+    </foreach>  
+  </insert>  
   <update id="updateByPrimaryKeySelective" parameterType="com.ppmall.pojo.OrderItem" >
     update mmall_order_item
     <set >

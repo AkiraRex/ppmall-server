@@ -33,4 +33,5 @@ public interface CartMapper {
 	Cart selectCartByProductId(@Param("userId") int userId, @Param("productId") int productId);
 	
 	int updateCartByProductId(@Param("userId") int userId, @Param("productId") Integer productId,@Param("quantity") Integer count,@Param("checked") int checked);
+	
 }

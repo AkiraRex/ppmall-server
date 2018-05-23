@@ -1,5 +1,6 @@
 package com.ppmall.controller.portal;
 
+import javax.jws.soap.SOAPBinding.Use;
 import javax.servlet.http.HttpSession;
 
 import com.ppmall.service.IOrderService;
@@ -18,22 +19,26 @@ import com.ppmall.service.ICartService;
 @Controller
 @RequestMapping("/order")
 public class OrderController {
-    @Autowired
-    IOrderService iOrderService;
+	@Autowired
+	IOrderService iOrderService;
 
-    @RequestMapping(value = "/get_order_cart_product.do", method = RequestMethod.GET)
-    @ResponseBody
-    public ServerResponse getOrderCartList(HttpSession session) {
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
-        int userId = currentUser.getId();
-        return iOrderService.getOrderCart(userId);
-    }
+	@RequestMapping(value = "/get_order_cart_product.do", method = RequestMethod.GET)
+	@ResponseBody
+	public ServerResponse getOrderCartList(HttpSession session) {
+		User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+		int userId = currentUser.getId();
+		return iOrderService.getOrderCart(userId);
+	}
 
-    @RequestMapping(value = "/create.do",method = RequestMethod.POST)
-    @ResponseBody
-    public ServerResponse createOrder(){
-        return null;
-    }
-
-
+	@RequestMapping(value = "/create.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse createOrder(int shippingId, HttpSession session) {
+		User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+		try {
+			return iOrderService.createOrder(currentUser.getId(), shippingId);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return ServerResponse.createErrorMessage("创建失败");
+		}
+	}
 }

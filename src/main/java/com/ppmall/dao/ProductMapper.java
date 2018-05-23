@@ -19,4 +19,6 @@ public interface ProductMapper {
     int updateByPrimaryKey(Product record);
 
     List<Product> selectAll(Map paramMap);
+    
+    int updateBatchSelective(List list);
 }
