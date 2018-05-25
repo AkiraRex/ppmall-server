@@ -170,4 +170,35 @@ public class OrderServiceImpl implements IOrderService {
 		long currentTime = System.currentTimeMillis();
 		return currentTime + new Random().nextInt(100);
 	}
+
+	@Override
+	public ServerResponse getOrderList(int userId, int pageNum, int pageSize) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(pageNum, pageSize);
+		Map paramMap = new HashMap();
+		paramMap.put("userId", userId);
+		List<Order> orderList = orderMapper.selectAll(paramMap);
+		PageInfo<Order> pageResult = new PageInfo<>(orderList);
+		return ServerResponse.createSuccess("获取成功", pageResult);
+
+	}
+
+	@Override
+	public ServerResponse cancelOrder(Long orderNo) {
+		// TODO Auto-generated method stub
+		Order order = orderMapper.selectByOrderNo(orderNo);
+		if (order == null) {
+			return ServerResponse.createErrorMessage("该用户没有此订单");
+		}
+		
+		if (order.getStatus() != Const.OrderStatus.UNPAY.getCode()) {
+			String desc = Const.OrderStatus.codeOf(Const.OrderStatus.UNPAY.getCode()).getDesc();
+			return ServerResponse.createErrorMessage("订单状态为" + desc + ",不能取消");
+		}
+		order = new Order();
+		order.setOrderNo(orderNo);
+		order.setStatus(Const.OrderStatus.CANCEL.getCode());
+		orderMapper.updateByOrderNoSelective(order);
+		return ServerResponse.createSuccessMessage("操作成功");
+	}
 }

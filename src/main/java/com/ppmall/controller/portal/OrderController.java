@@ -42,4 +42,24 @@ public class OrderController {
 			return ServerResponse.createErrorMessage("创建失败");
 		}
 	}
+
+	@RequestMapping(value = "/list.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse getOrderList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+			@RequestParam(value = "pageSize", defaultValue = "10") int pageSize, HttpSession session) {
+		User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+		return iOrderService.getOrderList(currentUser.getId(), pageNum, pageSize);
+	}
+
+	@RequestMapping(value = "/detail.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse getOrderDetail(Long orderNo, HttpSession session) {
+		return iOrderService.getOrderDetail(orderNo);
+	}
+	
+	@RequestMapping(value = "/cancel.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse cancelOrder(Long orderNo) {
+		return iOrderService.cancelOrder(orderNo);
+	}
 }

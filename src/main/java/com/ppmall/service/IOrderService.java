@@ -10,4 +10,8 @@ public interface IOrderService {
 	ServerResponse getOrderCart(int userId);
 
 	ServerResponse createOrder(int userId, int shippingId);
+	
+	ServerResponse getOrderList(int userId, int pageNum, int pageSize);
+	
+	ServerResponse cancelOrder(Long orderNo);
 }

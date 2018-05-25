@@ -17,6 +17,8 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
+    
+    int updateByOrderNoSelective(Order order);
 
     List selectAll(Map paramMap);
 
