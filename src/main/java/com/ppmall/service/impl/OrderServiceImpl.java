@@ -104,7 +104,7 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	@Transactional
 	public ServerResponse createOrder(int userId, int shippingId) {
-		List<CartProductVo> cartCheckedList = cartMapper.selectCartProductListByUserIdAndChecked(userId, 1);
+		List<CartProductVo> cartCheckedList = cartMapper.selectCartProductListByUserIdAndChecked(userId, 1);// 1是选中
 
 		long orderNo = generateOrderNo();
 		Date date = DateUtil.getDate();
@@ -190,7 +190,7 @@ public class OrderServiceImpl implements IOrderService {
 		if (order == null) {
 			return ServerResponse.createErrorMessage("该用户没有此订单");
 		}
-		
+
 		if (order.getStatus() != Const.OrderStatus.UNPAY.getCode()) {
 			String desc = Const.OrderStatus.codeOf(Const.OrderStatus.UNPAY.getCode()).getDesc();
 			return ServerResponse.createErrorMessage("订单状态为" + desc + ",不能取消");
@@ -198,6 +198,7 @@ public class OrderServiceImpl implements IOrderService {
 		order = new Order();
 		order.setOrderNo(orderNo);
 		order.setStatus(Const.OrderStatus.CANCEL.getCode());
+		order.setUpdateTime(DateUtil.getDate());
 		orderMapper.updateByOrderNoSelective(order);
 		return ServerResponse.createSuccessMessage("操作成功");
 	}
