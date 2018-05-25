@@ -43,7 +43,7 @@ public class OrderController {
 		}
 	}
 
-	@RequestMapping(value = "/list.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
 	@ResponseBody
 	public ServerResponse getOrderList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 			@RequestParam(value = "pageSize", defaultValue = "10") int pageSize, HttpSession session) {
@@ -51,7 +51,7 @@ public class OrderController {
 		return iOrderService.getOrderList(currentUser.getId(), pageNum, pageSize);
 	}
 
-	@RequestMapping(value = "/detail.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/detail.do", method = RequestMethod.GET)
 	@ResponseBody
 	public ServerResponse getOrderDetail(Long orderNo, HttpSession session) {
 		return iOrderService.getOrderDetail(orderNo);
