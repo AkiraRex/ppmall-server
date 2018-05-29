@@ -202,4 +202,10 @@ public class OrderServiceImpl implements IOrderService {
 		orderMapper.updateByOrderNoSelective(order);
 		return ServerResponse.createSuccessMessage("操作成功");
 	}
+
+	@Override
+	public ServerResponse payForOrder(Long orderNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

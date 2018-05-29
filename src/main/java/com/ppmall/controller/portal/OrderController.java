@@ -62,4 +62,10 @@ public class OrderController {
 	public ServerResponse cancelOrder(Long orderNo) {
 		return iOrderService.cancelOrder(orderNo);
 	}
+	
+	@RequestMapping(value = "/pay.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ServerResponse pay(Long orderNo) {
+		return null;
+	}
 }
