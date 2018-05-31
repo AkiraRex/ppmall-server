@@ -1,9 +1,14 @@
 package com.ppmall.service.impl;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ppmall.common.Const;
 import com.ppmall.common.ServerResponse;
+import com.ppmall.common.config.AliPayConfig;
 import com.ppmall.dao.CartMapper;
 import com.ppmall.dao.OrderItemMapper;
 import com.ppmall.dao.OrderMapper;
@@ -16,6 +21,7 @@ import com.ppmall.pojo.Shipping;
 import com.ppmall.service.IOrderService;
 import com.ppmall.util.DateUtil;
 import com.ppmall.util.PropertiesUtil;
+import com.ppmall.util.UUIDUtil;
 import com.ppmall.vo.CartProductVo;
 import com.ppmall.vo.OrderItemVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -206,6 +212,49 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public ServerResponse payForOrder(Long orderNo) {
 		// TODO Auto-generated method stub
+		String gatewayUrl = AliPayConfig.getConfigValue("mcloud_api_domain");
+		String app_id = AliPayConfig.getConfigValue("app_id");
+		String merchant_private_key = AliPayConfig.getConfigValue("merchant_private_key");
+		String alipay_public_key = AliPayConfig.getConfigValue("alipay_public_key");
+		String sign_type = AliPayConfig.getConfigValue("sign_type");
+		AlipayClient alipayClient = new DefaultAlipayClient(gatewayUrl, app_id,merchant_private_key, "json","UTF-8", alipay_public_key,sign_type);
+		
+		//设置请求参数
+		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
+		//alipayRequest.setReturnUrl(AliPayConfig.getConfigValue(""));
+		alipayRequest.setNotifyUrl(PropertiesUtil.getProperty("alipay.callback.url"));
+		
+		//商户订单号，商户网站订单系统中唯一订单号，必填
+		String out_trade_no = new String(UUIDUtil.getUUID());
+		//付款金额，必填
+		String total_amount = new String("sss");
+		//订单名称，必填
+		String subject = new String("ssss");
+		//商品描述，可空
+		String body = new String("");
+		
+		alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\"," 
+				+ "\"total_amount\":\""+ total_amount +"\"," 
+				+ "\"subject\":\""+ subject +"\"," 
+				+ "\"body\":\""+ body +"\"," 
+				+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+		
+		//若想给BizContent增加其他可选请求参数，以增加自定义超时时间参数timeout_express来举例说明
+		//alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\"," 
+		//		+ "\"total_amount\":\""+ total_amount +"\"," 
+		//		+ "\"subject\":\""+ subject +"\"," 
+		//		+ "\"body\":\""+ body +"\"," 
+		//		+ "\"timeout_express\":\"10m\"," 
+		//		+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+		//请求参数可查阅【电脑网站支付的API文档-alipay.trade.page.pay-请求参数】章节
+		
+		//请求
+		try {
+			String result = alipayClient.pageExecute(alipayRequest).getBody();
+		} catch (AlipayApiException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 }
