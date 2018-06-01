@@ -212,49 +212,53 @@ public class OrderServiceImpl implements IOrderService {
 	@Override
 	public ServerResponse payForOrder(Long orderNo) {
 		// TODO Auto-generated method stub
-		String gatewayUrl = AliPayConfig.getConfigValue("mcloud_api_domain");
-		String app_id = AliPayConfig.getConfigValue("app_id");
-		String merchant_private_key = AliPayConfig.getConfigValue("merchant_private_key");
-		String alipay_public_key = AliPayConfig.getConfigValue("alipay_public_key");
-		String sign_type = AliPayConfig.getConfigValue("sign_type");
-		AlipayClient alipayClient = new DefaultAlipayClient(gatewayUrl, app_id,merchant_private_key, "json","UTF-8", alipay_public_key,sign_type);
-		
-		//设置请求参数
+		String gatewayUrl = "https://openapi.alipaydev.com/gateway.do"; // AliPayConfig.getConfigValue("mcloud_api_domain");
+		String app_id = "2016091400509292";//AliPayConfig.getConfigValue("appid");
+		String merchant_private_key = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCZQN7dI+JglnYIAnfQ7QxNfhy8B6vkLU6eY4qJ02AYwH3Fi9spuwi2R6pbWcOUie0FcQhlpIdEr/zwhNUSe7xz8z3GOTl8RCbMzWjBM/uPtWlC4icIDQCtT2hum5RE6Yq3wQHDliSz/Wt+5bqIbeqSfXsy712XNft9JP75WSajo/Fqr/byNhujsT96gzG0ZV6VdTtBG950UpKuQbJGCW8gMJR8U5Fm4tyMt1wGBT1Yz4739RFbvv5sGaYRdRzLhMM0Vx/KGFpU1qfoVzDa6U5ERlUTXUO4ylPJzRtsymbPZ8VtyKV6YGIAPrvxY3Lc6GGb8BHRtqwHgl4Kr+CTRYAVAgMBAAECggEAQ2mBnwzV217T9JoBUmmza7L5uMw3FFvJpWpr2kycjMa/jFIEycp3/pZvnVdS7Nfu5uHdq7g/uDshrDsB7ut27holJjitzLe9yYDhf3r6QTCvaLhKKwRtM88mROEyy01fs4y21e4JnxLuYhdzgee3s1B3DOS16nnYcif/8HcCxB//I9GqkxWSWzps+ohGBnH/qXNWvw1CIiYH4F6HOWOJU8hnURxQiWx6bqkTnIpoj8EVQVaDohvz6n9FLUyWvO8crDI2U2eRn0AHXd9js2SQdF2Ie0hvnqlvLbZmcl2tOkjp5mNlFoz9SYVmH4ux0i3sbwUYg5m+cqUO13jHfBongQKBgQDGurvTOIVD0Tih38TA5VlfCcCZE5gUMzZEO5m5KpQzej1tvTQDX7Xgq/0EsMlIQXJFARxJRIcv/2G3aaPwahWipzlwMietwQVth29h2VLduvfGzC9IUbn00n9cW5dLCspQ623W/J5V7uDW+6oLZM50po5CcxVza04kWpijJdASPQKBgQDFayRtSGCfsRwnD/PAtPlm6rKbaFZrT9mvwRCxUew0TSrbNybttMsf8HfTW6VEdifJCXY8177f80eC2BwobJtWKJnzmhcQMFgBz+t0DDTCFZjkzM0ybsM9DRBmb3ipiGNOOUbHA7mPHjyvdPHDjvqk16xEKBW/VoQiari6T8i6uQKBgDHsl2LowBHZbbC81mDfPSRy/r91/K6WbvuVPXkXCUQlYWlALuDqGnbmvhl/kBFm354WOVTuskeMkK/TCixLekPyXqug7fbolsR9Ua3zOq4ZWkXG5dn1LhIjD3vURp3DiC/r9RwdOmm8KR/Y+U8DdBo5/WMUJj9opajcWZwi07LBAoGBAIDfhnIIk3rrxTMCyN59xWmXwGyO2gtHnxWKdPksP4OM9HMSN8lpAkihU7eX1fUxJJuqH5NsS2Aqkf4qUYdaDrVZ39YUOwYIaQsVzeB9r1sbeimyQCmyAKW0B4a3Mg+JxznjTf7QwatZ08e+EazVg21klUIQ4NF9Ctjkzh5hwumRAoGBAL+gRG1Dy5E1d4z307PjRpdLwIJIEoOtWjAygQnXxyTv/2krCgT85Y9EecqWcVt4uSqYXb3bbCwmWKnKmVksvxUk66XdzU4JJ+P5hijwRUfdLN/I8PcpIpyRA1gqknErdfDhSPEW8b2pQL3npU79hMlOwNJXf1tHU/l3C3opvSp9";
+		String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp24TeVchXIS+QYcSAVM1DHoAl3ChytA14Sl5UZK9YQ5b1CnMHdiyrbd2LIHJ1jpf1IvU0k7pD4r1a+iWWMTCHOHwF21gt2eVuImbYWoPg/jsM3Um+T8jO1Vz2v9cz9ITb/kqPZgiK453K5w17POm4D4vEWBUqTdEtSsFucxIXsU9z2bI9H8upCqjiXzRo8WwwEJin9woOasUCxyxUhW35WY+4mnvgX6BTLbuhrqb4jYPtwiS1RRkmo5bc+ppW+CMnVc6aP62sQ1Ivji+ycI/InyFwen5Oe/RrioYy0141XxOTErwiMoC2CE65cUNpYpABEr8KyhtVvXF2RBGxq2vdQIDAQAB";
+		//String alipay_public_key = AliPayConfig.getConfigValue("alipay_public_key");
+		String sign_type = "RSA2"; //AliPayConfig.getConfigValue("RSA2");
+		AlipayClient alipayClient = new DefaultAlipayClient(gatewayUrl, app_id, merchant_private_key, "json", "UTF-8",
+				alipay_public_key, sign_type);
+
+		// 设置请求参数
 		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
-		//alipayRequest.setReturnUrl(AliPayConfig.getConfigValue(""));
+		// alipayRequest.setReturnUrl(AliPayConfig.getConfigValue(""));
 		alipayRequest.setNotifyUrl(PropertiesUtil.getProperty("alipay.callback.url"));
-		
-		//商户订单号，商户网站订单系统中唯一订单号，必填
+
+		// 商户订单号，商户网站订单系统中唯一订单号，必填
 		String out_trade_no = new String(UUIDUtil.getUUID());
-		//付款金额，必填
-		String total_amount = new String("sss");
-		//订单名称，必填
+		// 付款金额，必填
+		String total_amount = new String("44234");
+		// 订单名称，必填
 		String subject = new String("ssss");
-		//商品描述，可空
+		// 商品描述，可空
 		String body = new String("");
-		
-		alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\"," 
-				+ "\"total_amount\":\""+ total_amount +"\"," 
-				+ "\"subject\":\""+ subject +"\"," 
-				+ "\"body\":\""+ body +"\"," 
+
+		alipayRequest.setBizContent("{\"out_trade_no\":\"" + out_trade_no + "\"," + "\"total_amount\":\"" + total_amount
+				+ "\"," + "\"subject\":\"" + subject + "\"," + "\"body\":\"" + body + "\","
 				+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
-		
-		//若想给BizContent增加其他可选请求参数，以增加自定义超时时间参数timeout_express来举例说明
-		//alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\"," 
-		//		+ "\"total_amount\":\""+ total_amount +"\"," 
-		//		+ "\"subject\":\""+ subject +"\"," 
-		//		+ "\"body\":\""+ body +"\"," 
-		//		+ "\"timeout_express\":\"10m\"," 
-		//		+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
-		//请求参数可查阅【电脑网站支付的API文档-alipay.trade.page.pay-请求参数】章节
-		
-		//请求
+
+		// 若想给BizContent增加其他可选请求参数，以增加自定义超时时间参数timeout_express来举例说明
+		// alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no
+		// +"\","
+		// + "\"total_amount\":\""+ total_amount +"\","
+		// + "\"subject\":\""+ subject +"\","
+		// + "\"body\":\""+ body +"\","
+		// + "\"timeout_express\":\"10m\","
+		// + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+		// 请求参数可查阅【电脑网站支付的API文档-alipay.trade.page.pay-请求参数】章节
+
+		// 请求
+		String result = "";
 		try {
-			String result = alipayClient.pageExecute(alipayRequest).getBody();
+			result = alipayClient.pageExecute(alipayRequest).getBody();
+			System.out.println(result);
 		} catch (AlipayApiException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+
+		return ServerResponse.createSuccess(result);
 	}
 }

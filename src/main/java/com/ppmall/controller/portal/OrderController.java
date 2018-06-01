@@ -1,6 +1,9 @@
 package com.ppmall.controller.portal;
 
-import javax.jws.soap.SOAPBinding.Use;
+import java.io.IOException;
+import java.io.Writer;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ppmall.service.IOrderService;
@@ -10,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.ppmall.common.Const;
 import com.ppmall.common.ServerResponse;
 import com.ppmall.pojo.User;
-import com.ppmall.service.ICartService;
 
 @Controller
 @RequestMapping("/order")
@@ -63,10 +64,9 @@ public class OrderController {
 		return iOrderService.cancelOrder(orderNo);
 	}
 	
-	@RequestMapping(value = "/pay.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/pay.do", method = RequestMethod.GET)
 	@ResponseBody
-	public ServerResponse pay(Long orderNo) {
-		iOrderService.payForOrder(orderNo);
-		return null;
+	public ServerResponse pay(Long orderNo,HttpServletResponse response, Writer writer) throws IOException {
+		return iOrderService.payForOrder(orderNo);
 	}
 }
