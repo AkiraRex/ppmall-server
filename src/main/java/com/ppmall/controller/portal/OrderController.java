@@ -66,6 +66,7 @@ public class OrderController {
 	@RequestMapping(value = "/pay.do", method = RequestMethod.POST)
 	@ResponseBody
 	public ServerResponse pay(Long orderNo) {
+		iOrderService.payForOrder(orderNo);
 		return null;
 	}
 }
