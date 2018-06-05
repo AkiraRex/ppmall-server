@@ -21,6 +21,7 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePrecreateRequest;
 import com.alipay.util.ZxingUtil;
+import com.alipay.vo.BizContentVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ppmall.common.Const;
@@ -225,20 +226,31 @@ public class OrderServiceImpl implements IOrderService {
 
 		// 查询相关订单信息
 		
-		Map orderInfo = (Map) getOrderDetail(orderNo).getData();
+		OrderInfoVo orderInfoVo = (OrderInfoVo) getOrderDetail(orderNo).getData();
 		
 		// 设置请求参数
 		AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
 		request.setNotifyUrl(PropertiesUtil.getProperty("alipay.callback.url"));
-		request.setBizContent("{" 
-				+ "    \"out_trade_no\":\"20150320010101001\"," 
-				+ "    \"total_amount\":\"88.88\","
-				+ "    \"discountable_amount\":\"8.88\"," 
-				+ "    \"undiscountable_amount\":\"80\","
-				+ "    \"subject\":\"Iphone6 16G\"," 
-				+ "    \"store_id\":\"NJ_001\"" 
-				+ "    }");
-		// 通过alipayClient调用API，获得对应的response类
+		
+		String out_trade_no = String.valueOf(orderInfoVo.getOrderNo());
+		String total_amount = String.valueOf(orderInfoVo.getPayment());
+		String discountable_amount = "0";
+		String body = new StringBuilder().append("订单").append(out_trade_no).append("购买商品共").append(total_amount).append("元").toString();
+		// 商户操作员编号，添加此参数可以为商户操作员做销售统计
+		String operatorId = "test_operator_id";
+        // (必填) 商户门店编号，通过门店号和商家后台可以配置精准到门店的折扣信息，详询支付宝技术支持
+        String storeId = "test_store_id";
+        
+        BizContentVo bizContentVo = new BizContentVo();
+        bizContentVo.setBody(body);
+        bizContentVo.setDiscountable_amount(discountable_amount);
+        bizContentVo.setOut_trade_no(out_trade_no);
+        bizContentVo.setStore_id(storeId);
+        bizContentVo.setTotal_amount(total_amount);
+        bizContentVo.setSubject("iPhoneX");
+        
+        request.setBizContent(bizContentVo.toString());
+		
 		String result = alipayClient.execute(request).getBody();
 		System.out.print(result);
 		
