@@ -16,5 +16,5 @@ public interface IOrderService {
 	
 	ServerResponse cancelOrder(Long orderNo);
 	
-	ServerResponse payForOrder(Long orderNo) throws AlipayApiException;
+	ServerResponse payForOrder(Long orderNo,String path) throws AlipayApiException;
 }

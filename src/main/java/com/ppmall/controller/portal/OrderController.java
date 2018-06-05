@@ -69,6 +69,6 @@ public class OrderController {
 	@ResponseBody
 	public ServerResponse pay(Long orderNo,HttpSession session) throws AlipayApiException {
 		String path = session.getServletContext().getRealPath("upload");
-		return iOrderService.payForOrder(orderNo);
+		return iOrderService.payForOrder(orderNo,path);
 	}
 }

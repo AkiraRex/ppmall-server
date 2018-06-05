@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Random;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.util.JSONPObject;
 import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,6 @@ import com.alipay.api.request.AlipayTradePrecreateRequest;
 import com.alipay.util.ZxingUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.gson.JsonObject;
 import com.ppmall.common.Const;
 import com.ppmall.common.ServerResponse;
 import com.ppmall.dao.CartMapper;
@@ -216,7 +214,7 @@ public class OrderServiceImpl implements IOrderService {
 	}
 
 	@Override
-	public ServerResponse payForOrder(Long orderNo) throws AlipayApiException {
+	public ServerResponse payForOrder(Long orderNo,String path) throws AlipayApiException {
 		// TODO Auto-generated method stub
 		String gatewayUrl = "https://openapi.alipaydev.com/gateway.do"; // AliPayConfig.getConfigValue("mcloud_api_domain");
 		String app_id = "2016091400509292";
@@ -225,9 +223,23 @@ public class OrderServiceImpl implements IOrderService {
 		AlipayClient alipayClient = new DefaultAlipayClient(gatewayUrl, app_id, merchant_private_key, "json", "utf-8",
 				alipay_public_key, "RSA2"); // 获得初始化的AlipayClient
 
+		// 查询相关订单信息
+		
+//		orderInfo.put("orderNo", order.getOrderNo());
+//		orderInfo.put("createTime", DateUtil.getDateString(order.getCreateTime()));
+//		orderInfo.put("status", order.getStatus());
+//		orderInfo.put("statusDesc", Const.OrderStatus.codeOf(order.getStatus()).getDesc());
+//		orderInfo.put("paymentTypeDesc",
+//				order.getPaymentType() != null ? Const.PayType.codeOf(order.getPaymentType()).getDesc() : "");
+//		orderInfo.put("payment", order.getPayment());
+//		orderInfo.put("shippingVo", shipping);
+//		orderInfo.put("orderItemVoList", orderItems);
+//		orderInfo.put("imageHost", imageHost);
+		Map orderInfo = (Map) getOrderDetail(orderNo).getData();
+		
 		// 设置请求参数
 		AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
-		request.setNotifyUrl("sss");
+		request.setNotifyUrl(PropertiesUtil.getProperty("alipay.callback.url"));
 		request.setBizContent("{" 
 				+ "    \"out_trade_no\":\"20150320010101001\"," 
 				+ "    \"total_amount\":\"88.88\","
@@ -249,7 +261,6 @@ public class OrderServiceImpl implements IOrderService {
 			e.printStackTrace();
 		}
 		resultMap = (Map) resultMap.get("alipay_trade_precreate_response");
-		String path = "D:/testImage";
 
 		File qrFile = new File(path);
 		if (!qrFile.exists()) {
@@ -258,7 +269,7 @@ public class OrderServiceImpl implements IOrderService {
 		}
 		String qrPath = path + "/jjj.png";
 		String qrFileName = "jjj.png";
-		ZxingUtil.getQRCodeImge((String)resultMap.get("qr_code"), 480, 480, qrPath);
+		ZxingUtil.getQRCodeImge((String)resultMap.get("qr_code"), 256, qrPath);
 
 		return ServerResponse.createSuccess("");
 	}
