@@ -1,5 +1,6 @@
 package com.ppmall.service;
 
+import com.alipay.api.AlipayApiException;
 import com.ppmall.common.ServerResponse;
 
 public interface IOrderService {
@@ -15,5 +16,5 @@ public interface IOrderService {
 	
 	ServerResponse cancelOrder(Long orderNo);
 	
-	ServerResponse payForOrder(Long orderNo);
+	ServerResponse payForOrder(Long orderNo) throws AlipayApiException;
 }

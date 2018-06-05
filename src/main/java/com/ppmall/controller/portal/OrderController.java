@@ -6,6 +6,7 @@ import java.io.Writer;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.alipay.api.AlipayApiException;
 import com.ppmall.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,7 +67,7 @@ public class OrderController {
 	
 	@RequestMapping(value = "/pay.do", method = RequestMethod.GET)
 	@ResponseBody
-	public ServerResponse pay(Long orderNo,HttpServletResponse response, Writer writer) throws IOException {
+	public ServerResponse pay(Long orderNo,HttpServletResponse response, Writer writer) throws AlipayApiException {
 		return iOrderService.payForOrder(orderNo);
 	}
 }
