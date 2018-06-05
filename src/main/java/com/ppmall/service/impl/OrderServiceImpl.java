@@ -38,6 +38,7 @@ import com.ppmall.service.IOrderService;
 import com.ppmall.util.DateUtil;
 import com.ppmall.util.PropertiesUtil;
 import com.ppmall.vo.CartProductVo;
+import com.ppmall.vo.OrderInfoVo;
 import com.ppmall.vo.OrderItemVo;
 
 @Service("iOrderService")
@@ -78,20 +79,19 @@ public class OrderServiceImpl implements IOrderService {
 		Shipping shipping = shippingMapper.selectByPrimaryKey(shippingId);
 		List<OrderItem> orderItems = orderItemMapper.selectByOrderNo(orderNo);
 		String imageHost = PropertiesUtil.getProperty("ftp.server.http.prefix");
-
-		Map orderInfo = new HashMap();
-		orderInfo.put("orderNo", order.getOrderNo());
-		orderInfo.put("createTime", DateUtil.getDateString(order.getCreateTime()));
-		orderInfo.put("status", order.getStatus());
-		orderInfo.put("statusDesc", Const.OrderStatus.codeOf(order.getStatus()).getDesc());
-		orderInfo.put("paymentTypeDesc",
-				order.getPaymentType() != null ? Const.PayType.codeOf(order.getPaymentType()).getDesc() : "");
-		orderInfo.put("payment", order.getPayment());
-		orderInfo.put("shippingVo", shipping);
-		orderInfo.put("orderItemVoList", orderItems);
-		orderInfo.put("imageHost", imageHost);
-
-		return ServerResponse.createSuccess("获取成功", orderInfo);
+		
+		OrderInfoVo orderInfoVo = new OrderInfoVo();
+		orderInfoVo.setCreateTime(DateUtil.getDateString(order.getCreateTime()));
+		orderInfoVo.setImageHost(imageHost);
+		orderInfoVo.setOrderItemVoList(orderItems);
+		orderInfoVo.setOrderNo(order.getOrderNo());
+		orderInfoVo.setPayment(order.getPayment());
+		orderInfoVo.setPaymentTypeDesc(order.getPaymentType() != null ? Const.PayType.codeOf(order.getPaymentType()).getDesc() : "");
+		orderInfoVo.setShippingVo(shipping);
+		orderInfoVo.setStatus(order.getStatus());
+		orderInfoVo.setStatusDesc(Const.OrderStatus.codeOf(order.getStatus()).getDesc());
+		
+		return ServerResponse.createSuccess("获取成功", orderInfoVo);
 	}
 
 	@Override
@@ -225,16 +225,6 @@ public class OrderServiceImpl implements IOrderService {
 
 		// 查询相关订单信息
 		
-//		orderInfo.put("orderNo", order.getOrderNo());
-//		orderInfo.put("createTime", DateUtil.getDateString(order.getCreateTime()));
-//		orderInfo.put("status", order.getStatus());
-//		orderInfo.put("statusDesc", Const.OrderStatus.codeOf(order.getStatus()).getDesc());
-//		orderInfo.put("paymentTypeDesc",
-//				order.getPaymentType() != null ? Const.PayType.codeOf(order.getPaymentType()).getDesc() : "");
-//		orderInfo.put("payment", order.getPayment());
-//		orderInfo.put("shippingVo", shipping);
-//		orderInfo.put("orderItemVoList", orderItems);
-//		orderInfo.put("imageHost", imageHost);
 		Map orderInfo = (Map) getOrderDetail(orderNo).getData();
 		
 		// 设置请求参数
