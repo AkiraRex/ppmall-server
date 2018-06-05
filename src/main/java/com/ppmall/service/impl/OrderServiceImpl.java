@@ -21,6 +21,7 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePrecreateRequest;
+import com.alipay.util.ZxingUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.JsonObject;
@@ -38,7 +39,6 @@ import com.ppmall.pojo.Shipping;
 import com.ppmall.service.IOrderService;
 import com.ppmall.util.DateUtil;
 import com.ppmall.util.PropertiesUtil;
-import com.ppmall.util.ZxingUtil;
 import com.ppmall.vo.CartProductVo;
 import com.ppmall.vo.OrderItemVo;
 

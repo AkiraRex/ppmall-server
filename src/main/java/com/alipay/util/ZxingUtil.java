@@ -1,4 +1,4 @@
-package com.ppmall.util;
+package com.alipay.util;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
