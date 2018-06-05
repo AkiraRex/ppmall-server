@@ -1,4 +1,4 @@
-package com.ppmall.common.config;
+package com.alipay.config;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
