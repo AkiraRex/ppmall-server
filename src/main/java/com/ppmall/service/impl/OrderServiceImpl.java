@@ -239,13 +239,6 @@ public class OrderServiceImpl implements IOrderService {
         // (必填) 商户门店编号，通过门店号和商家后台可以配置精准到门店的折扣信息，详询支付宝技术支持
         String storeId = "test_store_id";
 
-//        BizContentVo bizContentVo = new BizContentVo();
-//        bizContentVo.setBody(body);
-//        bizContentVo.setDiscountable_amount(discountable_amount);
-//        bizContentVo.setOut_trade_no(out_trade_no);
-//        bizContentVo.setStore_id(storeId);
-//        bizContentVo.setTotal_amount(total_amount);
-//        bizContentVo.setSubject("iPhoneX");
 
 
         ObjectMapper objectMapper = new ObjectMapper();
