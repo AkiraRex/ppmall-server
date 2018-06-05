@@ -67,7 +67,8 @@ public class OrderController {
 	
 	@RequestMapping(value = "/pay.do", method = RequestMethod.GET)
 	@ResponseBody
-	public ServerResponse pay(Long orderNo,HttpServletResponse response, Writer writer) throws AlipayApiException {
+	public ServerResponse pay(Long orderNo,HttpSession session) throws AlipayApiException {
+		String path = session.getServletContext().getRealPath("upload");
 		return iOrderService.payForOrder(orderNo);
 	}
 }
