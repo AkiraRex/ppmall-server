@@ -67,8 +67,18 @@ public class OrderController {
 	
 	@RequestMapping(value = "/pay.do", method = RequestMethod.GET)
 	@ResponseBody
-	public ServerResponse pay(Long orderNo,HttpSession session) throws AlipayApiException {
+	public ServerResponse pay(Long orderNo,HttpSession session)  {
 		String path = session.getServletContext().getRealPath("upload");
-		return iOrderService.payForOrder(orderNo,path);
+		ServerResponse response = null;
+		try {
+			 iOrderService.payForOrder(orderNo,path);
+		} catch (AlipayApiException e) {
+			e.printStackTrace();
+			response = ServerResponse.createErrorMessage("支付宝错误");
+		} catch (IOException e) {
+			e.printStackTrace();
+			response = ServerResponse.createErrorMessage("错误");
+		}
+		return response;
 	}
 }

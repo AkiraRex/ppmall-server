@@ -3,6 +3,8 @@ package com.ppmall.service;
 import com.alipay.api.AlipayApiException;
 import com.ppmall.common.ServerResponse;
 
+import java.io.IOException;
+
 public interface IOrderService {
 	ServerResponse getOrderList(Long orderNum, int pageNum, int pageSize);
 
@@ -16,5 +18,5 @@ public interface IOrderService {
 	
 	ServerResponse cancelOrder(Long orderNo);
 	
-	ServerResponse payForOrder(Long orderNo,String path) throws AlipayApiException;
+	ServerResponse payForOrder(Long orderNo,String path) throws AlipayApiException, IOException;
 }
