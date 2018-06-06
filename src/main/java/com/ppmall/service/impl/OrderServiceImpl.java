@@ -327,7 +327,7 @@ public class OrderServiceImpl implements IOrderService {
 
 	@Override
 	public ServerResponse alipayCallback(Map paramMap) {
-		// TODO Auto-generated method stub
+		String tradeStatus = (String)paramMap.get("trade_status");
 		return null;
 	}
 }

@@ -2,12 +2,19 @@ package com.ppmall.controller.portal;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.alipay.api.AlipayApiException;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.config.Configs;
 import com.ppmall.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -86,9 +93,33 @@ public class OrderController {
 	
 	@RequestMapping(value = "/alipay_callback.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String alipayCallback(HttpSession session,HttpServletRequest request)  {
-		String path = session.getServletContext().getRealPath("upload");
-		System.out.println("alipay_callback.do");
+	public Object alipayCallback(HttpSession session,HttpServletRequest request)  {
+		Map paramMap = new HashMap<>();
+		Enumeration paramNames = request.getParameterNames();
+		// 遍历获取参数
+		while (paramNames.hasMoreElements()) {
+			String name = (String) paramNames.nextElement();
+			paramMap.put(name, request.getParameter(name));
+		}
+		
+		// 遍历完毕
+		// 支付宝验签名
+		// 第一步： 在通知返回参数列表中，除去sign、sign_type两个参数外，凡是通知返回回来的参数皆是待验签的参数。
+		paramMap.remove("sign_type");
+		//paramMap.remove("sign");
+		
+
+		// 第五步：需要严格按照如下描述校验通知数据的正确性。
+		try {
+			boolean alipayRSACheckedV2 = AlipaySignature.rsaCheckV2(paramMap, Configs.getAlipayPublicKey(),"utf-8","RSA2");
+			System.out.println("---------------------" + alipayRSACheckedV2 + "------------------------------");
+			if (!alipayRSACheckedV2)
+				return ServerResponse.createErrorMessage("非法请求");
+		} catch (AlipayApiException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		iOrderService.alipayCallback(paramMap);
 		ServerResponse response = null;
 		
 		return "success";
