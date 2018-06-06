@@ -104,12 +104,8 @@ public class OrderController {
 		
 		// 遍历完毕
 		// 支付宝验签名
-		// 第一步： 在通知返回参数列表中，除去sign、sign_type两个参数外，凡是通知返回回来的参数皆是待验签的参数。
 		paramMap.remove("sign_type");
-		//paramMap.remove("sign");
-		
 
-		// 第五步：需要严格按照如下描述校验通知数据的正确性。
 		try {
 			boolean alipayRSACheckedV2 = AlipaySignature.rsaCheckV2(paramMap, Configs.getAlipayPublicKey(),"utf-8","RSA2");
 			System.out.println("---------------------" + alipayRSACheckedV2 + "------------------------------");
@@ -119,9 +115,11 @@ public class OrderController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		iOrderService.alipayCallback(paramMap);
-		ServerResponse response = null;
-		
-		return "success";
+		ServerResponse response = iOrderService.alipayCallback(paramMap);
+
+		if(response.isSuccess())
+			return Const.AliPayReponse.SUCCESS;
+		else
+			return Const.AliPayReponse.ERROR;
 	}
 }

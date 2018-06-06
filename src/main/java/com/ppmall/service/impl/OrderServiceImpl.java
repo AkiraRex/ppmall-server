@@ -31,10 +31,12 @@ import com.ppmall.common.ServerResponse;
 import com.ppmall.dao.CartMapper;
 import com.ppmall.dao.OrderItemMapper;
 import com.ppmall.dao.OrderMapper;
+import com.ppmall.dao.PayInfoMapper;
 import com.ppmall.dao.ProductMapper;
 import com.ppmall.dao.ShippingMapper;
 import com.ppmall.pojo.Order;
 import com.ppmall.pojo.OrderItem;
+import com.ppmall.pojo.PayInfo;
 import com.ppmall.pojo.Product;
 import com.ppmall.pojo.Shipping;
 import com.ppmall.service.IOrderService;
@@ -61,6 +63,9 @@ public class OrderServiceImpl implements IOrderService {
 
     @Autowired
     private ProductMapper productMapper;
+    
+    @Autowired
+    private PayInfoMapper payInfoMapper;
 
     @Override
     public ServerResponse getOrderList(Long orderNum, int pageNum, int pageSize) {
@@ -327,7 +332,36 @@ public class OrderServiceImpl implements IOrderService {
 
 	@Override
 	public ServerResponse alipayCallback(Map paramMap) {
-		String tradeStatus = (String)paramMap.get("trade_status");
-		return null;
+		String tradeStatus = (String) paramMap.get("trade_status");
+		long orderNo = Long.valueOf((String) paramMap.get("out_trade_no"));
+		String totalAmount = (String)paramMap.get("total_amount");
+		String platformNumber = (String)paramMap.get("trade_no");
+		
+		Order order = orderMapper.selectByOrderNo(orderNo);
+		if (order == null) 
+			// 非ppmall商城
+			return ServerResponse.createErrorMessage("非PPMALL订单");
+		
+		if(!order.getPayment().toString().equals(totalAmount))
+			return ServerResponse.createErrorMessage("订单金额错误");
+		
+		if (tradeStatus.equals(Const.AliPayStatus.TRADE_SUCCESS.getStatus())) {
+			order.setStatus(Const.OrderStatus.PAID.getCode());
+			order.setPaymentTime(DateUtil.getDate());
+			orderMapper.updateByOrderNoSelective(order);
+		}
+		
+		PayInfo payInfo = new PayInfo();
+		Date now = DateUtil.getDate();
+		payInfo.setCreateTime(now);
+		payInfo.setOrderNo(orderNo);
+		payInfo.setPayPlatform(Const.PayType.ALIPAY.getCode());
+		payInfo.setPlatformNumber(platformNumber);
+		payInfo.setPlatformStatus(tradeStatus);
+		payInfo.setUpdateTime(now);
+		payInfo.setUserId(order.getUserId());
+		payInfoMapper.insert(payInfo);
+		
+		return ServerResponse.createSuccess();
 	}
 }
