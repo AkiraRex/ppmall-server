@@ -3,6 +3,7 @@ package com.ppmall.controller.portal;
 import java.io.IOException;
 import java.io.Writer;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -83,10 +84,11 @@ public class OrderController {
 		return response;
 	}
 	
-	@RequestMapping(value = "/alipay_callback.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/alipay_callback.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String alipayCallback(HttpSession session,HttpRequest request)  {
+	public String alipayCallback(HttpSession session,HttpServletRequest request)  {
 		String path = session.getServletContext().getRealPath("upload");
+		System.out.println("alipay_callback.do");
 		ServerResponse response = null;
 		
 		return "success";

@@ -271,7 +271,7 @@ public class OrderServiceImpl implements IOrderService {
                 .setStoreId(storeId)
                 .setExtendParams(extendParams)
                 .setTimeoutExpress(timeoutExpress)
-//              .setNotifyUrl("http://www.test-notify-url.com")//支付宝服务器主动通知商户服务器里指定的页面http路径,根据需要设置
+                .setNotifyUrl("http://209363js29.iask.in:10681/order/alipay_callback.do")//支付宝服务器主动通知商户服务器里指定的页面http路径,根据需要设置
                 .setGoodsDetailList(goodsDetailList);
 
         ServerResponse response = null;
