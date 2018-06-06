@@ -10,20 +10,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alipay.api.AlipayApiException;
-
-import com.alipay.api.request.AlipayTradePrecreateRequest;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.alipay.config.Configs;
 import com.alipay.model.ExtendParams;
 import com.alipay.model.GoodsDetail;
-import com.alipay.model.builder.AlipayTradePayRequestBuilder;
 import com.alipay.model.builder.AlipayTradePrecreateRequestBuilder;
 import com.alipay.model.result.AlipayF2FPrecreateResult;
 import com.alipay.service.AlipayTradeService;
@@ -238,7 +233,11 @@ public class OrderServiceImpl implements IOrderService {
         String outTradeNo = String.valueOf(orderInfoVo.getOrderNo());
         String totalAmount = String.valueOf(orderInfoVo.getPayment());
         String undiscountableAmount = totalAmount;
-        String body = new StringBuilder().append("订单").append(outTradeNo).append("购买商品共").append(totalAmount).append("元").toString();
+        String body = new StringBuilder().append("订单")
+        								 .append(outTradeNo)
+        								 .append("购买商品共")
+        								 .append(totalAmount)
+        								 .append("元").toString();
         // 商户操作员编号，添加此参数可以为商户操作员做销售统计
         String operatorId = "test_operator_id";
         // (必填) 商户门店编号，通过门店号和商家后台可以配置精准到门店的折扣信息，详询支付宝技术支持
@@ -325,4 +324,10 @@ public class OrderServiceImpl implements IOrderService {
 		return response;
 
     }
+
+	@Override
+	public ServerResponse alipayCallback(Map paramMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import com.alipay.api.AlipayApiException;
 import com.ppmall.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -80,5 +81,14 @@ public class OrderController {
 			response = ServerResponse.createErrorMessage("错误");
 		}
 		return response;
+	}
+	
+	@RequestMapping(value = "/alipay_callback.do", method = RequestMethod.GET)
+	@ResponseBody
+	public String alipayCallback(HttpSession session,HttpRequest request)  {
+		String path = session.getServletContext().getRealPath("upload");
+		ServerResponse response = null;
+		
+		return "success";
 	}
 }
