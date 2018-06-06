@@ -71,7 +71,7 @@ public class OrderController {
 		String path = session.getServletContext().getRealPath("upload");
 		ServerResponse response = null;
 		try {
-			 iOrderService.payForOrder(orderNo,path);
+			response = iOrderService.payForOrder(orderNo,path);
 		} catch (AlipayApiException e) {
 			e.printStackTrace();
 			response = ServerResponse.createErrorMessage("支付宝错误");
