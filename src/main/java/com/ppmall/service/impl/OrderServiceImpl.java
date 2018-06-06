@@ -364,4 +364,17 @@ public class OrderServiceImpl implements IOrderService {
 		
 		return ServerResponse.createSuccess();
 	}
+	
+	@Override
+	public ServerResponse queryOrderPayStatus(Long orderNo){
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        if(order == null){
+            return ServerResponse.createErrorMessage("用户没有该订单");
+        }
+        if(order.getStatus() >= Const.OrderStatus.PAID.getCode()){
+            return ServerResponse.createSuccess();
+        }
+        return ServerResponse.createError();
+    }
+
 }

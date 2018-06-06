@@ -122,4 +122,14 @@ public class OrderController {
 		else
 			return Const.AliPayReponse.ERROR;
 	}
+	
+	@RequestMapping("query_order_pay_status.do")
+    @ResponseBody
+    public ServerResponse<Boolean> queryOrderPayStatus(HttpSession session, Long orderNo){
+        ServerResponse serverResponse = iOrderService.queryOrderPayStatus(orderNo);
+        if(serverResponse.isSuccess()){
+            return ServerResponse.createSuccess(true);
+        }
+        return ServerResponse.createSuccess(false);
+    }
 }
