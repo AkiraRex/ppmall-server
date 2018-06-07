@@ -37,5 +37,26 @@ public class ShippingController {
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		return iShippingService.addShipping(user.getId(), shipping);
 	}
+	
+	@RequestMapping(value = "/select.do", method = RequestMethod.GET)
+	@ResponseBody
+	public ServerResponse selectShipping(HttpSession session, Integer shippingId) {
+		User user = (User) session.getAttribute(Const.CURRENT_USER);
+		return iShippingService.selectShipping(shippingId);
+	}
+	
+	@RequestMapping(value = "/update.do", method = RequestMethod.GET)
+	@ResponseBody
+	public ServerResponse saveShipping(HttpSession session, Shipping shipping) {
+		User user = (User) session.getAttribute(Const.CURRENT_USER);
+		return iShippingService.saveShipping(shipping);
+	}
+	
+	@RequestMapping(value = "/del.do", method = RequestMethod.GET)
+	@ResponseBody
+	public ServerResponse deleteShipping(HttpSession session, Integer shippingId) {
+		User user = (User) session.getAttribute(Const.CURRENT_USER);
+		return iShippingService.deleteShipping(shippingId);
+	}
 
 }

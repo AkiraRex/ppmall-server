@@ -40,4 +40,25 @@ public class ShippingService implements IShippingService {
 		return ServerResponse.createSuccess("添加成功");
 	}
 
+	@Override
+	public ServerResponse selectShipping(int shiippingId) {
+		// TODO Auto-generated method stub
+		Shipping shipping = shippingMapper.selectByPrimaryKey(shiippingId);
+		return ServerResponse.createSuccess("查询成功",shipping);
+	}
+
+	@Override
+	public ServerResponse saveShipping(Shipping shipping) {
+		// TODO Auto-generated method stub
+		shippingMapper.updateByPrimaryKeySelective(shipping);
+		return ServerResponse.createSuccess("修改成功");
+	}
+
+	@Override
+	public ServerResponse deleteShipping(int shippingId) {
+		// TODO Auto-generated method stub
+		shippingMapper.deleteByPrimaryKey(shippingId);
+		return ServerResponse.createSuccess("删除成功");
+	}
+
 }
