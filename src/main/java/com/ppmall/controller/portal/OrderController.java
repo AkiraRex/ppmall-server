@@ -94,6 +94,7 @@ public class OrderController {
 	@RequestMapping(value = "/alipay_callback.do", method = RequestMethod.POST)
 	@ResponseBody
 	public Object alipayCallback(HttpSession session,HttpServletRequest request)  {
+        System.out.println("---------------------alipayCallback------------------------------");
 		Map paramMap = new HashMap<>();
 		Enumeration paramNames = request.getParameterNames();
 		// 遍历获取参数
