@@ -18,7 +18,7 @@ public class UploadToFtp {
 			uploadList.add(file);
 		}
 		try {
-			FtpUtil.uploadFile(uploadList,"pub");
+			FtpUtil.uploadFile(uploadList,"pub/images");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
