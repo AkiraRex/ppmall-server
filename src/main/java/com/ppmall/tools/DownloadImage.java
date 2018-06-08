@@ -1,4 +1,4 @@
-package com.ppmall.util;
+package com.ppmall.tools;
 
 import com.github.pagehelper.PageInfo;
 import com.ppmall.common.ServerResponse;
