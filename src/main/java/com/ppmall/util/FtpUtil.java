@@ -69,16 +69,24 @@ public class FtpUtil {
         this.pwd = pwd;
     }
 
-    public static boolean uploadFile(List<File> fileList) throws IOException {
-        FtpUtil FtpUtil = new FtpUtil(ftpIp, 21, ftpUser, ftpPass);
-        logger.info("开始连接ftp服务器");
-        boolean result = FtpUtil.uploadFile("", fileList);
-        logger.info("开始连接ftp服务器,结束上传,上传结果:{}");
-        return result;
-    }
+	public static boolean uploadFile(List<File> fileList) throws IOException {
+		FtpUtil FtpUtil = new FtpUtil(ftpIp, 21, ftpUser, ftpPass);
+		logger.info("开始连接ftp服务器");
+		boolean result = FtpUtil.uploadFile("", fileList, true);
+		logger.info("开始连接ftp服务器,结束上传,上传结果:{}");
+		return result;
+	}
+
+	public static boolean uploadFile(List<File> fileList, String remotePath) throws IOException {
+		FtpUtil FtpUtil = new FtpUtil(ftpIp, 21, ftpUser, ftpPass);
+		logger.info("开始连接ftp服务器");
+		boolean result = FtpUtil.uploadFile(remotePath, fileList, true);
+		logger.info("开始连接ftp服务器,结束上传,上传结果:{}");
+		return result;
+	}
 
 
-    private boolean uploadFile(String remotePath, List<File> fileList) throws IOException {
+    private boolean uploadFile(String remotePath, List<File> fileList,boolean isPassiveMode) throws IOException {
         boolean uploaded = true;
         FileInputStream fis = null;
         //连接FTP服务器
@@ -88,7 +96,8 @@ public class FtpUtil {
                 ftpClient.setBufferSize(1024);
                 ftpClient.setControlEncoding("UTF-8");
                 ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
-                ftpClient.enterLocalPassiveMode();
+                if(isPassiveMode)
+                	ftpClient.enterLocalPassiveMode();
                 for (File fileItem : fileList) {
                     fis = new FileInputStream(fileItem);
                     ftpClient.storeFile(fileItem.getName(), fis);
