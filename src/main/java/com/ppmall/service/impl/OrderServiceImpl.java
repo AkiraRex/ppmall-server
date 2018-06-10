@@ -346,6 +346,7 @@ public class OrderServiceImpl implements IOrderService {
 			return ServerResponse.createErrorMessage("订单金额错误");
 		
 		if (tradeStatus.equals(Const.AliPayStatus.TRADE_SUCCESS.getStatus())) {
+		    order.setPaymentType(Const.PayType.ALIPAY.getCode());
 			order.setStatus(Const.OrderStatus.PAID.getCode());
 			order.setPaymentTime(DateUtil.getDate());
 			orderMapper.updateByOrderNoSelective(order);
