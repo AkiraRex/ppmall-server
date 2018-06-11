@@ -117,5 +117,22 @@ public class CategoryServiceImpl implements ICategoryService {
         return categorySet;
     }
 
+	@Override
+	public ServerResponse getAllCategoryList() {
+		// TODO Auto-generated method stub
+		List allList = new ArrayList<>();
+		List<Category> lel1List =  categoryMapper.selectCategoryAndChildByParentId(0);// 查询出1级品类
+		for (Category category : lel1List) {
+			List<Category> lel2List = categoryMapper.selectCategoryAndChildByParentId(category.getId());
+			Map map = new HashMap<>();
+			map.put("subCategoryList", lel2List);
+			map.put("id", category.getId());
+			map.put("name", category.getName());
+			map.put("parentId", category.getParentId());
+			allList.add(map);
+		}
+		return ServerResponse.createSuccess("获取成功", allList);
+	}
+
 
 }

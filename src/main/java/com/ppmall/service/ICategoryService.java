@@ -6,13 +6,15 @@ import java.util.List;
 import java.util.Set;
 
 public interface ICategoryService {
-    ServerResponse addCategory(int parentId,String CategoryName);
+	ServerResponse addCategory(int parentId, String CategoryName);
 
-    ServerResponse<List> getCategory(int parentId);
+	ServerResponse<List> getCategory(int parentId);
 
-    ServerResponse getCategoryAndChildren(int categoryId);
+	ServerResponse getCategoryAndChildren(int categoryId);
 
-    ServerResponse setCategoryName(int categoryId,String categoryName);
+	ServerResponse setCategoryName(int categoryId, String categoryName);
 
-    ServerResponse getCategoryParent(int categoryId);
+	ServerResponse getCategoryParent(int categoryId);
+
+	ServerResponse getAllCategoryList();
 }

@@ -1,7 +1,10 @@
 package com.ppmall.pojo;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Objects;
+
+import org.codehaus.jackson.map.ObjectMapper;
 
 public class Category implements Comparable {
     private Integer id;
@@ -17,9 +20,11 @@ public class Category implements Comparable {
     private Date createTime;
 
     private Date updateTime;
+    
+    private String mainImage;
 
 
-    public Category(Integer id, Integer parentId, String name, Boolean status, Integer sortOrder, Date createTime, Date updateTime) {
+    public Category(Integer id, Integer parentId, String name, Boolean status, Integer sortOrder, Date createTime, Date updateTime, String mainImage) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
@@ -27,6 +32,7 @@ public class Category implements Comparable {
         this.sortOrder = sortOrder;
         this.createTime = createTime;
         this.updateTime = updateTime;
+        this.mainImage = mainImage;
     }
 
     public Category() {
@@ -89,7 +95,15 @@ public class Category implements Comparable {
         this.updateTime = updateTime;
     }
 
-    @Override
+    public String getMainImage() {
+		return mainImage;
+	}
+
+	public void setMainImage(String mainImage) {
+		this.mainImage = mainImage;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -99,7 +113,6 @@ public class Category implements Comparable {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 
@@ -108,5 +121,18 @@ public class Category implements Comparable {
         if (this.getId() > ((Category) o).getId())
             return 1;
         return -1;
+    }
+    
+    @Override
+    public String toString() {
+    	// TODO Auto-generated method stub
+    	 ObjectMapper mapper = new ObjectMapper();
+         try {
+             String returnString =  mapper.writeValueAsString(this);
+             return returnString;
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
+         return super.toString();
     }
 }

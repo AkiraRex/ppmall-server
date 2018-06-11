@@ -1,11 +1,26 @@
 package com.ppmall.test.sevice;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+
+import com.ppmall.common.ServerResponse;
+import com.ppmall.service.ICategoryService;
 
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@TransactionConfiguration(transactionManager = "transactionManager")
+@ContextConfiguration(locations={"classpath:applicationContext.xml"})
 public class CategoryTest {
-    @Test
-    public void test() {
-        System.out.println("test");
-    }
+	@Autowired
+	private ICategoryService iCategoryService;
+	
+	@Test
+	public void test() {
+		ServerResponse response = iCategoryService.getAllCategoryList();
+		System.out.println(response);
+	}
 }

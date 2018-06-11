@@ -10,12 +10,13 @@
       <arg column="sort_order" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="main_image" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
 
 
   <sql id="Base_Column_List" >
-    id, parent_id, name, status, sort_order, create_time, update_time
+    id, parent_id, name, status, sort_order, create_time, update_time, main_image
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
