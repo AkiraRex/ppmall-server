@@ -21,6 +21,7 @@ public interface CategoryMapper {
 
     List selectCategoryByParentId(int parentId);
 
+    @Cacheable("sssssssss")
     List selectCategoryAndChildByParentId(int parentId);
 
     List selectCategoryAndParent(int id);
