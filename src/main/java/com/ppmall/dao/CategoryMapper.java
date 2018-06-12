@@ -4,6 +4,8 @@ import com.ppmall.pojo.Category;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
+
 public interface CategoryMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -19,6 +21,7 @@ public interface CategoryMapper {
 
     List selectCategoryByParentId(int parentId);
 
+    @Cacheable("sssssssss")
     List selectCategoryAndChildByParentId(int parentId);
 
     List selectCategoryAndParent(int id);

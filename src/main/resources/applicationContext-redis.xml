@@ -21,7 +21,7 @@
     <!-- 配置JedisConnectionFactory -->
     <bean id="jedisConnectionFactory"
         class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-        <property name="hostName" value="${redis.host}" />
+        <property name="hostName" value="${redis.server}" />
         <property name="port" value="${redis.port}" />
         <property name="password" value="${redis.pass}" />
         <property name="database" value="${redis.dbIndex}" />
@@ -40,11 +40,11 @@
     </bean>
 
     <!-- 配置RedisCacheConfig -->
-    <!--<bean id="redisCacheConfig" class="com.ppmall.util.RedisCacheConfig">
+    <bean id="redisCacheConfig" class="com.ppmall.redis.RedisCacheConfig">
         <constructor-arg ref="jedisConnectionFactory" />
         <constructor-arg ref="redisTemplate" />
         <constructor-arg ref="redisCacheManager" />
-    </bean> -->
+    </bean>
     <!-- redis config end -->
        
 </beans>

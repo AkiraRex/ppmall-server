@@ -4,10 +4,14 @@ import com.google.common.collect.Sets;
 import com.ppmall.common.ServerResponse;
 import com.ppmall.dao.CategoryMapper;
 import com.ppmall.pojo.Category;
+import com.ppmall.redis.RedisUtil;
 import com.ppmall.service.ICategoryService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -15,124 +19,137 @@ import java.util.*;
 @Service("iCategoryService")
 public class CategoryServiceImpl implements ICategoryService {
 
-    private Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
+	private Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
-    @Autowired
-    private CategoryMapper categoryMapper;
+	@Autowired
+	private CategoryMapper categoryMapper;
 
-    @Override
-    public ServerResponse addCategory(int parentId, String CategoryName) {
-        Category category = new Category();
+	@Autowired
+	private RedisUtil redisUtil;
 
-        category.setName(CategoryName);
-        category.setParentId(parentId);
-        category.setStatus(true);
+	@Override
+	public ServerResponse addCategory(int parentId, String CategoryName) {
+		Category category = new Category();
 
-        int insertCount = categoryMapper.insert(category);
+		category.setName(CategoryName);
+		category.setParentId(parentId);
+		category.setStatus(true);
 
-        if (insertCount > 0)
-            return ServerResponse.createSuccessMessage("添加品类成功");
+		int insertCount = categoryMapper.insert(category);
 
-        return ServerResponse.createErrorMessage("添加品类失败");
-    }
+		if (insertCount > 0){
+			redisUtil.del("allCategory");
+			getAllCategoryList();
+			return ServerResponse.createSuccessMessage("添加品类成功");
+		}
 
-    @Override
-    public ServerResponse<List> getCategory(int parentId) {
-        List categoryList = categoryMapper.selectCategoryByParentId(parentId);
-        //findChildCategory(categorySet,categoryId;
+		return ServerResponse.createErrorMessage("添加品类失败");
+	}
 
-        if (categoryList.size() == 0) {
-            logger.info("未找到相关子类");
-        }
+	@Override
+	public ServerResponse<List> getCategory(int parentId) {
+		List categoryList = categoryMapper.selectCategoryByParentId(parentId);
+		// findChildCategory(categorySet,categoryId;
 
-        return ServerResponse.createSuccess(categoryList);
+		if (categoryList.size() == 0) {
+			logger.info("未找到相关子类");
+		}
 
-    }
+		return ServerResponse.createSuccess(categoryList);
 
-    @Override
-    public ServerResponse getCategoryAndChildren(int categoryId) {
-        Set<Category> categorySet = Sets.newHashSet();
-        findChildCategory(categorySet, categoryId);
-        return ServerResponse.createSuccess(categorySet);
-    }
+	}
 
-    @Override
-    public ServerResponse getCategoryParent(int categoryId) {
-        Set<Category> categorySet = Sets.newHashSet();
-        findParentCategory(categorySet, categoryId);
-        //Set<String> returnSet = Sets.newHashSet();
+	@Override
+	public ServerResponse getCategoryAndChildren(int categoryId) {
+		Set<Category> categorySet = Sets.newHashSet();
+		findChildCategory(categorySet, categoryId);
+		return ServerResponse.createSuccess(categorySet);
+	}
 
-        Set<Category> treeSet = new TreeSet(categorySet);
+	@Override
+	public ServerResponse getCategoryParent(int categoryId) {
+		Set<Category> categorySet = Sets.newHashSet();
+		findParentCategory(categorySet, categoryId);
+		// Set<String> returnSet = Sets.newHashSet();
 
-        String categoryParent = "/";
+		Set<Category> treeSet = new TreeSet(categorySet);
 
-        for (Category category : treeSet) {
-            categoryParent = categoryParent + category.getName() + "/";
-        }
+		String categoryParent = "/";
 
+		for (Category category : treeSet) {
+			categoryParent = categoryParent + category.getName() + "/";
+		}
 
-        return ServerResponse.createSuccess(categoryParent);
-    }
+		return ServerResponse.createSuccess(categoryParent);
+	}
 
-    @Override
-    public ServerResponse setCategoryName(int categoryId, String categoryName) {
-        Category category = new Category();
-        category.setId(categoryId);
-        category.setName(categoryName);
+	@Override
+	public ServerResponse setCategoryName(int categoryId, String categoryName) {
+		Category category = new Category();
+		category.setId(categoryId);
+		category.setName(categoryName);
 
-        int updateCount = categoryMapper.updateByPrimaryKeySelective(category);
+		int updateCount = categoryMapper.updateByPrimaryKeySelective(category);
 
-        if (updateCount > 0)
-            return ServerResponse.createSuccessMessage("修改成功");
-        return ServerResponse.createErrorMessage("修改失败");
-    }
+		if (updateCount > 0) {
+			redisUtil.del("allCategory");
+			getAllCategoryList();
+			return ServerResponse.createSuccessMessage("修改成功");
+		}
 
+		return ServerResponse.createErrorMessage("修改失败");
+	}
 
-    //递归算法,算出子节点
-    private Set<Category> findChildCategory(Set<Category> categorySet, Integer categoryId) {
-        Category category = categoryMapper.selectByPrimaryKey(categoryId);
-        if (category != null) {
-            categorySet.add(category);
-        }
-        //查找子节点,递归算法一定要有一个退出的条件
+	// 递归算法,算出子节点
+	private Set<Category> findChildCategory(Set<Category> categorySet, Integer categoryId) {
+		Category category = categoryMapper.selectByPrimaryKey(categoryId);
+		if (category != null) {
+			categorySet.add(category);
+		}
+		// 查找子节点,递归算法一定要有一个退出的条件
 
-        List<Category> categoryList = categoryMapper.selectCategoryAndChildByParentId(categoryId);
-        for (Category categoryItem : categoryList) {
-            findChildCategory(categorySet, categoryItem.getId());
-        }
-        return categorySet;
-    }
+		List<Category> categoryList = categoryMapper.selectCategoryAndChildByParentId(categoryId);
+		for (Category categoryItem : categoryList) {
+			findChildCategory(categorySet, categoryItem.getId());
+		}
+		return categorySet;
+	}
 
-    //递归算法,算出父节点
-    private Set<Category> findParentCategory(Set<Category> categorySet, Integer categoryId) {
-        Category category = categoryMapper.selectByPrimaryKey(categoryId);
-        if (category != null) {
-            categorySet.add(category);
-        }
-        //查找子节点,递归算法一定要有一个退出的条件
-        List<Category> categoryList = categoryMapper.selectCategoryAndParent(categoryId);
-        for (Category categoryItem : categoryList) {
-            findParentCategory(categorySet, categoryItem.getParentId());
-        }
-        return categorySet;
-    }
+	// 递归算法,算出父节点
+	private Set<Category> findParentCategory(Set<Category> categorySet, Integer categoryId) {
+		Category category = categoryMapper.selectByPrimaryKey(categoryId);
+		if (category != null) {
+			categorySet.add(category);
+		}
+		// 查找子节点,递归算法一定要有一个退出的条件
+		List<Category> categoryList = categoryMapper.selectCategoryAndParent(categoryId);
+		for (Category categoryItem : categoryList) {
+			findParentCategory(categorySet, categoryItem.getParentId());
+		}
+		return categorySet;
+	}
 
 	@Override
 	public ServerResponse getAllCategoryList() {
 		// TODO Auto-generated method stub
-		List allList = new ArrayList<>();
-		List<Category> lel1List =  categoryMapper.selectCategoryAndChildByParentId(0);// 查询出1级品类
-		for (Category category : lel1List) {
-			List<Category> lel2List = categoryMapper.selectCategoryAndChildByParentId(category.getId());
-			Map map = new HashMap<>();
-			map.put("subCategoryList", lel2List);
-			map.put("id", category.getId());
-			map.put("name", category.getName());
-			map.put("parentId", category.getParentId());
-			allList.add(map);
+		List allList = (List) redisUtil.get("allCategory");
+
+		if (!redisUtil.hasKey("allCategory")) {
+			allList = new ArrayList<>();
+			List<Category> lel1List = categoryMapper.selectCategoryAndChildByParentId(0);// 查询出1级品类
+			for (Category category : lel1List) {
+				List<Category> lel2List = categoryMapper.selectCategoryAndChildByParentId(category.getId());
+				Map map = new HashMap<>();
+				map.put("subCategoryList", lel2List);
+				map.put("id", category.getId());
+				map.put("name", category.getName());
+				map.put("parentId", category.getParentId());
+				allList.add(map);
+			}
+			redisUtil.set("allCategory", allList);
 		}
+
 		return ServerResponse.createSuccess("获取成功", allList);
 	}
-
 
 }

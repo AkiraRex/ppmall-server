@@ -12,7 +12,6 @@ import com.ppmall.service.ICategoryService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(transactionManager = "transactionManager")
 @ContextConfiguration(locations={"classpath:applicationContext.xml"})
 public class CategoryTest {
 	@Autowired

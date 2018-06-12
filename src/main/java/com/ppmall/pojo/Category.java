@@ -1,12 +1,13 @@
 package com.ppmall.pojo;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-public class Category implements Comparable {
+public class Category implements Comparable,Serializable {
     private Integer id;
 
     private Integer parentId;
