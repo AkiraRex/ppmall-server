@@ -27,10 +27,15 @@
         <property name="database" value="${redis.dbIndex}" />
         <property name="poolConfig" ref="poolConfig" />
     </bean>
+    
+    <!-- 手动指定Redis序列化类(如使用默认序列化类key会出现乱码) -->
+    <bean id="stringRedisSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
 
     <!-- 配置RedisTemplate -->
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="jedisConnectionFactory" />
+        <property name="keySerializer" ref="stringRedisSerializer" />
+        <property name="hashKeySerializer" ref="stringRedisSerializer" />
     </bean>
 
     <!-- 配置RedisCacheManager -->
