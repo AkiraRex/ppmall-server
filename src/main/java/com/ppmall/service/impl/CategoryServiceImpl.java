@@ -1,6 +1,7 @@
 package com.ppmall.service.impl;
 
 import com.google.common.collect.Sets;
+import com.ppmall.common.Const;
 import com.ppmall.common.ServerResponse;
 import com.ppmall.dao.CategoryMapper;
 import com.ppmall.pojo.Category;
@@ -38,7 +39,7 @@ public class CategoryServiceImpl implements ICategoryService {
 		int insertCount = categoryMapper.insert(category);
 
 		if (insertCount > 0){
-			redisUtil.del("allCategory");
+			redisUtil.del(Const.Cache.ALL_CATEGORY);
 			getAllCategoryList();
 			return ServerResponse.createSuccessMessage("添加品类成功");
 		}
@@ -92,7 +93,7 @@ public class CategoryServiceImpl implements ICategoryService {
 		int updateCount = categoryMapper.updateByPrimaryKeySelective(category);
 
 		if (updateCount > 0) {
-			redisUtil.del("allCategory");
+			redisUtil.del(Const.Cache.ALL_CATEGORY);
 			getAllCategoryList();
 			return ServerResponse.createSuccessMessage("修改成功");
 		}
@@ -132,9 +133,9 @@ public class CategoryServiceImpl implements ICategoryService {
 	@Override
 	public ServerResponse getAllCategoryList() {
 		// TODO Auto-generated method stub
-		List allList = (List) redisUtil.get("allCategory");
+		List allList = (List) redisUtil.get(Const.Cache.ALL_CATEGORY);
 
-		if (!redisUtil.hasKey("allCategory")) {
+		if (allList == null || allList.size() == 0) {
 			allList = new ArrayList<>();
 			List<Category> lel1List = categoryMapper.selectCategoryAndChildByParentId(0);// 查询出1级品类
 			for (Category category : lel1List) {

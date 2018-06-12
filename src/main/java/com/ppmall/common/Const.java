@@ -3,9 +3,22 @@ package com.ppmall.common;
 public class Const {
 	public static final String CURRENT_USER = "currentUser";
 	public static final String FORGET_TOKEN = "forgetToken";
+	
+	public interface Cache{
+		/**
+		 * 所有品类
+		 */
+		String ALL_CATEGORY = "allCategory";
+	}
 
 	public interface Role {
+		/**
+		 * 管理员
+		 */
 		int ROLE_ADMIN = 1;
+		/**
+		 * 普通用户
+		 */
 		int ROLE_CUSTOMER = 0;
 	}
 	
