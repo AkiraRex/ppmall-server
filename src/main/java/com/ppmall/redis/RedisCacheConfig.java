@@ -56,6 +56,7 @@ public class RedisCacheConfig {
 				for (Object obj : params) {
 					sb.append(obj.toString() + ",");
 				}
+				System.out.println("------------------" + sb.toString() + "------------------");
 				return sb.toString();
 			}
 		};
