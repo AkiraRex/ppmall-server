@@ -9,7 +9,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
 public interface ProductMapper {
-	@CacheEvict(value = "com.ppmall.pojo.product", key = "#id")
     int deleteByPrimaryKey(Integer id);
 
     int insert(Product record);
