@@ -3,7 +3,6 @@ package com.ppmall.redis;
 import java.lang.reflect.Method;
 
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
@@ -45,7 +44,7 @@ public class RedisCacheConfig {
 	}
 
 	@Bean
-	public KeyGenerator keyGenerator() {
+	public KeyGenerator basekeyGenerator() {
 		return new KeyGenerator() {
 			@Override
 			public Object generate(Object target, Method method, Object... params) {

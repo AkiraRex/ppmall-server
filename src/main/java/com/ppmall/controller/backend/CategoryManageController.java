@@ -25,8 +25,8 @@ public class CategoryManageController {
 
     @RequestMapping(value = "/add_category.do")
     @ResponseBody
-    public ServerResponse<String> updateInformation(HttpSession session, String categoryName, @RequestParam(value = "parentId", defaultValue = "0") int parentId) {
-        return iCategoryService.addCategory(parentId, categoryName);
+    public ServerResponse<String> updateInformation(HttpSession session, String categoryName, @RequestParam(value = "parentId", defaultValue = "0") int parentId, String mainImage) {
+        return iCategoryService.addCategory(parentId, categoryName, mainImage);
     }
 
     @RequestMapping(value = "/get_category.do", method = RequestMethod.GET)
@@ -51,6 +51,18 @@ public class CategoryManageController {
     @ResponseBody
     public ServerResponse<List> setCategoryName(HttpSession session, int categoryId, String categoryName) {
         return iCategoryService.setCategoryName(categoryId, categoryName);
+    }
+    
+    @RequestMapping(value = "/del_category.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List> deleteCategory(HttpSession session, int categoryId) {
+        return iCategoryService.delCategory(categoryId);
+    }
+    
+    @RequestMapping(value = "/set_category_image.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List> setCategoryImage(HttpSession session, int categoryId, String mianImage) {
+        return iCategoryService.delCategory(categoryId);
     }
 
 

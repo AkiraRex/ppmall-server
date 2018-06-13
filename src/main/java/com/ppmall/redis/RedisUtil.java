@@ -18,8 +18,8 @@ import com.ppmall.service.impl.CategoryServiceImpl;
 public class RedisUtil {
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
-	
-	private Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
+
+	private Logger logger = LoggerFactory.getLogger(RedisUtil.class);
 
 	/**
 	 * 指定缓存失效时间
@@ -32,7 +32,7 @@ public class RedisUtil {
 	 */
 	public boolean expire(String key, long time) {
 		logger.info("Redis expire:" + key);
-		
+
 		try {
 			if (time > 0) {
 				redisTemplate.expire(key, time, TimeUnit.SECONDS);
@@ -100,6 +100,7 @@ public class RedisUtil {
 	 * @return 值
 	 */
 	public Object get(String key) {
+		logger.info("从Redis读取key:" + key);
 		return key == null ? null : redisTemplate.opsForValue().get(key);
 	}
 

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface ICategoryService {
-	ServerResponse addCategory(int parentId, String CategoryName);
+	ServerResponse addCategory(int parentId, String CategoryName, String mainImage);
 
 	ServerResponse<List> getCategory(int parentId);
 
@@ -17,4 +17,8 @@ public interface ICategoryService {
 	ServerResponse getCategoryParent(int categoryId);
 
 	ServerResponse getAllCategoryList();
+	
+	ServerResponse delCategory(int categoryId);
+	
+	ServerResponse setCategoryImage(int categoryId, String mainImage);
 }
