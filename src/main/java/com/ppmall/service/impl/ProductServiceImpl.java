@@ -12,12 +12,16 @@ import com.ppmall.util.StringUtil;
 import com.ppmall.vo.ProductVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CacheConfig(cacheNames = "com.ppamll.service.ProductService")
 @Service("iProductService")
 public class ProductServiceImpl implements IProductService {
 
@@ -33,9 +37,16 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	@Override
+    @Cacheable(key = "#root.caches[0].name + #productId", unless = "#result.getStatus() == 1")
+	// key 缓存key 
+	// #root.caches[0].name即类设置的缓存数据库(链表用于存储key的值)
+	// #productId 为函数参数
+	// unless 不存缓存的条件
 	public ServerResponse getDetailById(int productId) {
 		Product product = productMapper.selectByPrimaryKey(productId);
-		
+		if (product == null) {
+			return ServerResponse.createErrorMessage("该商品已下架或被删除");
+		}
 		ProductVo productVo = new ProductVo(product);
 		productVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
 		
@@ -43,6 +54,7 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	@Override
+	@CachePut(key = "#root.caches[0].name + #product.getId()")
 	public ServerResponse saveProduct(Product product) {
 		Integer productId = product.getId();
 
@@ -60,6 +72,7 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	@Override
+	@CachePut(key = "#root.caches[0].name + #product.getId()")
 	public ServerResponse setStatus(Product product) {
 		productMapper.updateByPrimaryKeySelective(product);
 		return ServerResponse.createSuccessMessage("修改成功");
