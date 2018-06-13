@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ppmall.common.ServerResponse;
-import com.ppmall.pojo.Product;
 import com.ppmall.service.IProductService;
 import com.ppmall.util.StringUtil;
 import com.ppmall.vo.ProductVo;

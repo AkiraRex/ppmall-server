@@ -79,13 +79,6 @@
       <artifactId>aspectjrt</artifactId>
       <version>1.6.11</version>
     </dependency>
-
-	<!-- 3.x时代 -->
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-mapper-asl</artifactId>
-      <version>1.9.12</version>
-    </dependency>
     
     <dependency>  
     	<groupId>com.fasterxml.jackson.core</groupId>  

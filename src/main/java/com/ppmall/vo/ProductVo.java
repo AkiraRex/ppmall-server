@@ -1,7 +1,6 @@
 package com.ppmall.vo;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import com.ppmall.pojo.Product;
 import com.ppmall.util.DateUtil;
@@ -63,6 +62,10 @@ public class ProductVo {
         this.createTime = DateUtil.getDateString(product.getCreateTime());
         this.updateTime = DateUtil.getDateString(product.getUpdateTime());
     }
+    
+    public ProductVo() {
+		// TODO Auto-generated constructor stub
+	}
 
     public Integer getId() {
         return id;

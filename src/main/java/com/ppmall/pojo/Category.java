@@ -5,7 +5,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 public class Category implements Comparable,Serializable {
     private Integer id;

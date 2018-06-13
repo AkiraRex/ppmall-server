@@ -1,17 +1,24 @@
 package com.ppmall.common;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
 import java.io.IOException;
 import java.io.Serializable;
 
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL )
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServerResponse<T> implements Serializable {
-    private int status;
+   
+	private int status;
     private String msg;
     private T data;
+    
+    public ServerResponse() {
+		// TODO Auto-generated constructor stub
+    	// 用于GenericJacksonSerializable 反序列化
+	}
 
     private ServerResponse(int status) {
         this.status = status;
