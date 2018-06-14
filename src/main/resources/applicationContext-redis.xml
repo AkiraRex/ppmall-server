@@ -29,7 +29,7 @@
     </bean>
     
     <!-- 手动指定Redis序列化类(如使用默认序列化类key会出现乱码) -->
-    <bean id="stringRedisSerializer" class="com.ppmall.redis.StringRedisSerializer"></bean>
+    <bean id="stringRedisSerializer" class="com.ppmall.redis.serializer.StringRedisSerializer"></bean>
    	<bean id="jsonRedisSerializer" class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"></bean>
     
     <!-- 配置RedisTemplate -->
@@ -47,7 +47,7 @@
     </bean>
 
     <!-- 配置RedisCacheConfig -->
-    <bean id="redisCacheConfig" class="com.ppmall.redis.RedisCacheConfig">
+    <bean id="redisCacheConfig" class="com.ppmall.redis.config.RedisCacheConfig">
         <constructor-arg ref="jedisConnectionFactory" />
         <constructor-arg ref="redisTemplate" />
         <constructor-arg ref="redisCacheManager" />

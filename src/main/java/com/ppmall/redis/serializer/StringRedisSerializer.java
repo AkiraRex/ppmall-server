@@ -1,4 +1,4 @@
-package com.ppmall.redis;
+package com.ppmall.redis.serializer;
 
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;

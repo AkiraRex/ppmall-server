@@ -1,4 +1,4 @@
-package com.ppmall.redis;
+package com.ppmall.redis.config;
 
 import java.lang.reflect.Method;
 
