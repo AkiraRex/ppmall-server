@@ -6,17 +6,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ppmall.common.ServerResponse;
-import com.ppmall.service.ISeckillService;
+import com.ppmall.service.ISecKillService;
 
 @Controller
 @RequestMapping("/kill")
-public class SeckillController {
+public class SecKillController {
 	@Autowired
-	private ISeckillService iSeckillService;
+	private ISecKillService iSeckillService;
 	
 	@RequestMapping(value = "/create_order.do")
 	@ResponseBody
-	public ServerResponse cerateOrder() {
+	public ServerResponse createOrder() {
 		
 		return iSeckillService.createOrder(0);
 		

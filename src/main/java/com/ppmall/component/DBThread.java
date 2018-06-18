@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("dBThread")
 @Scope("prototype") // spring 多例
 public class DBThread implements Runnable {
 	private String msg;
