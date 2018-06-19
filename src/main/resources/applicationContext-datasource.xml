@@ -18,6 +18,7 @@
         <property name="locations">
             <list>
                 <value>classpath:datasource.properties</value>
+                <value>classpath:rabbitmq.properties</value>
             </list>
         </property>
         <property name="fileEncoding" value="utf-8"/>

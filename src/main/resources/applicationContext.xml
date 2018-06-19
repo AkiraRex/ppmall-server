@@ -18,6 +18,8 @@
     <import resource="applicationContext-datasource.xml"/>
     
     <import resource="applicationContext-redis.xml"/>
+    
+    <import resource="applicationContext-rabbitmq.xml"/>
 
 
 </beans>
