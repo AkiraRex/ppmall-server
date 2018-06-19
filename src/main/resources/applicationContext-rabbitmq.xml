@@ -18,8 +18,11 @@
 		class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter" />
 
 	<!-- 连接配置 -->
-	<rabbit:connection-factory id="connectionFactory"
-		host="${rabbitmq.host}" username="${rabbitmq.username}" password="${rabbitmq.password}"
+	<rabbit:connection-factory 
+		id="connectionFactory"
+		host="${rabbitmq.host}" 
+		username="${rabbitmq.username}" 
+		password="${rabbitmq.password}"
 		port="${rabbitmq.port}" />
 
 	 <rabbit:admin connection-factory="connectionFactory" />  
