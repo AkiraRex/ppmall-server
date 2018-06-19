@@ -1,11 +1,9 @@
 package com.ppmall.controller.backend;
 
-import com.ppmall.common.Const;
-import com.ppmall.common.ResponseCode;
-import com.ppmall.common.ServerResponse;
-import com.ppmall.pojo.User;
-import com.ppmall.service.ICategoryService;
-import com.ppmall.service.IUserService;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpSession;
-import java.util.List;
+import com.ppmall.common.ServerResponse;
+import com.ppmall.service.ICategoryService;
 
 @Controller
 @RequestMapping("/manage/category")
