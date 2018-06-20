@@ -1,5 +1,7 @@
 # ppmall-server
   > 本项目根据慕课网电商课程前端反推,另外增加首页品类动态显示等功能...
+  	本项目是Maven项目,前端资源已经打包整合
+  	用Tomcat部署请将项目设置为默认加载项目,因前端资源路径为ip:port/...
 
 * [项目展示地址](http://www.grammaker.cn:8080/dist/view/user-login.html)
 
@@ -19,7 +21,7 @@
 3. 订单管理
 
 ## 技术
-1. Spring 依赖注入框架管理Java类
+1. Spring 依赖注入框架
 2. SpringMVC 做三层解耦
 3. Mybatis 对象关系映射
 4. MySQL 关系型数据库
