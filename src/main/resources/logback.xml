@@ -53,6 +53,9 @@
     <!-- geelynote mybatis log 日志 -->
 
     <logger name="com.ppmall.dao" level="DEBUG"/>
+    
+    <logger name="org.springframework.amqp.rabbit.listener.BlockingQueueConsumer" level="WARN" />  
+    <logger name="org.springframework.core.task.SimpleAsyncTaskExecutor" level="WARN" />     
 
     <!--<logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG" >-->
         <!--<appender-ref ref="console"/>-->

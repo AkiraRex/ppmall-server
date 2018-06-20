@@ -22,10 +22,18 @@ public class DealSeckillThread implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while (queue != null && !queue.isEmpty()) {
-			
-            System.out.println("下单成功" + queue.poll().getId());
-        }
+		while (true) {
+			System.out.println(queue.isEmpty());
+			if (queue != null && !queue.isEmpty()) {
+				System.out.println("下单成功" + queue.poll().getId());
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 	}
 

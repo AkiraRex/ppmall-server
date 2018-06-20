@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ppmall.common.ServerResponse;
+import com.ppmall.component.DealSeckillThread;
 import com.ppmall.component.ThreadPoolManager;
 import com.ppmall.dao.KillMapper;
 import com.ppmall.pojo.Kill;
@@ -21,11 +22,13 @@ import com.ppmall.util.DateUtil;
 
 @Service
 public class SecKillServiceImpl implements ISecKillService {
-	// private static ConcurrentLinkedQueue<Product> queue = new
-	// ConcurrentLinkedQueue<>();// 队列
+	private static ConcurrentLinkedQueue<Product> queue = new ConcurrentLinkedQueue<>();// 队列
 
 	// @Autowired
 	// ThreadPoolManager tpm;
+	static{
+		new Thread(new DealSeckillThread(queue)).start();
+	}
 	@Autowired
 	private KillMapper killMapper;
 
@@ -42,6 +45,10 @@ public class SecKillServiceImpl implements ISecKillService {
 		if (count > 0) {
 			// tpm.processOrders("帆帆帆帆" + count);
 			//
+			Product product = new Product();
+			product.setId(count);
+			queue.offer(product);
+			
 			iSecKillMessageProducer.sendMessage("SecKill", count);
 			redisUtil.decr("count", 1);
 			return ServerResponse.createSuccessMessage("抢购成功");
