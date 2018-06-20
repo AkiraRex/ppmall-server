@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.DataType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -147,6 +148,9 @@ public class OrderServiceImpl implements IOrderService {
             item.setProductName(vo.getProductName());
             item.setQuantity(vo.getQuantity());
             item.setTotalPrice(new BigDecimal(vo.getProductTotalPrice()));
+            item.setCreateTime(date);
+            item.setUpdateTime(date);
+            
             paymentTotal += vo.getProductTotalPrice();
             batchInsertList.add(item);
             deleteCartList.add(vo.getProductId());

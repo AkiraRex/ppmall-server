@@ -11,6 +11,10 @@ public class DateUtil {
     public static Date getDate() {
         return new Date();
     }
+    
+    public static Date getDate(long milis) {
+        return new Date(milis);
+    }
 
     public static String getDateString(long dateTime) {
         return sdf.format(new Date(dateTime));

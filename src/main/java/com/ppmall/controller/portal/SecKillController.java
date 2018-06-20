@@ -29,4 +29,12 @@ public class SecKillController {
 		return null;
 		
 	}
+	
+	@RequestMapping(value = "/get_kill_list.do")
+	@ResponseBody
+	public ServerResponse getKillList() {
+		
+		return null;
+		
+	}
 }
