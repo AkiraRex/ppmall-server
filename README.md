@@ -1,5 +1,5 @@
 # ppmall-server
-  > 本项目根据慕课网电商课程前端反推,另外增加比如品类首页品类动态显示等...
+  > 本项目根据慕课网电商课程前端反推,另外增加首页品类动态显示等功能...
 
 * [项目展示地址](http://www.grammaker.cn:8080/dist/view/user-login.html)
 
