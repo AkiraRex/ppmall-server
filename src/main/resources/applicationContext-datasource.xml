@@ -25,7 +25,7 @@
     </bean>
 
 
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
         <property name="driverClassName" value="${db.driverClassName}"/>
         <property name="url" value="${db.url}"/>
         <property name="username" value="${db.username}"/>
@@ -56,6 +56,14 @@
         <property name="testWhileIdle" value="true"/>
         <!--# 检查连接有效性的SQL语句-->
         <property name="validationQuery" value="SELECT 1 FROM dual"/>
+        
+        <property name="poolPreparedStatements" value="${db.poolPreparedStatements}" />
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+            value="${db.maxPoolPreparedStatementPerConnectionSize}" />
+
+        <!-- 配置监控统计拦截的filters -->
+        <property name="filters" value="${db.filters}" />
+        
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
