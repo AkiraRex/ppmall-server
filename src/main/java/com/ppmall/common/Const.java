@@ -1,5 +1,9 @@
 package com.ppmall.common;
-
+/**
+ * 静态类(各种静态资源，枚举资源)
+ * @author rex
+ *
+ */
 public class Const {
 	public static final String CURRENT_USER = "currentUser";
 	public static final String FORGET_TOKEN = "forgetToken";
@@ -21,7 +25,11 @@ public class Const {
 		 */
 		int ROLE_CUSTOMER = 0;
 	}
-	
+	/**
+	 * 支付宝回调接口的response
+	 * @author rex
+	 *
+	 */
 	public interface AliPayReponse{
 		String SUCCESS = "success";
 		String ERROR = "error";
@@ -66,6 +74,11 @@ public class Const {
 
 	}
 
+	/**
+	 * 支付类型
+	 * @author rex
+	 *
+	 */
 	public enum PayType {
 		WECHAT(0, "微信支付"), 
 		ALIPAY(1, "支付宝");
@@ -96,7 +109,11 @@ public class Const {
 		}
 
 	}
-
+	/**
+	 * 支付宝回调状态
+	 * @author rex
+	 *
+	 */
 	public enum AliPayStatus {
 		WAIT_BUYER_PAY("WAIT_BUYER_PAY", "交易创建，等待买家付款"),
 		TRADE_CLOSED("TRADE_CLOSED", "未付款交易超时关闭，或支付完成后全额退款"),

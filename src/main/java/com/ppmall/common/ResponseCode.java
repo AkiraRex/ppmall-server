@@ -1,5 +1,10 @@
 package com.ppmall.common;
 
+/**
+ * response状态枚举
+ * @author rex
+ *
+ */
 public enum ResponseCode {
     SUCCESS(0,"SUCCESS"),
     ERROR(1,"ERROR"),
