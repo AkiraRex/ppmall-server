@@ -16,9 +16,9 @@ public class SecKillController {
 	
 	@RequestMapping(value = "/create_order.do")
 	@ResponseBody
-	public ServerResponse createOrder() {
+	public ServerResponse createOrder(int productId) {
 		
-		return iSeckillService.createOrder(0);
+		return iSeckillService.createOrder(26);
 		
 	}
 	

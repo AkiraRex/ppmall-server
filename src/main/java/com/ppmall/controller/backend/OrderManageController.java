@@ -20,9 +20,22 @@ public class OrderManageController {
     public ServerResponse getOrderList(int pageNum, @RequestParam(value = "pageSize", defaultValue = "10") int pageSize, Long orderNo) {
         return iOrderService.getOrderList(orderNo, pageNum, pageSize);
     }
+    
     @RequestMapping(value = "/detail.do",method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse getOrderDetail(Long orderNo){
         return iOrderService.getOrderDetail(orderNo);
+    }
+    
+    @RequestMapping(value = "/send_goods.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse deliveryOrder(Long orderNo){
+        return iOrderService.deliveryOrder(orderNo);
+    }
+    
+    @RequestMapping(value = "/prepare_goods.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse prepareOrder(Long orderNo){
+        return iOrderService.prepareOrder(orderNo);
     }
 }

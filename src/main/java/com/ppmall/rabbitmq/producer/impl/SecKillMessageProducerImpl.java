@@ -13,11 +13,11 @@ public class SecKillMessageProducerImpl implements ISecKillMessageProducer {
 	AmqpTemplate amqpTemplate;
 
 	@Override
-	public void sendMessage(String key, Object object) {
+	public void sendMessage(String exchange, String key, Object object) {
 		// TODO Auto-generated method stub
 		try {
 			System.out.println("=========发送消息开始=============消息：" + object.toString());
-			amqpTemplate.convertAndSend("key", object);
+			amqpTemplate.convertAndSend("testExchange", key, object);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

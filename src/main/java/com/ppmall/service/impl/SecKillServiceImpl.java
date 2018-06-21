@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.ppmall.redis.RedisUtil;
+
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +23,17 @@ import com.ppmall.service.ISecKillService;
 import com.ppmall.util.DateUtil;
 
 @Service
-public class SecKillServiceImpl implements ISecKillService {
+public class SecKillServiceImpl implements ISecKillService, InitializingBean {
 	private static ConcurrentLinkedQueue<Product> queue = new ConcurrentLinkedQueue<>();// 队列
 
-	// @Autowired
-	// ThreadPoolManager tpm;
-	static{
-		new Thread(new DealSeckillThread(queue)).start();
-	}
+	@Autowired
+	ThreadPoolManager tpm;
+
 	@Autowired
 	private KillMapper killMapper;
+
+	@Autowired
+	private DealSeckillThread dealSeckillThread;
 
 	@Autowired
 	private ISecKillMessageProducer iSecKillMessageProducer;
@@ -43,13 +46,13 @@ public class SecKillServiceImpl implements ISecKillService {
 		// TODO Auto-generated method stub
 		int count = Integer.valueOf(redisUtil.get("count").toString());
 		if (count > 0) {
-			// tpm.processOrders("帆帆帆帆" + count);
-			//
+			// tpm.processOrders(productId + "");
+
 			Product product = new Product();
 			product.setId(count);
 			queue.offer(product);
-			
-			iSecKillMessageProducer.sendMessage("SecKill", count);
+
+			iSecKillMessageProducer.sendMessage("testExchange", "SecKillQueue", productId);
 			redisUtil.decr("count", 1);
 			return ServerResponse.createSuccessMessage("抢购成功");
 		}
@@ -64,15 +67,22 @@ public class SecKillServiceImpl implements ISecKillService {
 		}
 
 		if (endTime == null) {
-			long weekMilis = 1000 * 60 * 60 * 24 * 7;
+			long weekMilis = 1000 * 60 * 60 * 24 * 7; // 7日内抢购活动
 			endTime = DateUtil.getDate(beginTime.getTime() + weekMilis);
 		}
-		
+
 		Map paramMap = new HashMap<>();
 		paramMap.put("beginTime", beginTime);
 		paramMap.put("endTime", endTime);
 		List<Kill> killList = killMapper.selectByActivityDuration(paramMap);
 		return ServerResponse.createSuccess("获取成功", killList);
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		// TODO Auto-generated method stub
+		// new Thread(new DealSeckillThread(queue)).start();
+
 	}
 
 }

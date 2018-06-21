@@ -19,6 +19,10 @@ public interface IOrderService {
 	
 	ServerResponse cancelOrder(Long orderNo);
 	
+	ServerResponse prepareOrder(Long orderNo);
+	
+	ServerResponse deliveryOrder(Long orderNo);
+	
 	ServerResponse payForOrder(Long orderNo,String path) throws AlipayApiException, IOException;
 	
 	ServerResponse alipayCallback(Map paramMap);

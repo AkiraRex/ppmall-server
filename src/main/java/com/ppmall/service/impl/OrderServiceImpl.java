@@ -149,7 +149,7 @@ public class OrderServiceImpl implements IOrderService {
             item.setQuantity(vo.getQuantity());
             item.setTotalPrice(new BigDecimal(vo.getProductTotalPrice()));
             item.setCreateTime(date);
-            item.setUpdateTime(date);
+            //item.setUpdateTime(date);
             
             paymentTotal += vo.getProductTotalPrice();
             batchInsertList.add(item);
@@ -225,6 +225,30 @@ public class OrderServiceImpl implements IOrderService {
         orderMapper.updateByOrderNoSelective(order);
         return ServerResponse.createSuccessMessage("操作成功");
     }
+    
+	@Override
+	public ServerResponse prepareOrder(Long orderNo) {
+		// TODO Auto-generated method stub
+		Order order = new Order();
+		order.setOrderNo(orderNo);
+		order.setUpdateTime(DateUtil.getDate());
+		order.setStatus(Const.OrderStatus.PREPARE.getCode());
+		orderMapper.updateByOrderNoSelective(order);
+		return ServerResponse.createSuccessMessage("修改成功");
+	}
+
+	@Override
+	public ServerResponse deliveryOrder(Long orderNo) {
+		// TODO Auto-generated method stub
+		Order order = new Order();
+		Date now = DateUtil.getDate();
+		order.setOrderNo(orderNo);
+		order.setUpdateTime(now);
+		order.setSendTime(now);
+		order.setStatus(Const.OrderStatus.SHIPED.getCode());
+		orderMapper.updateByOrderNoSelective(order);
+		return ServerResponse.createSuccessMessage("修改成功");
+	}
 
     @Override
     public ServerResponse payForOrder(Long orderNo, String path) throws AlipayApiException, IOException {
