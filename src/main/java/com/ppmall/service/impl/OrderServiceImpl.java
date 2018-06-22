@@ -149,7 +149,7 @@ public class OrderServiceImpl implements IOrderService {
             item.setQuantity(vo.getQuantity());
             item.setTotalPrice(new BigDecimal(vo.getProductTotalPrice()));
             item.setCreateTime(date);
-            //item.setUpdateTime(date);
+            item.setUpdateTime(date);
             
             paymentTotal += vo.getProductTotalPrice();
             batchInsertList.add(item);

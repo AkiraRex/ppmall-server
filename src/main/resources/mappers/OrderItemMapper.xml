@@ -220,7 +220,7 @@
         #{item.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="item.updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+        #{item.updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
     </foreach>  
