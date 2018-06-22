@@ -19,6 +19,8 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.stereotype.Component;
 
+import com.ppmall.rabbitmq.message.SecKillMessage;
+
 @Component
 public class SecKillThreadService implements BeanFactoryAware {
 
@@ -33,7 +35,7 @@ public class SecKillThreadService implements BeanFactoryAware {
 	// 线程池所使用的缓冲队列大小
 	private final static int WORK_QUEUE_SIZE = 50;
 	// 消息缓冲队列
-	Queue<Object> msgQueue = new LinkedList<Object>();
+	Queue<SecKillMessage> msgQueue = new LinkedList<SecKillMessage>();
 
 	// 用于储存在队列中的订单,防止重复提交
 	Map<String, Object> cacheMap = new ConcurrentHashMap<>();
@@ -42,13 +44,13 @@ public class SecKillThreadService implements BeanFactoryAware {
 	final RejectedExecutionHandler handler = new RejectedExecutionHandler() {
 		@Override
 		public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-			// System.out.println("太忙了,把该订单交给调度线程池逐一处理" + ((DBThread)
-			// r).getMsg());
-			msgQueue.offer(((SecKillDataBaseThread) r).getMsg());
+			logger.info("线程池到达MAX_POOL_SIZE,放入消息缓冲队列等待线程池空余时优先处理");
+			// 当线程池中线程数量已经到达 MAX_POOL_SIZE ，将进入此方法
+			msgQueue.offer(((SecKillDataBaseThread) r).getMsg());// 放入自定义的缓冲队列
 		}
 	};
 
-	// 订单线程池
+	// 订单线程池 ArrayBlockingQueue有界阻塞队列，
 	final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE_TIME,
 			TimeUnit.SECONDS, new ArrayBlockingQueue(WORK_QUEUE_SIZE), this.handler);
 
@@ -60,18 +62,16 @@ public class SecKillThreadService implements BeanFactoryAware {
 	final ScheduledFuture taskHandler = scheduler.scheduleAtFixedRate(new Runnable() {
 		@Override
 		public void run() {
-			if (!msgQueue.isEmpty()) {
-				if (threadPool.getQueue().size() < WORK_QUEUE_SIZE) {
-					System.out.print("调度：");
-					String orderId = (String) msgQueue.poll();
+			if (!msgQueue.isEmpty()) { // 先判断缓冲队列是否存在缓冲消息
+				if (threadPool.getQueue().size() < WORK_QUEUE_SIZE) { // 判断线程池中的队列是否有空余
+					logger.info("调度：");
+					SecKillMessage message = (SecKillMessage) msgQueue.poll();// 取出缓冲队列中的消息进行处理
 					SecKillDataBaseThread accessDBThread = (SecKillDataBaseThread) factory.getBean("dBThread");
-					accessDBThread.setMsg(orderId);
+					accessDBThread.setMsg(message);
 					threadPool.execute(accessDBThread);
 				}else{
 					
 				}
-				// while (msgQueue.peek() != null) {
-				// }
 			}
 		}
 	}, 0, 1, TimeUnit.SECONDS);
@@ -84,16 +84,16 @@ public class SecKillThreadService implements BeanFactoryAware {
 		threadPool.shutdown();
 	}
 
-	public Queue<Object> getMsgQueue() {
+	public Queue<SecKillMessage> getMsgQueue() {
 		return msgQueue;
 	}
 
 	// 将任务加入订单线程池
-	public void processOrders(String orderId) {
+	public void processOrders(SecKillMessage message) {
 //		if (cacheMap.get(orderId) == null) {
 //			cacheMap.put(orderId, new Object());
 			SecKillDataBaseThread accessDBThread = (SecKillDataBaseThread) factory.getBean("dBThread");
-			accessDBThread.setMsg(orderId);
+			accessDBThread.setMsg(message);
 			threadPool.execute(accessDBThread);
 //		}
 	}

@@ -1,11 +1,17 @@
 package com.ppmall.controller.portal;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ppmall.common.Const;
 import com.ppmall.common.ServerResponse;
+import com.ppmall.pojo.User;
+import com.ppmall.rabbitmq.message.SecKillMessage;
+import com.ppmall.redis.RedisUtil;
 import com.ppmall.service.ISecKillService;
 
 @Controller
@@ -14,11 +20,24 @@ public class SecKillController {
 	@Autowired
 	private ISecKillService iSeckillService;
 	
+	@Autowired
+	private RedisUtil redisUtil;
+	
 	@RequestMapping(value = "/create_order.do")
 	@ResponseBody
-	public ServerResponse createOrder(int productId) {
+	public ServerResponse createOrder(int activityId,int shippingId,HttpSession session) {
 		
-		return iSeckillService.createOrder(26);
+		User user = (User) session.getAttribute(Const.CURRENT_USER);
+		
+		redisUtil.get("");
+		
+		SecKillMessage message = new SecKillMessage();
+		message.setActivityId(activityId);
+		message.setProductId(26);
+		message.setQuantity(1);
+		message.setShippingId(shippingId);
+		message.setUserId(22);
+		return iSeckillService.createOrder(message);
 		
 	}
 	

@@ -15,9 +15,10 @@ import org.springframework.stereotype.Service;
 import com.ppmall.common.ServerResponse;
 import com.ppmall.component.seckill.DealSeckillThread;
 import com.ppmall.component.seckill.SecKillThreadService;
-import com.ppmall.dao.KillMapper;
-import com.ppmall.pojo.Kill;
+import com.ppmall.dao.ActivityMapper;
+import com.ppmall.pojo.Activity;
 import com.ppmall.pojo.Product;
+import com.ppmall.rabbitmq.message.SecKillMessage;
 import com.ppmall.rabbitmq.producer.ISecKillMessageProducer;
 import com.ppmall.service.ISecKillService;
 import com.ppmall.util.DateUtil;
@@ -30,7 +31,7 @@ public class SecKillServiceImpl implements ISecKillService, InitializingBean {
 	SecKillThreadService tpm;
 
 	@Autowired
-	private KillMapper killMapper;
+	private ActivityMapper activityMapper;
 
 	@Autowired
 	private DealSeckillThread dealSeckillThread;
@@ -42,17 +43,22 @@ public class SecKillServiceImpl implements ISecKillService, InitializingBean {
 	RedisUtil redisUtil;
 
 	@Override
-	public synchronized ServerResponse createOrder(int productId) {
+	public synchronized ServerResponse createOrder(SecKillMessage message) {
 		// TODO Auto-generated method stub
 		int count = Integer.valueOf(redisUtil.get("count").toString());
 		if (count > 0) {
-			tpm.processOrders(productId + "");
+			// 线程池处理方式(线程池原理类似于消息队列,自带一个队列)
 
+			tpm.processOrders(message);
+
+			// 普通多线程方式处理队列
 			Product product = new Product();
 			product.setId(count);
 			queue.offer(product);
 
-			//iSecKillMessageProducer.sendMessage("testExchange", "SecKillQueue", productId);
+			// rabbitmq消息队列(生产者),消费者在com.ppmall.rabbitmq.listener.SecKillQueueListener.onMessage()
+			// iSecKillMessageProducer.sendMessage("testExchange",
+			// "SecKillQueue", productId);
 			redisUtil.decr("count", 1);
 			return ServerResponse.createSuccessMessage("抢购成功");
 		}
@@ -74,7 +80,7 @@ public class SecKillServiceImpl implements ISecKillService, InitializingBean {
 		Map paramMap = new HashMap<>();
 		paramMap.put("beginTime", beginTime);
 		paramMap.put("endTime", endTime);
-		List<Kill> killList = killMapper.selectByActivityDuration(paramMap);
+		List<Activity> killList = activityMapper.selectByActivityDuration(paramMap);
 		return ServerResponse.createSuccess("获取成功", killList);
 	}
 
