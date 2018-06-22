@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ppmall.common.ServerResponse;
-import com.ppmall.component.DealSeckillThread;
-import com.ppmall.component.ThreadPoolManager;
+import com.ppmall.component.seckill.DealSeckillThread;
+import com.ppmall.component.seckill.SecKillThreadService;
 import com.ppmall.dao.KillMapper;
 import com.ppmall.pojo.Kill;
 import com.ppmall.pojo.Product;
@@ -27,7 +27,7 @@ public class SecKillServiceImpl implements ISecKillService, InitializingBean {
 	private static ConcurrentLinkedQueue<Product> queue = new ConcurrentLinkedQueue<>();// 队列
 
 	@Autowired
-	ThreadPoolManager tpm;
+	SecKillThreadService tpm;
 
 	@Autowired
 	private KillMapper killMapper;
@@ -46,13 +46,13 @@ public class SecKillServiceImpl implements ISecKillService, InitializingBean {
 		// TODO Auto-generated method stub
 		int count = Integer.valueOf(redisUtil.get("count").toString());
 		if (count > 0) {
-			// tpm.processOrders(productId + "");
+			tpm.processOrders(productId + "");
 
 			Product product = new Product();
 			product.setId(count);
 			queue.offer(product);
 
-			iSecKillMessageProducer.sendMessage("testExchange", "SecKillQueue", productId);
+			//iSecKillMessageProducer.sendMessage("testExchange", "SecKillQueue", productId);
 			redisUtil.decr("count", 1);
 			return ServerResponse.createSuccessMessage("抢购成功");
 		}

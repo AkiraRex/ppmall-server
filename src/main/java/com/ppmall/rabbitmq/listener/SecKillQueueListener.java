@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ppmall.service.ICartService;
 import com.ppmall.service.IOrderService;
@@ -28,16 +29,18 @@ public class SecKillQueueListener implements MessageListener {
 	}
 
 	@Override
+	@Transactional
 	public void onMessage(Message message) {
 		// TODO Auto-generated method stub
-		System.out.println("=============监听【QueueListenter】消息" + message);
+		logger.info("=============监听【QueueListenter】消息" + message);
+		
 		try {
 			int productId = Integer.valueOf(new String(message.getBody(),"UTF-8"));
 			iCartService.addToCart(productId, 1, 22);
 			iOrderService.createOrder(22, 4);
 			
 			logger.info("下单成功" + productId);
-			System.out.print("=====获取消息" + new String(message.getBody(),"UTF-8"));
+			
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

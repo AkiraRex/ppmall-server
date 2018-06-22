@@ -1,4 +1,4 @@
-package com.ppmall.component;
+package com.ppmall.component.seckill;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +11,9 @@ import com.ppmall.service.IOrderService;
 
 @Component("dBThread")
 @Scope("prototype") // spring 多例
-public class DBThread implements Runnable {
+public class SecKillDataBaseThread implements Runnable {
 	private String msg;
-	private Logger logger = LoggerFactory.getLogger(DBThread.class);
+	private Logger logger = LoggerFactory.getLogger(SecKillDataBaseThread.class);
 
 	@Autowired
 	private IOrderService iOrderService;
@@ -24,10 +24,11 @@ public class DBThread implements Runnable {
 	@Override
 	public void run() {
 		// 模拟在数据库插入数据
-		int productId = Integer.valueOf(msg);
-		iCartService.addToCart(productId, 1, 22);
-		iOrderService.createOrder(22, 4);
-		
+		int userId = (int) (Math.random() * (100));
+		int productId = Integer.valueOf(getMsg());
+		iCartService.addToCart(productId, 1, userId);
+		iOrderService.createOrder(userId, 4);
+
 		logger.info("下单成功" + productId);
 	}
 

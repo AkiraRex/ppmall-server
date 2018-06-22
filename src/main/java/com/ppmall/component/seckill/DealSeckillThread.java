@@ -1,4 +1,4 @@
-package com.ppmall.component;
+package com.ppmall.component.seckill;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 

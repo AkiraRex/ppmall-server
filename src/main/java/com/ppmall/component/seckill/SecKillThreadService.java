@@ -1,4 +1,4 @@
-package com.ppmall.component;
+package com.ppmall.component.seckill;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -20,9 +20,9 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ThreadPoolManager implements BeanFactoryAware {
+public class SecKillThreadService implements BeanFactoryAware {
 
-	private static Logger log = LoggerFactory.getLogger(ThreadPoolManager.class);
+	private static Logger logger = LoggerFactory.getLogger(SecKillThreadService.class);
 	private BeanFactory factory;// 用于从IOC里取对象
 	// 线程池维护线程的最少数量
 	private final static int CORE_POOL_SIZE = 2;
@@ -44,7 +44,7 @@ public class ThreadPoolManager implements BeanFactoryAware {
 		public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
 			// System.out.println("太忙了,把该订单交给调度线程池逐一处理" + ((DBThread)
 			// r).getMsg());
-			msgQueue.offer(((DBThread) r).getMsg());
+			msgQueue.offer(((SecKillDataBaseThread) r).getMsg());
 		}
 	};
 
@@ -64,9 +64,11 @@ public class ThreadPoolManager implements BeanFactoryAware {
 				if (threadPool.getQueue().size() < WORK_QUEUE_SIZE) {
 					System.out.print("调度：");
 					String orderId = (String) msgQueue.poll();
-					DBThread accessDBThread = (DBThread) factory.getBean("dBThread");
+					SecKillDataBaseThread accessDBThread = (SecKillDataBaseThread) factory.getBean("dBThread");
 					accessDBThread.setMsg(orderId);
 					threadPool.execute(accessDBThread);
+				}else{
+					
 				}
 				// while (msgQueue.peek() != null) {
 				// }
@@ -88,12 +90,12 @@ public class ThreadPoolManager implements BeanFactoryAware {
 
 	// 将任务加入订单线程池
 	public void processOrders(String orderId) {
-		if (cacheMap.get(orderId) == null) {
-			cacheMap.put(orderId, new Object());
-			DBThread accessDBThread = (DBThread) factory.getBean("dBThread");
+//		if (cacheMap.get(orderId) == null) {
+//			cacheMap.put(orderId, new Object());
+			SecKillDataBaseThread accessDBThread = (SecKillDataBaseThread) factory.getBean("dBThread");
 			accessDBThread.setMsg(orderId);
 			threadPool.execute(accessDBThread);
-		}
+//		}
 	}
 
 	// BeanFactoryAware
