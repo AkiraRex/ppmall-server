@@ -20,11 +20,11 @@ import com.ppmall.pojo.Activity;
 import com.ppmall.pojo.Product;
 import com.ppmall.rabbitmq.message.ActivityMessage;
 import com.ppmall.rabbitmq.producer.ISecKillMessageProducer;
-import com.ppmall.service.ISecKillService;
+import com.ppmall.service.ActivityService;
 import com.ppmall.util.DateUtil;
 
 @Service
-public class SecKillServiceImpl implements ISecKillService, InitializingBean {
+public class ActivityServiceImpl implements ActivityService, InitializingBean {
 	private static ConcurrentLinkedQueue<Product> queue = new ConcurrentLinkedQueue<>();// 队列
 
 	@Autowired

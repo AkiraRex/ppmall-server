@@ -12,13 +12,13 @@ import com.ppmall.common.ServerResponse;
 import com.ppmall.pojo.User;
 import com.ppmall.rabbitmq.message.ActivityMessage;
 import com.ppmall.redis.RedisUtil;
-import com.ppmall.service.ISecKillService;
+import com.ppmall.service.ActivityService;
 
 @Controller
-@RequestMapping("/kill")
+@RequestMapping("/activity")
 public class ActivityController {
 	@Autowired
-	private ISecKillService iSeckillService;
+	private ActivityService iSeckillService;
 	
 	@Autowired
 	private RedisUtil redisUtil;
