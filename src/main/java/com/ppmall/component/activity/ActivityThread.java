@@ -1,4 +1,4 @@
-package com.ppmall.component.seckill;
+package com.ppmall.component.activity;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -14,11 +14,11 @@ import com.ppmall.service.impl.CartServiceImpl;
 import com.ppmall.service.impl.OrderServiceImpl;
 
 @Component
-public class DealSeckillThread implements Runnable {
+public class ActivityThread implements Runnable {
 
 	private ConcurrentLinkedQueue<Product> queue;
 
-	private Logger logger = LoggerFactory.getLogger(DealSeckillThread.class);
+	private Logger logger = LoggerFactory.getLogger(ActivityThread.class);
 
 	//@Autowired
 	private IOrderService iOrderService;
@@ -26,11 +26,11 @@ public class DealSeckillThread implements Runnable {
 	//@Autowired
 	private ICartService iCartService;
 
-	public DealSeckillThread() {
+	public ActivityThread() {
 		
 	}
 
-	public DealSeckillThread(ConcurrentLinkedQueue<Product> queue) {
+	public ActivityThread(ConcurrentLinkedQueue<Product> queue) {
 		this.queue = queue;
 		this.iCartService = new CartServiceImpl();
 		this.iOrderService = new OrderServiceImpl();

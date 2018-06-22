@@ -1,4 +1,4 @@
-package com.ppmall.component.seckill;
+package com.ppmall.component.activity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,15 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.ppmall.rabbitmq.message.SecKillMessage;
+import com.ppmall.rabbitmq.message.ActivityMessage;
 import com.ppmall.service.ICartService;
 import com.ppmall.service.IOrderService;
 
 @Component("dBThread")
 @Scope("prototype") // spring 多例
-public class SecKillDataBaseThread implements Runnable {
-	private SecKillMessage msg;
-	private Logger logger = LoggerFactory.getLogger(SecKillDataBaseThread.class);
+public class ActivityDataBaseThread implements Runnable {
+	private ActivityMessage msg;
+	private Logger logger = LoggerFactory.getLogger(ActivityDataBaseThread.class);
 
 	@Autowired
 	private IOrderService iOrderService;
@@ -36,11 +36,11 @@ public class SecKillDataBaseThread implements Runnable {
 		logger.info("下单成功" + productId);
 	}
 
-	public SecKillMessage getMsg() {
+	public ActivityMessage getMsg() {
 		return this.msg;
 	}
 
-	public void setMsg(SecKillMessage msg) {
+	public void setMsg(ActivityMessage msg) {
 		this.msg = msg;
 	}
 }

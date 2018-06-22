@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ppmall.common.Const;
 import com.ppmall.common.ServerResponse;
 import com.ppmall.pojo.User;
-import com.ppmall.rabbitmq.message.SecKillMessage;
+import com.ppmall.rabbitmq.message.ActivityMessage;
 import com.ppmall.redis.RedisUtil;
 import com.ppmall.service.ISecKillService;
 
 @Controller
 @RequestMapping("/kill")
-public class SecKillController {
+public class ActivityController {
 	@Autowired
 	private ISecKillService iSeckillService;
 	
@@ -31,7 +31,7 @@ public class SecKillController {
 		
 		redisUtil.get("");
 		
-		SecKillMessage message = new SecKillMessage();
+		ActivityMessage message = new ActivityMessage();
 		message.setActivityId(activityId);
 		message.setProductId(26);
 		message.setQuantity(1);

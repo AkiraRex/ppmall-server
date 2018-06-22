@@ -1,6 +1,6 @@
 package com.ppmall.rabbitmq.message;
 
-public class SecKillMessage {
+public class ActivityMessage {
 	private int userId;
 	private int productId;
 	private int activityId;

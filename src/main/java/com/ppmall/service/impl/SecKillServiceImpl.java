@@ -13,12 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ppmall.common.ServerResponse;
-import com.ppmall.component.seckill.DealSeckillThread;
-import com.ppmall.component.seckill.SecKillThreadService;
+import com.ppmall.component.activity.ActivityThread;
+import com.ppmall.component.activity.ActivityThreadService;
 import com.ppmall.dao.ActivityMapper;
 import com.ppmall.pojo.Activity;
 import com.ppmall.pojo.Product;
-import com.ppmall.rabbitmq.message.SecKillMessage;
+import com.ppmall.rabbitmq.message.ActivityMessage;
 import com.ppmall.rabbitmq.producer.ISecKillMessageProducer;
 import com.ppmall.service.ISecKillService;
 import com.ppmall.util.DateUtil;
@@ -28,13 +28,13 @@ public class SecKillServiceImpl implements ISecKillService, InitializingBean {
 	private static ConcurrentLinkedQueue<Product> queue = new ConcurrentLinkedQueue<>();// 队列
 
 	@Autowired
-	SecKillThreadService tpm;
+	ActivityThreadService tpm;
 
 	@Autowired
 	private ActivityMapper activityMapper;
 
 	@Autowired
-	private DealSeckillThread dealSeckillThread;
+	private ActivityThread dealSeckillThread;
 
 	@Autowired
 	private ISecKillMessageProducer iSecKillMessageProducer;
@@ -43,7 +43,7 @@ public class SecKillServiceImpl implements ISecKillService, InitializingBean {
 	RedisUtil redisUtil;
 
 	@Override
-	public synchronized ServerResponse createOrder(SecKillMessage message) {
+	public synchronized ServerResponse createOrder(ActivityMessage message) {
 		// TODO Auto-generated method stub
 		int count = Integer.valueOf(redisUtil.get("count").toString());
 		if (count > 0) {
