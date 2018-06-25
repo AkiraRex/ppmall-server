@@ -155,7 +155,7 @@ public class CategoryServiceImpl implements ICategoryService {
 		category.setMainImage(mainImage);
 
 		int updateCount = categoryMapper.updateByPrimaryKeySelective(category);
-		
+
 		if (updateCount > 0) {
 			redisUtil.del(Const.Cache.ALL_CATEGORY);
 			getAllCategoryList();
@@ -192,5 +192,12 @@ public class CategoryServiceImpl implements ICategoryService {
 			findParentCategory(categorySet, categoryItem.getParentId());
 		}
 		return categorySet;
+	}
+
+	@Override
+	public ServerResponse getCategoryDetail(int categoryId) {
+		// TODO Auto-generated method stub
+		Category category = categoryMapper.selectByPrimaryKey(categoryId);
+		return ServerResponse.createSuccess(category);
 	}
 }

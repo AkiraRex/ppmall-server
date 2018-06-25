@@ -26,9 +26,21 @@ public class CategoryController {
 		return iCategoryService.getAllCategoryList();
 	}
 	
+	/**
+	 * 小程序接口(获取品类)
+	 * @param session
+	 * @param parentId
+	 * @return
+	 */
 	@RequestMapping(value = "/get_category.do", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<List> getCategory(HttpSession session, @RequestParam(value = "parentId", defaultValue = "0") int parentId) {
         return iCategoryService.getCategory(parentId);
+    }
+	
+	@RequestMapping(value = "/get_category_detail.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List> getCategoryDetail(HttpSession session, @RequestParam(value = "id", defaultValue = "0") int id) {
+        return iCategoryService.getCategoryDetail(id);
     }
 }

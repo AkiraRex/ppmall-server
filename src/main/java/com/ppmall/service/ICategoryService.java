@@ -21,4 +21,6 @@ public interface ICategoryService {
 	ServerResponse delCategory(int categoryId);
 	
 	ServerResponse setCategoryImage(int categoryId, String mainImage);
+	
+	ServerResponse getCategoryDetail(int categortId);
 }
