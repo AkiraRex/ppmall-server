@@ -1,11 +1,14 @@
 package com.ppmall.controller.portal;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ppmall.common.ServerResponse;
@@ -22,4 +25,10 @@ public class CategoryController {
 	public ServerResponse getAllCategoryList(HttpSession session) {
 		return iCategoryService.getAllCategoryList();
 	}
+	
+	@RequestMapping(value = "/get_category.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<List> getCategory(HttpSession session, @RequestParam(value = "parentId", defaultValue = "0") int parentId) {
+        return iCategoryService.getCategory(parentId);
+    }
 }
