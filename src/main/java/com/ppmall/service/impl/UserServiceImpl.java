@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 @Service("iUserService")
 public class UserServiceImpl implements IUserService {
@@ -161,7 +160,7 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public ServerResponse wechatLogin(String code) {
+	public ServerResponse wechatLogin(String code, String encryptedData, String iv) {
 		// TODO Auto-generated method stub
 		String url = PropertiesUtil.getProperty("wechat.login.api");
 		String grant_type = PropertiesUtil.getProperty("wechat.login.grant_type");
@@ -173,10 +172,13 @@ public class UserServiceImpl implements IUserService {
 				+ "&secret=" + secret 
 				+ "&js_code=" + code;
 		Map resultMap = JsonUtil.jsonStringToObject(HttpUtil.httpsGet(url + param), HashMap.class);
-		if (resultMap.get("openid") != null) {
-			User user = new User();
-			user.setUsername((String) resultMap.get("openid"));
-			userMapper.insert(user);
+		String openid = (String) resultMap.get("openid");
+		if (openid != null) {
+			User user = userMapper.selectByWechatOpenId(openid);
+			if (user == null) {
+				
+				
+			}
 			return ServerResponse.createSuccess("登陆成功", user);
 		}
 

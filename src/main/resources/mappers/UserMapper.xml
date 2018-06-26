@@ -11,18 +11,25 @@
             <arg column="question" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="answer" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="role" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="wechat_openid" jdbcType="VARCHAR" javaType="java.lang.String"/>
             <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         </constructor>
     </resultMap>
     <sql id="Base_Column_List">
-    id, username, password, email, phone, question, answer, role, create_time, update_time
+    id, username, password, email, phone, question, answer, role, wechat_openid, create_time, update_time
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from mmall_user
         where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByWechatOpenId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_user
+        where wechat_openid = #{wechat_openid,jdbcType=VARCHAR}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_user
@@ -64,6 +71,9 @@
             </if>
             <if test="role != null">
                 role,
+            </if>
+            <if test="wechatOpenid != null">
+                wechat_openid,
             </if>
             <if test="createTime != null">
                 create_time,

@@ -33,4 +33,6 @@ public interface UserMapper {
     int updateUserByUsername(User user);
 
     String selectPasswordByUsername(String username);
+    
+    User selectByWechatOpenId(String wechatOpenId);
 }

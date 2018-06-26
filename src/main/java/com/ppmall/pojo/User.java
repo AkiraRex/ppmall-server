@@ -18,8 +18,10 @@ public class User {
     private String answer;
 
     private Integer role;
+    
+    private String wechatOpenid;
 
-    private Date createTime;
+	private Date createTime;
 
     private Date updateTime;
 
@@ -103,6 +105,15 @@ public class User {
     public void setRole(Integer role) {
         this.role = role;
     }
+    
+    public String getWechatOpenid() {
+		return wechatOpenid;
+	}
+
+	public void setWechatOpenid(String wechatOpenid) {
+		this.wechatOpenid = wechatOpenid;
+	}
+
 
     public Date getCreateTime() {
         return createTime;

@@ -16,10 +16,10 @@ import com.ppmall.service.IUserService;
 public class UserApiController {
 	@Autowired
 	private IUserService iUserService;
-	
+
 	@RequestMapping(value = "/wechat_login.do", method = RequestMethod.POST)
-	public ServerResponse wechatLogin(String code,HttpSession session){
-		ServerResponse response = iUserService.wechatLogin(code);
+	public ServerResponse wechatLogin(String code, String encryptedData, String iv, HttpSession session) {
+		ServerResponse response = iUserService.wechatLogin(code, encryptedData, iv);
 		if (response.isSuccess()) {
 			session.setAttribute(Const.CURRENT_USER, response.getData());
 		}
