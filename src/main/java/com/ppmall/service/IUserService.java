@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface IUserService {
     ServerResponse<User> login(String username, String password);
+    
+    ServerResponse wechatLogin(String code);
 
     ServerResponse<String> register(String username, String password, String mail, String phone, String question, String answer, int role);
 
