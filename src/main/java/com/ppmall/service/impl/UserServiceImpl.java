@@ -2,18 +2,26 @@ package com.ppmall.service.impl;
 
 import com.ppmall.common.Const;
 import com.ppmall.common.ServerResponse;
+import com.ppmall.dao.AuthMapper;
 import com.ppmall.dao.UserMapper;
+import com.ppmall.pojo.Auth;
 import com.ppmall.pojo.User;
 import com.ppmall.service.IUserService;
+import com.ppmall.util.AesUtil;
 import com.ppmall.util.DateUtil;
 import com.ppmall.util.HttpUtil;
 import com.ppmall.util.JsonUtil;
 import com.ppmall.util.MD5Util;
 import com.ppmall.util.PropertiesUtil;
 import com.ppmall.util.UUIDUtil;
+
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +30,9 @@ import java.util.Map;
 public class UserServiceImpl implements IUserService {
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Autowired
+	private AuthMapper authMapper;
 
 	@Override
 	public ServerResponse<User> login(String username, String password) {
@@ -160,6 +171,7 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
+	@Transactional
 	public ServerResponse wechatLogin(String code, String encryptedData, String iv) {
 		// TODO Auto-generated method stub
 		String url = PropertiesUtil.getProperty("wechat.login.api");
@@ -175,11 +187,49 @@ public class UserServiceImpl implements IUserService {
 		String openid = (String) resultMap.get("openid");
 		if (openid != null) {
 			User user = userMapper.selectByWechatOpenId(openid);
+			String contentString = null;
+			Auth auth = null;
+			Date now = new Date();
 			if (user == null) {
-				
-				
+				try {					
+					byte contentByte[] = AesUtil.decrypt(Base64.decodeBase64(encryptedData),
+							Base64.decodeBase64((String) resultMap.get("session_key")), Base64.decodeBase64(iv));
+					contentString = new String(contentByte, "UTF-8");
+					
+					int end = contentString.indexOf("watermark") - 1;
+					contentString = contentString.substring(0, end) + "\"updateTime\":\"" + now + "\","
+																	+ "\"updateTime\":\"" + now + "\","
+																	+ "\"openid\":\"" + openid + "\"}";
+					auth = JsonUtil.jsonStringToObject(contentString, Auth.class);
+					
+					user = new User();
+					user.setWechatOpenid(openid);
+					user.setUsername(UUIDUtil.getUUID().substring(0, 11));
+					user.setPassword(MD5Util.MD5EncodeUtf8(UUIDUtil.getUUID().substring(0, 6)));
+					user.setRole(Const.Role.ROLE_ADMIN);
+					user.setCreateTime(now);
+					user.setUpdateTime(now);
+					
+					
+					userMapper.insert(user);
+					authMapper.insert(auth);	
+					
+				} catch (InvalidAlgorithmParameterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return ServerResponse.createErrorMessage("登陆失败");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return ServerResponse.createErrorMessage("登陆失败");
+				}
+			} else {
+				auth = authMapper.selectByOpenId(openid);
 			}
-			return ServerResponse.createSuccess("登陆成功", user);
+			Map returnMap = new HashMap<>();
+			resultMap.put("user", user);
+			resultMap.put("auth",auth);
+			return ServerResponse.createSuccess("登陆成功", resultMap);
 		}
 
 		return ServerResponse.createErrorMessage("登陆失败");
