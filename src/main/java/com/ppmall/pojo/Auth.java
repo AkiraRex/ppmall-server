@@ -5,9 +5,9 @@ import java.util.Date;
 public class Auth {
     private Integer id;
 
-    private String openid;
+    private String openId;
 
-    private String nickname;
+    private String nickName;
 
     private Integer gender;
 
@@ -17,20 +17,23 @@ public class Auth {
 
     private String country;
 
+    private String city;
+
     private String avatarUrl;
 
     private Date createTime;
 
     private Date updateTime;
 
-    public Auth(Integer id, String openid, String nickname, Integer gender, String language, String province, String country, String avatarUrl, Date createTime, Date updateTime) {
+    public Auth(Integer id, String openId, String nickName, Integer gender, String language, String province, String country, String city, String avatarUrl, Date createTime, Date updateTime) {
         this.id = id;
-        this.openid = openid;
-        this.nickname = nickname;
+        this.openId = openId;
+        this.nickName = nickName;
         this.gender = gender;
         this.language = language;
         this.province = province;
         this.country = country;
+        this.city = city;
         this.avatarUrl = avatarUrl;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -48,20 +51,20 @@ public class Auth {
         this.id = id;
     }
 
-    public String getOpenid() {
-        return openid;
+    public String getOpenId() {
+        return openId;
     }
 
-    public void setOpenid(String openid) {
-        this.openid = openid == null ? null : openid.trim();
+    public void setOpenId(String openId) {
+        this.openId = openId == null ? null : openId.trim();
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname == null ? null : nickname.trim();
+    public void setNickName(String nickName) {
+        this.nickName = nickName == null ? null : nickName.trim();
     }
 
     public Integer getGender() {
@@ -94,6 +97,14 @@ public class Auth {
 
     public void setCountry(String country) {
         this.country = country == null ? null : country.trim();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
     }
 
     public String getAvatarUrl() {

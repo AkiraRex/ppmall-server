@@ -197,16 +197,16 @@ public class UserServiceImpl implements IUserService {
 					contentString = new String(contentByte, "UTF-8");
 					
 					int end = contentString.indexOf("watermark") - 1;
-					contentString = contentString.substring(0, end) + "\"updateTime\":\"" + now + "\","
-																	+ "\"updateTime\":\"" + now + "\","
-																	+ "\"openid\":\"" + openid + "\"}";
+					contentString = contentString.substring(0, end) + "\"createTime\":\"" + now.getTime() + "\","
+																	+ "\"updateTime\":\"" + now.getTime() + "\"}";
+																	//+ "\"openid\":\"" + openid + "\"}";
 					auth = JsonUtil.jsonStringToObject(contentString, Auth.class);
 					
 					user = new User();
 					user.setWechatOpenid(openid);
 					user.setUsername(UUIDUtil.getUUID().substring(0, 11));
 					user.setPassword(MD5Util.MD5EncodeUtf8(UUIDUtil.getUUID().substring(0, 6)));
-					user.setRole(Const.Role.ROLE_ADMIN);
+					user.setRole(Const.Role.ROLE_CUSTOMER);
 					user.setCreateTime(now);
 					user.setUpdateTime(now);
 					
@@ -227,9 +227,9 @@ public class UserServiceImpl implements IUserService {
 				auth = authMapper.selectByOpenId(openid);
 			}
 			Map returnMap = new HashMap<>();
-			resultMap.put("user", user);
-			resultMap.put("auth",auth);
-			return ServerResponse.createSuccess("登陆成功", resultMap);
+			returnMap.put("user", user);
+			returnMap.put("auth",auth);
+			return ServerResponse.createSuccess("登陆成功", returnMap);
 		}
 
 		return ServerResponse.createErrorMessage("登陆失败");

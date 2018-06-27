@@ -3,7 +3,8 @@ package com.ppmall.dao;
 import com.ppmall.pojo.Auth;
 
 public interface AuthMapper {
-    int deleteByPrimaryKey(Integer id);
+
+	int deleteByPrimaryKey(Integer id);
 
 	int insert(Auth record);
 
@@ -14,8 +15,7 @@ public interface AuthMapper {
 	int updateByPrimaryKeySelective(Auth record);
 
 	int updateByPrimaryKey(Auth record);
-   
-    Auth selectByOpenId(String openId);
 
- 
+	Auth selectByOpenId(String openId);
+
 }

@@ -4,19 +4,20 @@
   <resultMap id="BaseResultMap" type="com.ppmall.pojo.Auth">
     <constructor>
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="openid" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="nickname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="open_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="nick_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="gender" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="language" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="province" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="country" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="city" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="avatar_url" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, openid, nickname, gender, language, province, country, avatar_url, create_time, 
+    id, open_id, nick_name, gender, language, province, country, city, avatar_url, create_time, 
     update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -25,25 +26,25 @@
     from mmall_auth
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByOpenId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from mmall_auth
-    where openid = #{openid,jdbcType=VARCHAR}
+    where open_id = #{open_id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_auth
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ppmall.pojo.Auth">
-    insert into mmall_auth (id, openid, nickname, 
+    insert into mmall_auth (id, open_id, nick_name, 
       gender, language, province, 
-      country, avatar_url, create_time, 
-      update_time)
-    values (#{id,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+      country, city, avatar_url, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
       #{gender,jdbcType=INTEGER}, #{language,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
-      #{country,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{country,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.ppmall.pojo.Auth">
     insert into mmall_auth
@@ -51,11 +52,11 @@
       <if test="id != null">
         id,
       </if>
-      <if test="openid != null">
-        openid,
+      <if test="openId != null">
+        open_id,
       </if>
-      <if test="nickname != null">
-        nickname,
+      <if test="nickName != null">
+        nick_name,
       </if>
       <if test="gender != null">
         gender,
@@ -68,6 +69,9 @@
       </if>
       <if test="country != null">
         country,
+      </if>
+      <if test="city != null">
+        city,
       </if>
       <if test="avatarUrl != null">
         avatar_url,
@@ -83,11 +87,11 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="openid != null">
-        #{openid,jdbcType=VARCHAR},
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
       </if>
-      <if test="nickname != null">
-        #{nickname,jdbcType=VARCHAR},
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
       </if>
       <if test="gender != null">
         #{gender,jdbcType=INTEGER},
@@ -100,6 +104,9 @@
       </if>
       <if test="country != null">
         #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
       </if>
       <if test="avatarUrl != null">
         #{avatarUrl,jdbcType=VARCHAR},
@@ -115,11 +122,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ppmall.pojo.Auth">
     update mmall_auth
     <set>
-      <if test="openid != null">
-        openid = #{openid,jdbcType=VARCHAR},
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
       </if>
-      <if test="nickname != null">
-        nickname = #{nickname,jdbcType=VARCHAR},
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
       </if>
       <if test="gender != null">
         gender = #{gender,jdbcType=INTEGER},
@@ -132,6 +139,9 @@
       </if>
       <if test="country != null">
         country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
       </if>
       <if test="avatarUrl != null">
         avatar_url = #{avatarUrl,jdbcType=VARCHAR},
@@ -147,12 +157,13 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ppmall.pojo.Auth">
     update mmall_auth
-    set openid = #{openid,jdbcType=VARCHAR},
-      nickname = #{nickname,jdbcType=VARCHAR},
+    set open_id = #{openId,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=INTEGER},
       language = #{language,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},
       country = #{country,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
       avatar_url = #{avatarUrl,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
