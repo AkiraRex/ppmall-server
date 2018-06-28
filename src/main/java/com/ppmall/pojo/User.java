@@ -25,7 +25,7 @@ public class User {
 
     private Date updateTime;
 
-    public User(Integer id, String username, String password, String email, String phone, String question, String answer, Integer role, Date createTime, Date updateTime) {
+    public User(Integer id, String username, String password, String email, String phone, String question, String answer, Integer role, String wechatOpenid, Date createTime, Date updateTime) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -34,6 +34,7 @@ public class User {
         this.question = question;
         this.answer = answer;
         this.role = role;
+        this.wechatOpenid = wechatOpenid;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
