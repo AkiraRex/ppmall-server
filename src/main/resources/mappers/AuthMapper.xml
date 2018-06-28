@@ -26,11 +26,11 @@
     from mmall_auth
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectByOpenId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from mmall_auth
-    where open_id = #{open_id,jdbcType=VARCHAR}
+    where open_id = #{openId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_auth

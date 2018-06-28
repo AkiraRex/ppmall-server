@@ -29,7 +29,7 @@
         select
         <include refid="Base_Column_List"/>
         from mmall_user
-        where wechat_openid = #{wechat_openid,jdbcType=VARCHAR}
+        where wechat_openid = #{wechatOpenid,jdbcType=VARCHAR}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_user
