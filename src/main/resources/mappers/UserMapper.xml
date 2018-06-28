@@ -162,7 +162,9 @@
     where id = #{id,jdbcType=INTEGER}
     </update>
     <select id="loginByUsernameAndPassword" resultMap="BaseResultMap" parameterType="map">
-      select id,username,password,email,phone,role,question,answer,create_time,update_time from
+      select 
+      <include refid="Base_Column_List"/>
+       from
         mmall_user
       WHERE username = #{username} AND password = #{password};
     </select>

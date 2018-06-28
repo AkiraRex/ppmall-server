@@ -59,10 +59,12 @@ public class CartServiceImpl implements ICartService {
 		double cartTotalPrice = 0;
 		boolean allChecked = true;
 		for (CartProductVo vo : cartList) {
-			double totalPrice = vo.getProductTotalPrice();
-			cartTotalPrice += totalPrice;
-			if (vo.getProductChecked() == 0)
+			if (vo.getProductChecked() == 0){
 				allChecked = false;
+			}else{
+				double totalPrice = vo.getProductTotalPrice();
+				cartTotalPrice += totalPrice;
+			}
 		}
 
 		Map returnMap = new HashMap<>();
