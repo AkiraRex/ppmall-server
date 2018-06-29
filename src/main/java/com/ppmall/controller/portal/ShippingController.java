@@ -63,7 +63,7 @@ public class ShippingController {
 	@ResponseBody
 	public ServerResponse saveShipping(HttpSession session, Shipping shipping) {
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
-		return iShippingService.saveShipping(shipping);
+		return iShippingService.saveShipping(shipping,user.getId());
 	}
 	
 	@RequestMapping(value = "/del.do", method = RequestMethod.GET)

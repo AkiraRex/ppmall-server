@@ -14,7 +14,7 @@ public interface IShippingService {
 	
 	ServerResponse selectShipping(int shiippingId);
 	
-	ServerResponse saveShipping(Shipping shipping);
+	ServerResponse saveShipping(Shipping shipping, int userId);
 	
 	ServerResponse deleteShipping(int shipping);
 }

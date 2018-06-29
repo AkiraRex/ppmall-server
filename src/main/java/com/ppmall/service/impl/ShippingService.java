@@ -38,7 +38,7 @@ public class ShippingService implements IShippingService {
 			return ServerResponse.createErrorMessage("无地址");
 		return ServerResponse.createSuccess("获取成功", shipping);
 	}
-	
+
 	@Override
 	@Transactional
 	public ServerResponse setDefaultShipping(int userId, int shippingId) {
@@ -51,22 +51,28 @@ public class ShippingService implements IShippingService {
 		shipping.setUserId(null);
 		shipping.setIsDefault(1);
 		shippingMapper.updateByPrimaryKeySelective(shipping);
-		
+
 		return ServerResponse.createSuccessMessage("设置成功");
 	}
 
 	@Override
+	@Transactional
 	public ServerResponse addShipping(int userId, Shipping shipping) {
 		// TODO Auto-generated method stub
 		ServerResponse listResponse = this.getShippingList(userId, 1, 10);
-		List responseList = ((PageInfo)listResponse.getData()).getList();
+		List responseList = ((PageInfo) listResponse.getData()).getList();
 		Date date = DateUtil.getDate();
 		shipping.setUserId(userId);
 		shipping.setCreateTime(date);
 		shipping.setUpdateTime(date);
-		if(responseList == null || responseList.size() == 0)
+		if (responseList == null || responseList.size() == 0)
 			shipping.setIsDefault(1);
 		shippingMapper.insert(shipping);
+		
+		if (shipping.getIsDefault() == 1) {
+			this.setDefaultShipping(userId, shipping.getId());
+		}
+
 		return ServerResponse.createSuccess("添加成功");
 	}
 
@@ -78,9 +84,13 @@ public class ShippingService implements IShippingService {
 	}
 
 	@Override
-	public ServerResponse saveShipping(Shipping shipping) {
+	@Transactional
+	public ServerResponse saveShipping(Shipping shipping, int userId) {
 		// TODO Auto-generated method stub
 		shippingMapper.updateByPrimaryKeySelective(shipping);
+		if (shipping.getIsDefault() == 1) {
+			this.setDefaultShipping(userId, shipping.getId());
+		}
 		return ServerResponse.createSuccess("修改成功");
 	}
 
