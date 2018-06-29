@@ -59,6 +59,11 @@ public class ShippingService implements IShippingService {
 	@Transactional
 	public ServerResponse addShipping(int userId, Shipping shipping) {
 		// TODO Auto-generated method stub
+		// 小程序端无法判断是否新增，故后端判断
+		if (shipping.getId() == null) {
+			return this.addShipping(userId, shipping);
+		}
+		
 		ServerResponse listResponse = this.getShippingList(userId, 1, 10);
 		List responseList = ((PageInfo) listResponse.getData()).getList();
 		Date date = DateUtil.getDate();
