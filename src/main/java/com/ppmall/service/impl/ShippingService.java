@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -30,12 +31,41 @@ public class ShippingService implements IShippingService {
 	}
 
 	@Override
+	public ServerResponse getDefaultShipping(int userId) {
+		// TODO Auto-generated method stub
+		Shipping shipping = shippingMapper.selcetDefault(userId);
+		if (shipping == null)
+			return ServerResponse.createErrorMessage("无地址");
+		return ServerResponse.createSuccess("获取成功", shipping);
+	}
+	
+	@Override
+	@Transactional
+	public ServerResponse setDefaultShipping(int userId, int shippingId) {
+		// TODO Auto-generated method stub
+		Shipping shipping = new Shipping();
+		shipping.setUserId(userId);
+		shipping.setIsDefault(0);
+		shippingMapper.updateAllByUserIdSelective(shipping);
+		shipping.setId(shippingId);
+		shipping.setUserId(null);
+		shipping.setIsDefault(1);
+		shippingMapper.updateByPrimaryKeySelective(shipping);
+		
+		return ServerResponse.createSuccessMessage("设置成功");
+	}
+
+	@Override
 	public ServerResponse addShipping(int userId, Shipping shipping) {
 		// TODO Auto-generated method stub
+		ServerResponse listResponse = this.getShippingList(userId, 1, 10);
+		List responseList = ((PageInfo)listResponse.getData()).getList();
 		Date date = DateUtil.getDate();
 		shipping.setUserId(userId);
 		shipping.setCreateTime(date);
 		shipping.setUpdateTime(date);
+		if(responseList == null || responseList.size() == 0)
+			shipping.setIsDefault(1);
 		shippingMapper.insert(shipping);
 		return ServerResponse.createSuccess("添加成功");
 	}
@@ -44,7 +74,7 @@ public class ShippingService implements IShippingService {
 	public ServerResponse selectShipping(int shiippingId) {
 		// TODO Auto-generated method stub
 		Shipping shipping = shippingMapper.selectByPrimaryKey(shiippingId);
-		return ServerResponse.createSuccess("查询成功",shipping);
+		return ServerResponse.createSuccess("查询成功", shipping);
 	}
 
 	@Override

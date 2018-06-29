@@ -59,14 +59,10 @@ public class CartServiceImpl implements ICartService {
 		// TODO Auto-generated method stub
 		List<CartProductVo> cartList = cartMapper.selectCartProductListByUserIdAndChecked(userId, checked);
 		double cartTotalPrice = 0;
-		boolean allChecked = true;
+		boolean allChecked = false;
 		for (CartProductVo vo : cartList) {
-			if (vo.getProductChecked() == 0){
-				allChecked = false;
-			}else{
-				double totalPrice = vo.getProductTotalPrice();
-				cartTotalPrice += totalPrice;
-			}
+			double totalPrice = vo.getProductTotalPrice();
+			cartTotalPrice += totalPrice;
 		}
 
 		Map returnMap = new HashMap<>();

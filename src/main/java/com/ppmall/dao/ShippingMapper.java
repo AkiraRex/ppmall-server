@@ -18,4 +18,8 @@ public interface ShippingMapper {
     int updateByPrimaryKey(Shipping record);
     
     List selectByUserId(int userId);
+    
+    Shipping selcetDefault(Integer userId);
+    
+    int updateAllByUserIdSelective(Shipping record);
 }

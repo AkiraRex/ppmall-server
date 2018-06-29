@@ -30,6 +30,20 @@ public class ShippingController {
 		User user = (User) session.getAttribute(Const.CURRENT_USER);
 		return iShippingService.getShippingList(user.getId(), pageNum, pageSize);
 	}
+	
+	@RequestMapping(value = "/get_default.do", method = RequestMethod.GET)
+	@ResponseBody
+	public ServerResponse getDefaultShipping(HttpSession session) {
+		User user = (User) session.getAttribute(Const.CURRENT_USER);
+		return iShippingService.getDefaultShipping(user.getId());
+	}
+	
+	@RequestMapping(value = "/set_default.do", method = RequestMethod.GET)
+	@ResponseBody
+	public ServerResponse setDefaultShipping(HttpSession session, int shippingId) {
+		User user = (User) session.getAttribute(Const.CURRENT_USER);
+		return iShippingService.setDefaultShipping(user.getId(),shippingId);
+	}
 
 	@RequestMapping(value = "/add.do", method = RequestMethod.GET)
 	@ResponseBody

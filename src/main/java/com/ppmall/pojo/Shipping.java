@@ -22,12 +22,14 @@ public class Shipping {
     private String receiverAddress;
 
     private String receiverZip;
+    
+    private Integer isDefault;
 
     private Date createTime;
 
     private Date updateTime;
 
-    public Shipping(Integer id, Integer userId, String receiverName, String receiverPhone, String receiverMobile, String receiverProvince, String receiverCity, String receiverDistrict, String receiverAddress, String receiverZip, Date createTime, Date updateTime) {
+    public Shipping(Integer id, Integer userId, String receiverName, String receiverPhone, String receiverMobile, String receiverProvince, String receiverCity, String receiverDistrict, String receiverAddress, String receiverZip, Integer isDefault, Date createTime, Date updateTime) {
         this.id = id;
         this.userId = userId;
         this.receiverName = receiverName;
@@ -38,6 +40,7 @@ public class Shipping {
         this.receiverDistrict = receiverDistrict;
         this.receiverAddress = receiverAddress;
         this.receiverZip = receiverZip;
+        this.isDefault = isDefault;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -126,7 +129,15 @@ public class Shipping {
         this.receiverZip = receiverZip == null ? null : receiverZip.trim();
     }
 
-    public Date getCreateTime() {
+    public Integer getIsDefault() {
+		return isDefault;
+	}
+
+	public void setIsDefault(Integer isDefault) {
+		this.isDefault = isDefault;
+	}
+
+	public Date getCreateTime() {
         return createTime;
     }
 

@@ -5,6 +5,10 @@ import com.ppmall.pojo.Shipping;
 
 public interface IShippingService {
 	ServerResponse getShippingList(int userId, int pageNum, int pageSize);
+	
+	ServerResponse getDefaultShipping(int userId);
+	
+	ServerResponse setDefaultShipping(int userId, int shippingId);
 
 	ServerResponse addShipping(int userId, Shipping shipping);
 	
