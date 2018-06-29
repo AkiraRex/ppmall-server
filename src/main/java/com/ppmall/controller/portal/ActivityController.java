@@ -12,13 +12,13 @@ import com.ppmall.common.ServerResponse;
 import com.ppmall.pojo.User;
 import com.ppmall.rabbitmq.message.ActivityMessage;
 import com.ppmall.redis.RedisUtil;
-import com.ppmall.service.ActivityService;
+import com.ppmall.service.IActivityService;
 
 @Controller
 @RequestMapping("/activity")
 public class ActivityController {
 	@Autowired
-	private ActivityService iSeckillService;
+	private IActivityService iSeckillService;
 	
 	@Autowired
 	private RedisUtil redisUtil;
