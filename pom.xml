@@ -273,6 +273,12 @@
 	  <artifactId>bcprov-jdk15on</artifactId>
 	  <version>1.54</version>
 	</dependency>
+	<!-- jwt Token相关 -->
+	<dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+      <version>0.6.0</version>
+	  </dependency>
 
   </dependencies>
 
