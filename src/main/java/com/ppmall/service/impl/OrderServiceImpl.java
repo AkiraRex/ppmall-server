@@ -91,16 +91,26 @@ public class OrderServiceImpl implements IOrderService {
 		String imageHost = PropertiesUtil.getProperty("ftp.server.http.prefix");
 
 		OrderInfoVo orderInfoVo = new OrderInfoVo();
-		orderInfoVo.setCreateTime(DateUtil.getDateString(order.getCreateTime()));
-		orderInfoVo.setImageHost(imageHost);
+		if (order.getCreateTime() != null)
+			orderInfoVo.setCreateTime(DateUtil.getDateString(order.getCreateTime()));
+		if (order.getPaymentTime() != null)
+			orderInfoVo.setPaymentTime(DateUtil.getDateString(order.getPaymentTime()));
+		if (order.getSendTime() != null)
+			orderInfoVo.setSendTime(DateUtil.getDateString(order.getSendTime()));
+		if (order.getCloseTime() != null)
+			orderInfoVo.setCloseTime(DateUtil.getDateString(order.getCloseTime()));
+		if (order.getEndTime() != null)
+			orderInfoVo.setEndTime(DateUtil.getDateString(order.getEndTime()));
+		if (order.getPaymentType() != null)
+			orderInfoVo.setPaymentTypeDesc(Const.PayType.codeOf(order.getPaymentType()).getDesc());
+		
+		orderInfoVo.setStatus(order.getStatus());
+		orderInfoVo.setStatusDesc(Const.OrderStatus.codeOf(order.getStatus()).getDesc());
+		orderInfoVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
 		orderInfoVo.setOrderItemVoList(orderItems);
 		orderInfoVo.setOrderNo(order.getOrderNo());
 		orderInfoVo.setPayment(order.getPayment());
-		orderInfoVo.setPaymentTypeDesc(
-				order.getPaymentType() != null ? Const.PayType.codeOf(order.getPaymentType()).getDesc() : "");
 		orderInfoVo.setShippingVo(shipping);
-		orderInfoVo.setStatus(order.getStatus());
-		orderInfoVo.setStatusDesc(Const.OrderStatus.codeOf(order.getStatus()).getDesc());
 
 		return ServerResponse.createSuccess("获取成功", orderInfoVo);
 	}
