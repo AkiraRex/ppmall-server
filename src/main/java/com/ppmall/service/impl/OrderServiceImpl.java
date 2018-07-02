@@ -224,7 +224,7 @@ public class OrderServiceImpl implements IOrderService {
 			
 			orderInfoVo.setStatus(order.getStatus());
 			orderInfoVo.setStatusDesc(Const.OrderStatus.codeOf(order.getStatus()).getDesc());
-			orderInfoVo.setImageHost(PropertiesUtil.getProperty("http://www.grammaker.cn:7080/"));
+			orderInfoVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
 			orderInfoVo.setOrderItemVoList(orderItems);
 			orderInfoVo.setOrderNo(order.getOrderNo());
 			orderInfoVo.setPayment(order.getPayment());
