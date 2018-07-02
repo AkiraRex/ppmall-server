@@ -219,14 +219,15 @@ public class OrderServiceImpl implements IOrderService {
 				orderInfoVo.setCloseTime(DateUtil.getDateString(order.getCloseTime()));
 			if (order.getEndTime() != null)
 				orderInfoVo.setEndTime(DateUtil.getDateString(order.getEndTime()));
-
+			if (order.getPaymentType() != null)
+				orderInfoVo.setPaymentTypeDesc(Const.PayType.codeOf(order.getPaymentType()).getDesc());
+			
 			orderInfoVo.setStatus(order.getStatus());
 			orderInfoVo.setStatusDesc(Const.OrderStatus.codeOf(order.getStatus()).getDesc());
 			orderInfoVo.setImageHost(PropertiesUtil.getProperty("http://www.grammaker.cn:7080/"));
 			orderInfoVo.setOrderItemVoList(orderItems);
 			orderInfoVo.setOrderNo(order.getOrderNo());
 			orderInfoVo.setPayment(order.getPayment());
-			orderInfoVo.setPaymentTypeDesc(Const.PayType.codeOf(order.getPaymentType()).getDesc());
 			orderInfoVo.setShippingVo(shippingVo);
 			returnList.add(orderInfoVo);
 		}
