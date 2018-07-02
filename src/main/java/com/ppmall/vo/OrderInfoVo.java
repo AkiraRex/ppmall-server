@@ -8,6 +8,10 @@ import com.ppmall.pojo.Shipping;
 public class OrderInfoVo {
 	private long orderNo;
 	private String createTime;
+	private String paymentTime;
+	private String sendTime;
+	private String endTime;
+	private String closeTime;
 	private int status;
 	private String statusDesc;
 	private String paymentTypeDesc;
@@ -30,6 +34,38 @@ public class OrderInfoVo {
 
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getPaymentTime() {
+		return paymentTime;
+	}
+
+	public void setPaymentTime(String paymentTime) {
+		this.paymentTime = paymentTime;
+	}
+
+	public String getSendTime() {
+		return sendTime;
+	}
+
+	public void setSendTime(String sendTime) {
+		this.sendTime = sendTime;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
+	public String getCloseTime() {
+		return closeTime;
+	}
+
+	public void setCloseTime(String closeTime) {
+		this.closeTime = closeTime;
 	}
 
 	public int getStatus() {

@@ -142,6 +142,7 @@ public class OrderServiceImpl implements IOrderService {
         for (CartProductVo vo : cartCheckedList) {
             OrderItem item = new OrderItem();
             item.setOrderNo(orderNo);
+            item.setUserId(userId);
             item.setCurrentUnitPrice(new BigDecimal(vo.getProductPrice()));
             item.setProductId(vo.getProductId());
             item.setProductImage(vo.getProductMainImage());
@@ -200,8 +201,30 @@ public class OrderServiceImpl implements IOrderService {
         PageHelper.startPage(pageNum, pageSize);
         Map paramMap = new HashMap();
         paramMap.put("userId", userId);
+        List returnList = new ArrayList<>();
+        
         List<Order> orderList = orderMapper.selectAll(paramMap);
-        PageInfo<Order> pageResult = new PageInfo<>(orderList);
+        for (Order order : orderList) {
+			List<OrderItem> orderItems = orderItemMapper.selectByOrderNo(order.getOrderNo());
+			Shipping shippingVo = shippingMapper.selectByPrimaryKey(order.getShippingId());
+			OrderInfoVo orderInfoVo = new OrderInfoVo();
+	        orderInfoVo.setCreateTime(DateUtil.getDateString(order.getCreateTime()));
+	        orderInfoVo.setPaymentTime(DateUtil.getDateString(order.getPaymentTime()));
+	        orderInfoVo.setSendTime(DateUtil.getDateString(order.getSendTime()));
+	        orderInfoVo.setCloseTime(DateUtil.getDateString(order.getCloseTime()));
+	        orderInfoVo.setEndTime(DateUtil.getDateString(order.getEndTime()));
+	        orderInfoVo.setStatus(order.getStatus());
+	        orderInfoVo.setStatusDesc(Const.OrderStatus.codeOf(order.getStatus()).getDesc());
+	        orderInfoVo.setImageHost(PropertiesUtil.getProperty("http://www.grammaker.cn:7080/"));
+	        orderInfoVo.setOrderItemVoList(orderItems);
+	        orderInfoVo.setOrderNo(order.getOrderNo());
+	        orderInfoVo.setPayment(order.getPayment());
+	        orderInfoVo.setPaymentTypeDesc(Const.PayType.codeOf(order.getPaymentType()).getDesc());
+	        orderInfoVo.setShippingVo(shippingVo);
+	        returnList.add(orderInfoVo);
+        }
+        
+        PageInfo pageResult = new PageInfo<>(returnList);
         return ServerResponse.createSuccess("获取成功", pageResult);
 
     }
