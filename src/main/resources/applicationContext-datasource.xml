@@ -63,18 +63,23 @@
 
         <!-- 配置监控统计拦截的filters -->
         <property name="filters" value="${db.filters}" />
-        
+
+        <property name="proxyFilters">
+            <list>
+                <ref bean="wall-filter"/>
+            </list>
+        </property>
     </bean>
-    
-    <bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter">  
-        <property name="dbType" value="mysql"/>  
-        <!--<property name="config" ref="wall-config"/>-->  
-    </bean>  
-  
-    <!--解决mybatis与druid集成后，wallFilter sql注入异常-->  
-    <bean id="wall-config" class="com.alibaba.druid.wall.WallConfig">  
-        <property name="multiStatementAllow" value="true"/>  
-    </bean> 
+
+    <!--解决mybatis与druid集成后，wallFilter sql注入异常-->
+    <bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter">
+        <property name="config" ref="wall-config" />
+    </bean>
+
+    <bean id="wall-config" class="com.alibaba.druid.wall.WallConfig">
+        <property name="multiStatementAllow" value="true" />
+    </bean>
+
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
