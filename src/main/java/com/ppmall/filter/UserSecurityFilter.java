@@ -41,7 +41,7 @@ public class UserSecurityFilter implements Filter {
         /**
          * 包含login为登陆url不过滤，不包含login,register將进入以下
          */
-        if (!requestUrl.contains("login") && !requestUrl.contains("register") && !requestUrl.contains("alipay_callback.do") && !requestUrl.contains("check_valid") && !requestUrl.contains("kill")) {
+        if (!requestUrl.contains("login") && !requestUrl.contains("register") && !requestUrl.contains("alipay_callback.do") && !requestUrl.contains("check_valid") && !requestUrl.contains("kill") && !requestUrl.contains("product") && !requestUrl.contains("category")) {
             if (currentUser == null) {
                 httpServletResponse.getWriter().print(resultString);
             } else {
