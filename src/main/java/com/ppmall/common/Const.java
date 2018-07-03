@@ -1,4 +1,7 @@
 package com.ppmall.common;
+
+import java.util.Date;
+
 /**
  * 静态类(各种静态资源，枚举资源)
  * @author rex
@@ -7,6 +10,13 @@ package com.ppmall.common;
 public class Const {
 	public static final String CURRENT_USER = "currentUser";
 	public static final String FORGET_TOKEN = "forgetToken";
+	
+	public interface ExpiredType{
+		long ONE_MONTH =  1000L * 60L * 60L * 24L * 30L;
+		long ONE_DAY =  1000L * 60L * 60L * 24L;
+		long ONE_HOUR =  1000L * 60L * 60L;
+		long ONE_MINUTE =  1000L * 60L;
+	}
 	
 	public interface Cache{
 		/**
