@@ -1,11 +1,10 @@
 package com.ppmall.service;
 
-import java.util.Map;
-
 import com.ppmall.common.ServerResponse;
+import com.ppmall.pojo.User;
 
 public interface ITokenService {
 	
-	ServerResponse createNewToken(Map claims,String subject,long ttlAtMillis);
+	public ServerResponse refreshToken(String refreshToken, User user);
 	
 }

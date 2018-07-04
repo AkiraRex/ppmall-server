@@ -24,4 +24,6 @@ public interface ProductMapper {
     List<Product> selectAll(Map paramMap);
     
     int updateBatchSelective(List list);
+    
+    List selectHotProduct(Integer limit);
 }

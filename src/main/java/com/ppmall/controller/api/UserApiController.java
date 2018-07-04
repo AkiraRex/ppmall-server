@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ppmall.common.Const;
-import com.ppmall.common.Const.ExpiredType;
 import com.ppmall.common.ServerResponse;
 import com.ppmall.pojo.User;
-import com.ppmall.service.ITokenService;
 import com.ppmall.service.IUserService;
 import com.ppmall.util.TokenUtil;
 
@@ -29,14 +27,12 @@ public class UserApiController {
 	
 	@RequestMapping(value = "/wechat_login.do", method = RequestMethod.POST)
 	@ResponseBody
-	public ServerResponse wechatLogin(String code, String encryptedData, String iv, HttpSession session, HttpServletResponse httpResponse) {
+	public ServerResponse wechatLogin(String code, String encryptedData, String iv, HttpSession session) {
 		ServerResponse response = iUserService.wechatLogin(code, encryptedData, iv);
 		if (response.isSuccess()) {
 			User user = (User) ((Map) response.getData()).get("user");
-			Map claims = new HashMap<>();
-			claims.put(Const.CURRENT_USER, user);
- 			String token = TokenUtil.createToken(claims, String.valueOf(user.getId()), Const.ExpiredType.ONE_MONTH );
- 			httpResponse.addHeader("Authentication", token);
+//			user = new User();
+//			httpResponse.addHeader("Authentication", token);
 //			session.setAttribute(Const.CURRENT_USER, user);
 		}
 		return response;
@@ -46,15 +42,28 @@ public class UserApiController {
 	@ResponseBody
 	public ServerResponse login(String username, String password, HttpSession session, HttpServletResponse httpResponse) {
         ServerResponse response = iUserService.login(username, password);
+        Map returnMap = new HashMap<>();
         if (response.isSuccess()){
         	Map claims = new HashMap<>();
         	User user =  (User) response.getData();
 			claims.put(Const.CURRENT_USER, user);
- 			String token = TokenUtil.createToken(claims, String.valueOf(user.getId()), new Date().getTime() + ExpiredType.ONE_MONTH );
- 			httpResponse.addHeader("Authentication", token);
-// 			session.setAttribute(Const.CURRENT_USER, user);
+			
+			long now = new Date().getTime();
+			
+ 			String accessToken = TokenUtil.createToken(claims, String.valueOf(user.getId()), now + Const.ExpiredType.ONE_HOUR * 2 );
+ 			
+ 			claims.clear();
+ 			claims.put("userId",user.getId());
+ 			String refreshToken = TokenUtil.createToken(claims, String.valueOf(user.getId()), now + Const.ExpiredType.ONE_MONTH);
+
+ 			returnMap.put("user", user);
+ 			returnMap.put("accessToken", accessToken);
+ 			returnMap.put("refreshToken", refreshToken);
+ 			returnMap.put("expired", now + Const.ExpiredType.ONE_HOUR * 2);
+ 			
         }
             
-        return response;
+        return ServerResponse.createSuccess("登陆成功",returnMap);
+			
     }
 }

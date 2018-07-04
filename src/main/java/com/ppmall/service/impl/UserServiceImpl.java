@@ -13,6 +13,7 @@ import com.ppmall.util.HttpUtil;
 import com.ppmall.util.JsonUtil;
 import com.ppmall.util.MD5Util;
 import com.ppmall.util.PropertiesUtil;
+import com.ppmall.util.TokenUtil;
 import com.ppmall.util.UUIDUtil;
 
 import org.apache.commons.codec.binary.Base64;
@@ -226,9 +227,19 @@ public class UserServiceImpl implements IUserService {
 			} else {
 				auth = authMapper.selectByOpenId(openid);
 			}
+			
+			Map claims = new HashMap<>();
+			claims.put(Const.CURRENT_USER, user);
+ 			String accessToken = TokenUtil.createToken(claims, String.valueOf(user.getId()), Const.ExpiredType.ONE_HOUR * 2 );
+ 			claims.clear();
+ 			String refreshToken = TokenUtil.createToken(claims, String.valueOf(user.getId()), Const.ExpiredType.ONE_MONTH);
+			
 			Map returnMap = new HashMap<>();
 			returnMap.put("user", user);
 			returnMap.put("auth",auth);
+			returnMap.put("accessToken", accessToken);
+			returnMap.put("refreshToken", refreshToken);
+			
 			return ServerResponse.createSuccess("登陆成功", returnMap);
 		}
 

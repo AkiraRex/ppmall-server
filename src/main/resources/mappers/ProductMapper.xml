@@ -5,6 +5,7 @@
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="category_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="activity_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="subtitle" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="main_image" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -17,8 +18,26 @@
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
+  <resultMap id="HotProductVo" type="com.ppmall.vo.HotProductVo" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="category_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="activity_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="subtitle" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="main_image" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sub_images" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="detail" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="stock" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="count" jdbcType="INTEGER" javaType="java.lang.Long" />
+    </constructor>
+  </resultMap>
   <sql id="Base_Column_List" >
-    id, category_id, name, subtitle, main_image, sub_images, detail, price, stock, status, 
+    id, category_id, activity_id, name, subtitle, main_image, sub_images, detail, price, stock, status, 
     create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -26,6 +45,25 @@
     <include refid="Base_Column_List" />
     from mmall_product
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectHotProduct" resultMap="HotProductVo" parameterType="java.lang.Integer" >
+    SELECT
+		<include refid="Base_Column_List" />,
+		count
+	FROM
+		(
+			SELECT
+				count(id) count,
+				product_id
+			FROM
+				mmall_order_item
+			GROUP BY
+				product_id
+		) item
+	LEFT JOIN mmall_product product ON item.product_id = product.id
+	ORDER BY
+		item.count DESC
+	LIMIT #{limit,jdbcType=INTEGER}  
   </select>
   <select id="selectAll" resultMap="BaseResultMap" parameterType="map">
     select
@@ -44,6 +82,12 @@
     </if>
     <if test="categoryId != null">
       and category_id = #{categoryId,jdbcType=INTEGER}
+    </if>
+    <if test="beginTime != null">
+      and update_time <![CDATA[ >= ]]> #{beginTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      and update_time <![CDATA[ <= ]]> #{endTime,jdbcType=TIMESTAMP}
     </if>
     <if test="orderBy != null">
       order by ${orderBy}
