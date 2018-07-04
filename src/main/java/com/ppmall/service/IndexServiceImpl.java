@@ -12,6 +12,7 @@ import com.ppmall.common.Const;
 import com.ppmall.common.ServerResponse;
 import com.ppmall.dao.CategoryMapper;
 import com.ppmall.dao.ProductMapper;
+import com.ppmall.util.PropertiesUtil;
 
 @Service("iIndexService")
 public class IndexServiceImpl implements IIndexService {
@@ -38,6 +39,7 @@ public class IndexServiceImpl implements IIndexService {
 		returnMap.put("hotProductList", hotProductList);
 		returnMap.put("newProductList", newProductList);
 		returnMap.put("categoryList", categoryList);
+		returnMap.put("imageHost", PropertiesUtil.getProperty("ftp.server.http.prefix"));
 		return ServerResponse.createSuccess(returnMap);
 	}
 
