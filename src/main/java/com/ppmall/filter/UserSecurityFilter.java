@@ -75,7 +75,8 @@ public class UserSecurityFilter implements Filter {
         		&& !requestUrl.contains("kill") 
         		&& !requestUrl.contains("product/list.do")
         		&& !requestUrl.contains("product/detail.do")
-        		&& !requestUrl.contains("category")) {
+        		&& !requestUrl.contains("category")
+        		&& !requestUrl.contains("index")) {
             if (currentUser == null) {
                 httpServletResponse.getWriter().print(resultString);
             } else {
