@@ -129,6 +129,10 @@ public class ServerResponse<T> implements Serializable {
     public static <T> ServerResponse<T> createErrorStatus(int status,String errorMsg){
         return new ServerResponse<T>(status,errorMsg);
     }
+    
+    public static <T> ServerResponse<T> createErrorStatus(ResponseCode code){
+        return new ServerResponse<T>(code.getCode(),code.getDesc());
+    }
 
     
     @Override

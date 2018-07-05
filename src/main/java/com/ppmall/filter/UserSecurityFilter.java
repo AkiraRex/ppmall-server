@@ -42,7 +42,7 @@ public class UserSecurityFilter implements Filter {
         HttpSession httpSession = httpServletRequest.getSession();
 
         String requestUrl = httpServletRequest.getRequestURI();
-        String resultString = ServerResponse.createErrorStatus(ResponseCode.NOT_LOGIN.getCode(), "未登录").toString();
+        String resultString = ServerResponse.createErrorStatus(ResponseCode.NOT_LOGIN).toString();
         String token = httpServletRequest.getHeader("Authentication");
         
         User currentUser = (User) httpSession.getAttribute(Const.CURRENT_USER);

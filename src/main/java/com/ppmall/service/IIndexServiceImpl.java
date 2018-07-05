@@ -15,7 +15,7 @@ import com.ppmall.dao.ProductMapper;
 import com.ppmall.util.PropertiesUtil;
 
 @Service("iIndexService")
-public class IndexServiceImpl implements IIndexService {
+public class IIndexServiceImpl implements IIndexService {
 
 	@Autowired
 	private ProductMapper productMapper;
