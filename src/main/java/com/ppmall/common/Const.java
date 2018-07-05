@@ -18,6 +18,15 @@ public class Const {
 		long ONE_MINUTE =  1000L * 60L;
 	}
 	
+	public interface AdvertPosition{
+		int INDEX_BANNER = 1;
+	}
+	
+	public interface ValidStatus{
+		int VALID = 1;
+		int INVALID = 0;
+	}
+	
 	public interface Cache{
 		/**
 		 * 所有品类
