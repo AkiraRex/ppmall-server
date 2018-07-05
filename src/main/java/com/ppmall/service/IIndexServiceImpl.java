@@ -1,7 +1,9 @@
 package com.ppmall.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +16,9 @@ import com.ppmall.dao.AdvertMapper;
 import com.ppmall.dao.CategoryMapper;
 import com.ppmall.dao.ProductMapper;
 import com.ppmall.pojo.Advert;
+import com.ppmall.pojo.Category;
 import com.ppmall.util.PropertiesUtil;
+import com.ppmall.vo.HotProductVo;
 
 @Service("iIndexService")
 public class IIndexServiceImpl implements IIndexService {
@@ -31,8 +35,26 @@ public class IIndexServiceImpl implements IIndexService {
 	@Override
 	public ServerResponse getIndexData() {
 		// TODO Auto-generated method stub
-		List hotProductList = productMapper.selectHotProduct(3);
-
+		List<HotProductVo> hotProductList = productMapper.selectHotProduct(3);
+		List categoryProductList = new ArrayList<>();
+		
+		for (int i = 0; i < hotProductList.size(); i++) {
+			int categoryId = hotProductList.get(i).getCategoryId();
+			String categoryName = categoryMapper.selectByPrimaryKey(categoryId).getName();
+			
+			Map paramMap = new HashMap<>();
+			paramMap.put("categoryId",categoryId);
+			List hotCategoryProducts = productMapper.selectAll(paramMap).subList(0, 1);
+			
+			Map dataMap = new HashMap<>();
+			dataMap.put("name", categoryName);
+			dataMap.put("id", categoryId);
+			dataMap.put("productList", hotCategoryProducts);
+			categoryProductList.add(dataMap);
+		}
+		
+//		List<Category> hotCategory = categoryMapper.selectCategoryByIds(categoryIds);
+		
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("beginTime", new Date(new Date().getTime() - Const.ExpiredType.ONE_DAY * 7));
 		paramMap.put("endTime", new Date());
@@ -50,7 +72,9 @@ public class IIndexServiceImpl implements IIndexService {
 		returnMap.put("newProductList", newProductList);
 		returnMap.put("categoryList", categoryList);
 		returnMap.put("bannerList", bannerList);
+		returnMap.put("categoryProductList", categoryProductList);
 		returnMap.put("imageHost", PropertiesUtil.getProperty("ftp.server.http.prefix"));
+		
 		return ServerResponse.createSuccess(returnMap);
 	}
 

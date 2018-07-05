@@ -24,6 +24,15 @@
     from mmall_category
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectCategoryByIds" resultMap="BaseResultMap" parameterType="java.util.ArrayList" >
+    select 
+    <include refid="Base_Column_List" />
+    from mmall_category
+    where id in 
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+       #{item}
+    </foreach>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from mmall_category
     where id = #{id,jdbcType=INTEGER}
