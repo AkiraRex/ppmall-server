@@ -230,9 +230,9 @@ public class UserServiceImpl implements IUserService {
 			
 			Map claims = new HashMap<>();
 			claims.put(Const.CURRENT_USER, user);
- 			String accessToken = TokenUtil.createToken(claims, String.valueOf(user.getId()), Const.ExpiredType.ONE_HOUR * 2 );
+ 			String accessToken = TokenUtil.createToken(claims, String.valueOf(user.getId()), new Date().getTime() + Const.ExpiredType.ONE_HOUR * 2 );
  			claims.clear();
- 			String refreshToken = TokenUtil.createToken(claims, String.valueOf(user.getId()), Const.ExpiredType.ONE_MONTH);
+ 			String refreshToken = TokenUtil.createToken(claims, String.valueOf(user.getId()), new Date().getTime() + Const.ExpiredType.ONE_MONTH);
 			
 			Map returnMap = new HashMap<>();
 			returnMap.put("user", user);
