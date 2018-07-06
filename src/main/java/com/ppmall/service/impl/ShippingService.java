@@ -68,11 +68,14 @@ public class ShippingService implements IShippingService {
 		shipping.setUpdateTime(date);
 		if (responseList == null || responseList.size() == 0)
 			shipping.setIsDefault(1);
-		shippingMapper.insert(shipping);
 		
 		if (shipping.getIsDefault() == 1 && (responseList != null && responseList.size() > 0)) {
-			this.setDefaultShipping(userId, shipping.getId());
+			shipping = new Shipping();
+			shipping.setUserId(userId);
+			shipping.setIsDefault(0);
+			shippingMapper.updateAllByUserIdSelective(shipping);
 		}
+		shippingMapper.insert(shipping);
 
 		return ServerResponse.createSuccess("添加成功");
 	}
