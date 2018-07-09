@@ -70,10 +70,11 @@ public class ShippingService implements IShippingService {
 			shipping.setIsDefault(1);
 		
 		if (shipping.getIsDefault() == 1 && (responseList != null && responseList.size() > 0)) {
-			shipping = new Shipping();
-			shipping.setUserId(userId);
-			shipping.setIsDefault(0);
-			shippingMapper.updateAllByUserIdSelective(shipping);
+			Shipping shipping2 = new Shipping();
+			shipping2.setUserId(userId);
+			shipping2.setIsDefault(0);
+			shipping2.setUpdateTime(date);
+			shippingMapper.updateAllByUserIdSelective(shipping2);
 		}
 		shippingMapper.insert(shipping);
 

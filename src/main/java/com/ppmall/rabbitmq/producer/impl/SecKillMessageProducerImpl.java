@@ -9,15 +9,15 @@ import com.ppmall.rabbitmq.producer.ISecKillMessageProducer;
 @Component
 public class SecKillMessageProducerImpl implements ISecKillMessageProducer {
 
-	@Autowired
-	AmqpTemplate amqpTemplate;
+	//@Autowired
+	//AmqpTemplate amqpTemplate;
 
 	@Override
 	public void sendMessage(String exchange, String key, Object object) {
 		// TODO Auto-generated method stub
 		try {
 			System.out.println("=========发送消息开始=============消息：" + object.toString());
-			amqpTemplate.convertAndSend("testExchange", key, object);
+			//amqpTemplate.convertAndSend("testExchange", key, object);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

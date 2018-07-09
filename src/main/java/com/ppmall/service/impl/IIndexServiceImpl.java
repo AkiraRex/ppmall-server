@@ -41,7 +41,7 @@ public class IIndexServiceImpl implements IIndexService {
 
         for (int i = 0; i < hotProductList.size(); i++) {
             int categoryId = hotProductList.get(i).getCategoryId();
-            String categoryName = categoryMapper.selectByPrimaryKey(categoryId).getName();
+            Category category = categoryMapper.selectByPrimaryKey(categoryId);
 
             Map paramMap = new HashMap<>();
             paramMap.put("categoryId", categoryId);
@@ -50,8 +50,9 @@ public class IIndexServiceImpl implements IIndexService {
                 hotCategoryProducts = hotProductList.subList(0, 3);
 
             Map dataMap = new HashMap<>();
-            dataMap.put("name", categoryName);
+            dataMap.put("name", category.getName());
             dataMap.put("id", categoryId);
+            dataMap.put("parentId",category.getParentId());
             dataMap.put("productList", hotCategoryProducts);
             categoryProductList.add(dataMap);
         }
