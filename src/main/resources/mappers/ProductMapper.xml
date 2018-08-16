@@ -238,7 +238,6 @@
       price = #{price,jdbcType=DECIMAL},
       stock = #{stock,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = SYSDATE()
     where id = #{id,jdbcType=INTEGER}
   </update>
