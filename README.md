@@ -4,7 +4,9 @@
   	用Tomcat部署请将项目设置为默认加载项目,因前端资源路径为ip:port/...     
 
 * [项目展示地址](http://www.grammaker.cn:8080/dist/view/user-login.html)
-  增加了数据库文件，大哥们 点个星让我开心一下呀？
+* [项目后台管理地址](http://www.grammaker.cn:8080/backend/dist/view/#/login?redirect=%23%2Forder%2Findex)
+可以自己添加商品哦
+* 增加了数据库文件，大哥们 点个星让我开心一下呀？
 * 前端项目:https://github.com/AkiraRex/ppmall-v  
 
 -------------------------
@@ -16,6 +18,7 @@
 5. 个人信息
 6. 支付
    > 目前支持支付宝沙箱环境
+   > 沙箱环境才可以支付哦可以参考https://blog.csdn.net/z740852294/article/details/77679256
 
 ## 后台
 1. 商品管理
