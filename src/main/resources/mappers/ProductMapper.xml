@@ -270,7 +270,7 @@
         stock = #{item.stock,jdbcType=INTEGER},
       </if>
       <if test="item.status != null" >
-        status = #{item.status,jdbcType=INTEGER},
+        status = #{item.status,jdbcType=INTEGER}, 
       </if>
       <if test="item.createTime != null" >
         create_time = #{item.createTime,jdbcType=TIMESTAMP},
