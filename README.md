@@ -1,8 +1,9 @@
 # ppmall-server
   > 本项目根据慕课网电商课程前端反推,另外增加首页品类动态显示等功能...         
   	本项目是Maven项目,前端资源已经打包整合        
-  	用Tomcat部署请将项目设置为默认加载项目,因前端资源路径为ip:port/...     
-
+  	用Tomcat部署请将项目设置为默认加载项目,因前端资源路径为ip:port/...   
+	
+交流群：158157824有兴趣大家一起交流
 * [项目展示地址](http://www.grammaker.cn:8080/dist/view/user-login.html)
 * [项目后台管理地址](http://www.grammaker.cn:8080/backend/dist/view/#/login?redirect=%23%2Forder%2Findex)
 可以自己添加商品哦
