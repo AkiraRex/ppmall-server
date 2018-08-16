@@ -13,6 +13,7 @@ import com.ppmall.vo.ProductVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	@Override
-	@CachePut(key = "#root.caches[0].name + #product.getId()")
+	@CacheEvict(key = "#root.caches[0].name + #product.getId()")
 	public ServerResponse saveProduct(Product product) {
 		Integer productId = product.getId();
 
@@ -72,7 +73,7 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	@Override
-	@CachePut(key = "#root.caches[0].name + #product.getId()")
+	@CacheEvict(key = "#root.caches[0].name + #product.getId()")
 	public ServerResponse setStatus(Product product) {
 		productMapper.updateByPrimaryKeySelective(product);
 		return ServerResponse.createSuccessMessage("修改成功");
