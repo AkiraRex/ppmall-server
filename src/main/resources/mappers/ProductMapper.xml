@@ -74,6 +74,9 @@
     <if test="productId != null">
       and id = #{productId,jdbcType=INTEGER}
     </if>
+    <if test="status != null">
+      and status = #{status,jdbcType=INTEGER}
+    </if>
     <if test="productName != null">
       and name like concat('%', #{productName,jdbcType=VARCHAR}, '%')
     </if>

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.ppmall.common.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,12 +28,13 @@ public class ProductController {
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
 	@ResponseBody
 	public ServerResponse getProductList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-			@RequestParam(value = "pageNum", defaultValue = "10") int pageSize, Integer categoryId, String keyword,
+			@RequestParam(value = "pageSize", defaultValue = "10") int pageSize, Integer categoryId, String keyword,
 			String orderBy, HttpSession session) {
 
 		Map paramMap = new HashMap<>();
 		paramMap.put("categoryId", categoryId);
 		paramMap.put("keyword", keyword);
+		paramMap.put("status", Const.ValidStatus.VALID);
 
 		if (StringUtil.isNotBlank(orderBy) && !orderBy.equals("default"))
 			paramMap.put("orderBy", orderBy.replace("_", " "));
